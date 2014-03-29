@@ -6,34 +6,28 @@
   {
     'comment': '= Headline syntax'
     'name': 'markup.heading.review'
-    'begin': '^(=+\s*(.*))$'
+    'match': '^(=+\s*(.*))$'
     'captures':
       '1':
         'name': 'entity.name.tag.heading.review'
-    'patterns': [
-      {
-        'include': '#paragraph'
-      }
-    ]
+  }
+  {
+    'comment': 'block syntax'
+    'name': 'markup.list.review'
+    'match': '^//([^\\[]+)(\\[([^\\]]*)\\])*{$'
+    'captures':
+      '1':
+        'name': 'variable.other.review'
+    'end': '^//}$'
+  }
+  {
+    'comment': 'inline syntax'
+    'name': 'markup.inline.review'
+    'begin': '@<([^>]+)>{'
+    'beginCaptures':
+      '1':
+        'name': 'variable.other.review'
+    'end': '}'
   }
 ]
-'repository':
-  'paragraph':
-    'patterns': [
-      {
-        'comment': 'block syntax'
-        'name': 'markup.list.review'
-        'begin': '^//([^\\[]+)(\\[([^\\]]*)\\])*{$'
-        'captures':
-          '1':
-            'name': 'variable.other.review'
-        'end': '^//}$'
-        'patterns': [
-          {
-            'include': 'text.html.basic'
-          }
-        ]
-      }
-    ]
-
 'scopeName': 'source.re'
