@@ -1,5 +1,10 @@
-# language-review package
+# Re:VIEW support for Atom
 
-A short description of your package.
+[Re:VIEW](https://github.com/kmuto/review) is flexible document format/conversion system.
+It is used primarily in Japan.
 
-![A screenshot of your spankin' package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+本パッケージはRe:VIEWサポートをAtomに追加するためのものです。
+今のところシンタックスハイライトだけです。
+それさえも満足にできていませんけどね！
+
+まずはyanzmの[Sublime Text 2用プラグイン](https://github.com/yanzm/ReVIEW)を目指したいところです。
