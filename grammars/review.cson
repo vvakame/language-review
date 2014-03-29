@@ -4,14 +4,36 @@
 'name': 'Re:VIEW'
 'patterns': [
   {
+    'comment': '= Headline syntax'
     'name': 'markup.heading.review'
-    'begin': '(^=+\s*.*)'
+    'begin': '^(=+\s*(.*))$'
     'captures':
       '1':
         'name': 'entity.name.tag.heading.review'
-    'end': '$'
     'patterns': [
+      {
+        'include': '#paragraph'
+      }
     ]
   }
 ]
+'repository':
+  'paragraph':
+    'patterns': [
+      {
+        'comment': 'block syntax'
+        'name': 'markup.list.review'
+        'begin': '^//([^\\[]+)(\\[([^\\]]*)\\])*{$'
+        'captures':
+          '1':
+            'name': 'variable.other.review'
+        'end': '^//}$'
+        'patterns': [
+          {
+            'include': 'text.html.basic'
+          }
+        ]
+      }
+    ]
+
 'scopeName': 'source.re'
