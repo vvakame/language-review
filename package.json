@@ -1,8 +1,8 @@
 {
   "name": "language-review",
-  "version": "0.0.0",
-  "description": "Re:VIEW language support in Atom",
-  "repository": "https://github.com/atom/language-review",
+  "version": "0.0.1",
+  "description": "Re:VIEW support in Atom",
+  "repository": "https://github.com/vvakame/language-review",
   "license": "MIT",
   "engines": {
     "atom": "*",
