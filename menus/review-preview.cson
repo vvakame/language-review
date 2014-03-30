@@ -1,0 +1,10 @@
+'menu': [
+  'label': 'Packages'
+  'submenu': [
+    'label': 'Re:VIEW'
+    'submenu': [
+      'label': 'Toggle Preview'
+      'command': 'review-preview:toggle'
+    ]
+  ]
+]
