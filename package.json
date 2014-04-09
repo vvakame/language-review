@@ -10,7 +10,7 @@
     "node": "*"
   },
   "dependencies": {
-    "review.js": "0.1.0",
+    "review.js": "0.2.1",
 
     "fs-plus": "2.2.0",
     "pathwatcher": "1.1.1",

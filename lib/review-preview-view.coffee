@@ -3,6 +3,8 @@ path = require 'path'
 _ = require 'underscore-plus'
 {File} = require 'pathwatcher'
 
+ReVIEW = require "review.js"
+
 module.exports =
 class ReVIEWPreviewView extends ScrollView
   atom.deserializers.add(this)
@@ -47,7 +49,7 @@ class ReVIEWPreviewView extends ScrollView
     else
       atom.packages.once 'activated', =>
         resolve()
-        @renderMarkdown()
+        @renderReVIEW()
 
   editorForId: (editorId) ->
     for editor in atom.workspace.getEditors()
@@ -55,7 +57,7 @@ class ReVIEWPreviewView extends ScrollView
     null
 
   handleEvents: ->
-    @subscribe atom.syntax, 'grammar-added grammar-updated', _.debounce((=> @renderMarkdown()), 250)
+    @subscribe atom.syntax, 'grammar-added grammar-updated', _.debounce((=> @renderReVIEW()), 250)
     @subscribe this, 'core:move-up', => @scrollUp()
     @subscribe this, 'core:move-down', => @scrollDown()
 
@@ -71,7 +73,7 @@ class ReVIEWPreviewView extends ScrollView
       @css('zoom', 1)
 
     changeHandler = =>
-      @renderMarkdown()
+      @renderReVIEW()
       pane = atom.workspace.paneForUri(@getUri())
       if pane? and pane isnt atom.workspace.getActivePane()
         pane.activateItem(this)
@@ -82,22 +84,41 @@ class ReVIEWPreviewView extends ScrollView
       @subscribe(@editor.getBuffer(), 'contents-modified', changeHandler)
       @subscribe @editor, 'path-changed', => @trigger 'title-changed'
 
-  renderMarkdown: ->
+  renderReVIEW: ->
     @showLoading()
     if @file?
-      @file.read().then (contents) => @renderMarkdownText(contents)
+      @file.read().then (contents) => @renderReVIEWText(contents)
     else if @editor?
-      @renderMarkdownText(@editor.getText())
+      @renderReVIEWText(@editor.getText())
 
-  renderMarkdownText: (text) ->
+  renderReVIEWText: (text) ->
+    console.log(text)
     roaster = require 'roaster'
     sanitize = true
     breaks = atom.config.get('review-preview.breakOnSingleNewline')
-    roaster text, {sanitize, breaks}, (error, html) =>
-      if error
-        @showError(error)
-      else
-        @html(@tokenizeCodeBlocks(@resolveImagePaths(html)))
+
+    files = {
+      "ch01.re": text
+    }
+    result = {
+    }
+    ReVIEW.start (review) =>
+      review.initConfig
+        read: (path) => files[path]
+        write: (path, content) => result[path] = content
+        listener:
+          onReports: (reports) => console.log(reports)
+          onCompileSuccess: (book) =>
+            book.parts[1].chapters[0].builderProcesses.forEach (process) =>
+              @html(@tokenizeCodeBlocks(@resolveImagePaths(process.result)))
+        builders: [new ReVIEW.Build.HtmlBuilder(false)]
+        book:
+          preface: []
+          chapters: [
+            "ch01.re"
+          ]
+          afterword: []
+    null
 
   getTitle: ->
     if @file?

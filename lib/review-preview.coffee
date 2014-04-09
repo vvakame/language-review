@@ -43,5 +43,5 @@ module.exports =
     previousActivePane = atom.workspace.getActivePane()
     atom.workspace.open(uri, split: 'right', searchAllPanes: true).done (previewView) ->
       if previewView instanceof ReVIEWPreviewView
-        previewView.renderMarkdown()
+        previewView.renderReVIEW()
         previousActivePane.activate()
