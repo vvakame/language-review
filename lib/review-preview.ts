@@ -67,7 +67,7 @@ var obj = {
 			searchAllPanes: true
 		}).done(previewView => {
 			if (previewView instanceof ReVIEWPreviewView) {
-				(<any>previewView).renderReVIEW();
+				(<ReVIEWPreviewView>previewView).renderReVIEW();
 				previousActivePane.activate();
 			}
 		});

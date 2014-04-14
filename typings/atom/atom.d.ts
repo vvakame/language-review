@@ -307,7 +307,7 @@ declare module AtomCore {
 	}
 
 	interface IGrammar {
-		scopeName: any;
+		scopeName: string;
 	}
 
 	interface IPane /* extends Theorist.Model */ {
@@ -386,6 +386,9 @@ declare module AtomCore {
 		height:number;
 	}
 
+	interface IProject {
+	}
+
 	interface IWorkspaceStatic {
 		new():IWorkspace;
 	}
@@ -394,7 +397,7 @@ declare module AtomCore {
 		deserializeParams(params:any):any;
 		serializeParams():{paneContainer:any;fullScreen:boolean;};
 		eachEditor(callback:Function):void;
-		getEditors():any;
+		getEditors():IEditor[];
 		open(uri:string, options:any):Q.Promise<View>;
 		openLicense():void;
 		openSync(uri:string, options:any):any;
@@ -558,6 +561,7 @@ declare module AtomCore {
 		loadTime:number;
 		workspaceViewParentSelector:string;
 
+		project: IProject;
 		workspaceView: IWorkspaceView;
 		workspace: IWorkspace;
 		// really exists? end

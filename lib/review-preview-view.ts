@@ -143,19 +143,19 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		console.log(text);
 		var sanitize = true;
 		var breaks = atom.config.get("review-preview.breakOnSingleNewline");
-		var files = {
+		var files:{[path:string]:string;} = {
 			"ch01.re": text
 		};
-		var result = {
+		var result:{[path:string]:string;} = {
 		};
-		ReVIEW.start(review => {
+		ReVIEW.start((review:any) => {
 			review.initConfig({
-				read: path => files[path],
-				write: (path, content) => result[path] = content,
+				read: (path:any) => files[path],
+				write: (path:any, content:any) => result[path] = content,
 				listener: {
-					onReports: (reports) => console.log(reports),
-					onCompileSuccess: (book) => {
-						book.parts[1].chapters[0].builderProcesses.forEach(process => {
+					onReports: (reports:any) => console.log(reports),
+					onCompileSuccess: (book:any) => {
+						book.parts[1].chapters[0].builderProcesses.forEach((process:any) => {
 							var $html = this.resolveImagePaths(process.result);
 							this.jq.empty().append($html);
 						});
