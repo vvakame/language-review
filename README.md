@@ -8,3 +8,9 @@ It is used primarily in Japan.
 それさえも満足にできていませんけどね！
 
 まずはyanzmの[Sublime Text 2用プラグイン](https://github.com/yanzm/ReVIEW)を目指したいところです。
+
+## ライセンス
+
+本パッケージはMITライセンスで配布しています。
+
+本パッケージはApache License Version 2.0で配布されている[yanzmのSublime Text2用Re:VIEWプラグイン](https://github.com/yanzm/ReVIEW)の成果物(review.tmLanguage)を含みます。

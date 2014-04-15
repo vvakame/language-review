@@ -1,37 +1,589 @@
 {
     "fileTypes" : ["re"],
     "name" : "Re:VIEW",
-    "patterns" : [{
-        "comment" : "= Headline syntax",
-        "name" : "markup.heading.review",
-        "match" : "^(=+s*(.*))$",
-        "captures" : {
-            "1" : {
-                "name" : "entity.name.tag.heading.review"
+    "patterns": [
+        {
+            "comment": "Patagraph = ",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "4": {
+                    "name": "string.review"
+                }
+            },
+            "name": "patagraph.review",
+            "match": "(^={1,4}(\\{([^\\}]+)\\})?)\\s(.*)"
+        },
+        {
+            "comment": "Column ===[column]",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "string.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            },
+            "name": "column.review.begin",
+            "match": "(^={3}\\[(column)\\])\\s(.*)"
+        },
+        {
+            "comment": "Column ===[/column]",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            },
+            "name": "column.review.end",
+            "match": "(^={3}\\[/(column)\\])"
+        },
+        {
+            "comment": "Bullet point * ",
+            "name": "keyword.review",
+            "match": "^\\s+\\*+ "
+        },
+        {
+            "comment": "Numeric bullet point like 1. ",
+            "name": "keyword.review",
+            "match": "^\\s+[0-9]+\\. "
+        },
+        {
+            "comment": "Definition list like : Alpha ",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "string.review"
+                }
+            },
+            "name": "definition.review",
+            "match": "^\\s*(:)\\s(.*)"
+        },
+        {
+            "comment": "List //list[main][main()]{ ... //}",
+            "begin": "^(//)(list)\\[([^\\]]*)\\]\\[((\\\\]|[^]])*)\\](\\{)",
+            "end": "(^//\\})",
+            "name": "list.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "4": {
+                    "name": "string.review"
+                },
+                "6": {
+                    "name": "keyword.review"
+                }
             }
+        },
+        {
+            "comment": "EMList //emlist[main()]{ ... //}",
+            "begin": "^(//)(emlist)(\\[((\\\\]|[^]])*)\\])?(\\{)",
+            "end": "(^//\\})",
+            "name": "emlist.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "4": {
+                    "name": "string.review"
+                },
+                "6": {
+                    "name": "keyword.review"
+                }
+            }
+        },
+        {
+            "comment": "//source[...]{ ... //}",
+            "begin": "^(//)(source)\\[([^\\]]*)\\](\\{)",
+            "end": "(^//\\})",
+            "name": "source.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "string.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "4": {
+                    "name": "keyword.review"
+                }
+            }
+        },
+        {
+            "comment": "//listnum[hello][...]",
+            "begin": "^(//)(listnum)\\[([^\\]]*)\\]\\[((\\\\]|[^]])*)\\](\\{)",
+            "end": "(^//\\})",
+            "name": "listnum.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "4": {
+                    "name": "string.review"
+                },
+                "6": {
+                    "name": "keyword.review"
+                }
+            }
+        },
+        {
+            "comment": "@<list>{hello} ",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "5": {
+                    "name": "keyword.review"
+                },
+                "4": {
+                    "name": "variable.parameter.review"
+                }
+            },
+            "name": "listnum.inline.review",
+            "match": "(@<)(list)(>\\{)([^\\}]*)(\\})"
+        },
+        {
+            "comment": "Image //image[unixhistory][...][scale=2]",
+            "begin": "^(//)(image)\\[([^\\]]*)\\](\\[([^\\]]*)\\])?\\[((\\\\]|[^]])*)\\](\\{)",
+            "end": "(^//\\})",
+            "name": "image.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "5": {
+                    "name": "string.review"
+                },
+                "6": {
+                    "name": "string.review"
+                },
+                "8": {
+                    "name": "keyword.review"
+                }
+            }
+        },
+        {
+            "comment": "@<img>{unixhistory} ",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "5": {
+                    "name": "keyword.review"
+                },
+                "4": {
+                    "name": "variable.parameter.review"
+                }
+            },
+            "name": "image.inline.review",
+            "match": "(@<)(img)(>\\{)([^\\}]*)(\\})"
+        },
+        {
+            "comment": "//indepimage[sin_x][caption]",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "5": {
+                    "name": "string.review"
+                }
+            },
+            "name": "indepimage.review",
+            "match": "^(//)(indepimage)\\[([^\\]]*)\\](\\[([^\\]]*)\\])?"
+        },
+        {
+            "comment": "Graph //graph[sin_x][gnuplot][caption]{ ... //}",
+            "begin": "^(//)(graph)\\[([^\\]]*)\\]\\[(graphviz|gnuplot|blockdiag|aafigure)\\](\\[((\\\\]|[^]])*)\\])?(\\{)",
+            "end": "(^//\\})",
+            "name": "graph.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "4": {
+                    "name": "variable.parameter.review"
+                },
+                "6": {
+                    "name": "string.review"
+                },
+                "8": {
+                    "name": "keyword.review"
+                }
+            }
+        },
+        {
+            "comment": "Table //table[envvars][...]",
+            "begin": "^(//)(table)\\[([^\\]]*)\\]\\[((\\\\]|[^]])*)\\](\\{)",
+            "end": "(^//\\})",
+            "name": "table.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "4": {
+                    "name": "string.review"
+                },
+                "6": {
+                    "name": "keyword.review"
+                }
+            }
+        },
+        {
+            "comment": "@<table>{envvars} ",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "5": {
+                    "name": "keyword.review"
+                },
+                "4": {
+                    "name": "variable.parameter.review"
+                }
+            },
+            "name": "table.inline.review",
+            "match": "(@<)(table)(>\\{)([^\\}]*)(\\})"
+        },
+        {
+            "comment": "Footnote //footnote[site][...]",
+            "begin": "^(//)(footnote)\\[([^\\]]*)\\]\\[",
+            "end": "\\]",
+            "name": "footnote.review",
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "$self"
+                },
+                {
+                    "name": "string.review",
+                    "match": "."
+                }
+            ]
+        },
+        {
+            "comment": "@<fn>{site} ",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "5": {
+                    "name": "keyword.review"
+                },
+                "4": {
+                    "name": "variable.parameter.review"
+                }
+            },
+            "name": "footnote.inline.review",
+            "match": "(@<)(fn)(>\\{)([^\\}]*)(\\})"
+        },
+        {
+            "comment": "Bib //bibpaper[lins][Lins, 1991]{ ... //}",
+            "begin": "^(//)(bibpaper)\\[([^\\]]*)\\]\\[((\\\\]|[^]])*)\\](\\{)",
+            "end": "(^//\\})",
+            "name": "bibpaper.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "4": {
+                    "name": "string.review"
+                },
+                "6": {
+                    "name": "keyword.review"
+                }
+            }
+        },
+        {
+            "comment": "//noindent",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            },
+            "name": "noindent.review",
+            "match": "^(//)(noindent)"
+        },
+        {
+            "comment": "//raw[...]",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "string.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            },
+            "name": "raw.review",
+            "match": "^(//)(raw)\\[([^\\]]*)\\]"
+        },
+        {
+            "comment": "//hoge{ ... //}",
+            "begin": "^(//)([^\\{\\[\\]]+)(\\{)",
+            "end": "(^//\\})",
+            "name": "block.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            }
+        },
+        {
+            "comment": "Comment #@# ",
+            "name": "comment.line.review",
+            "match": "#@#.*"
+        },
+        {
+            "comment": "Warning #@warn(...) ",
+            "name": "comment.review",
+            "match": "#@warn\\(.*\\)"
+        },
+        {
+            "comment": "Comment @<comment>{...} //comment{...} ",
+            "name": "comment.review",
+            "match": "(@<comment>|//comment)\\{.*\\}"
+        },
+        {
+            "comment": "#@require, #@provide",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "support.function.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            },
+            "name": "require.review",
+            "match": "^(#@(require)|#@(provide))"
+        },
+        {
+            "comment": "#@mapfile(...) ... #@end",
+            "begin": "^(#@(mapfile)|#@(mapoutput))\\(([^\\)]*)\\)",
+            "end": "^(#@)(end)",
+            "name": "mapfile.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "support.function.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "4": {
+                    "name": "string.review"
+                }
+            }
+        },
+        {
+            "comment": "#@maprange(..., ...) ... #@end",
+            "begin": "^(#@)(maprange)\\(([^,]*,[^\\)]*)\\)",
+            "end": "^(#@)(end)",
+            "name": "maprange.review",
+            "endCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            },
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "string.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                }
+            }
+        },
+        {
+            "comment": "Inline instruction like @<list>{program} ",
+            "captures": {
+                "1": {
+                    "name": "keyword.review"
+                },
+                "3": {
+                    "name": "keyword.review"
+                },
+                "2": {
+                    "name": "support.function.review"
+                },
+                "4": {
+                    "name": "string.review"
+                },
+                "6": {
+                    "name": "keyword.review"
+                }
+            },
+            "name": "instruction.inline.review",
+            "match": "(@<)([a-z]+)(>\\{)((\\\\}|[^}])*)(\\})"
         }
-    },
-    {
-        "comment" : "block syntax",
-        "name" : "markup.list.review",
-        "match" : "^//([^\\[]+)(\\[([^\\]]*)\\])*{$",
-        "captures" : {
-            "1" : {
-                "name" : "variable.other.review"
-            }
-        },
-        "end" : "^//}$"
-    },
-    {
-        "comment" : "inline syntax",
-        "name" : "markup.inline.review",
-        "begin" : "@<([^>]+)>{",
-        "beginCaptures" : {
-            "1" : {
-                "name" : "variable.other.review"
-            }
-        },
-        "end" : "}"
-    }],
+    ],
     "scopeName" : "source.review"
 }
