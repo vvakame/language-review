@@ -5,4 +5,8 @@ npm-debug.log
 
 node_modules/
 
+.tscache/
+typings/
+
 lib/**/*.js
+lib/**/*.js.map

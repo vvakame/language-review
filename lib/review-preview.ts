@@ -12,7 +12,7 @@ var obj = {
 		]
 	},
 	activate: ()=> {
-		atom.workspaceView.command('review-preview:toggle', ()=> {
+		atom.workspaceView.command("review-preview:toggle", ()=> {
 			obj.toggle();
 		});
 
@@ -44,7 +44,7 @@ var obj = {
 			return;
 		}
 
-		var grammars:string[] = atom.config.get('language-review.grammars') || [];
+		var grammars:string[] = atom.config.get("language-review.grammars") || [];
 		console.log(editor.getGrammar().scopeName);
 		console.log(grammars);
 		if (!grammars.some(grammar => grammar === editor.getGrammar().scopeName)) {
@@ -63,7 +63,7 @@ var obj = {
 		var previousActivePane = atom.workspace.getActivePane();
 
 		atom.workspace.open(uri, {
-			split: 'right',
+			split: "right",
 			searchAllPanes: true
 		}).done(previewView => {
 			if (previewView instanceof ReVIEWPreviewView) {

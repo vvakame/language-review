@@ -24,7 +24,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 	}
 
 	static content():any {
-		return this.div({class: 'review-preview native-key-bindings', tabindex: -1});
+		return this.div({class: "review-preview native-key-bindings", tabindex: -1});
 	}
 
 	constructor(params:{editorId?:string; filePath?:string;} = {}) {
@@ -47,7 +47,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 
 	serialize() {
 		return {
-			deserializer: 'ReVIEWPreviewView',
+			deserializer: "ReVIEWPreviewView",
 			filePath: this.getPath(),
 			editorId: this.editorId
 		};
@@ -67,7 +67,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 			} else {
 				// The editor this preview was created for has been closed so close
 				// this preview since a preview cannot be rendered without an editor
-				var view = this.jq.parents('.pane').view();
+				var view = this.jq.parents(".pane").view();
 				if (view) {
 					view.destroyItem(this);
 				}
@@ -96,9 +96,9 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 	}
 
 	handleEvents() {
-		this.subscribe(atom.syntax, 'grammar-added grammar-updated', ()=> {
+		this.subscribe(atom.syntax, "grammar-added grammar-updated", ()=> {
 			setTimeout(()=> this.renderReVIEW(), 250);
-		})
+		});
 		this.subscribe(this, "core:move-up", ()=> this.jq.scrollUp());
 		this.subscribe(this, "core:move-down", ()=> this.jq.scrollDown());
 
@@ -125,8 +125,8 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		if (this.file) {
 			this.subscribe(this.file, "contents-changed", changeHandler);
 		} else if (this.editor) {
-			this.subscribe(this.editor.getBuffer(), 'contents-modified', changeHandler);
-			this.subscribe(this.editor, 'path-changed', () => this.jq.trigger('title-changed'));
+			this.subscribe(this.editor.getBuffer(), "contents-modified", changeHandler);
+			this.subscribe(this.editor, "path-changed", () => this.jq.trigger("title-changed"));
 		}
 	}
 
@@ -205,7 +205,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		var failureMessage = result.message;
 
 		this.jq.html($$$(function () {
-			this.h2('Previewing Re:VIEW Failed');
+			this.h2("Previewing Re:VIEW Failed");
 			if (failureMessage) {
 				return this.h3(failureMessage);
 			}
