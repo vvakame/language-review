@@ -12,11 +12,6 @@
   "dependencies": {
     "review.js": "0.2.1",
 
-    "fs-plus": "2.2.0",
-    "pathwatcher": "1.1.1",
-    "roaster": "1.0.3",
-    "temp": "0.7.0",
-    "underscore-plus": "1.1.2",
-    "wrench": "1.5.8"
+    "pathwatcher": "1.1.1"
   }
 }
