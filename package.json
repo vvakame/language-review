@@ -10,7 +10,7 @@
     "node": "*"
   },
   "dependencies": {
-    "review.js": "0.2.3",
+    "review.js": "0.2.4",
     "pathwatcher": "1.1.1"
   },
   "devDependencies": {

@@ -152,12 +152,12 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		};
 		ReVIEW.start(review => {
 			review.initConfig({
-				read: (path:any) => files[path],
-				write: (path:any, content:any) => result[path] = content,
+				read: path => files[path],
+				write: (path, content) => result[path] = content,
 				listener: {
-					onReports: (reports:any) => console.log(reports),
-					onCompileSuccess: (book:any) => {
-						book.parts[1].chapters[0].builderProcesses.forEach((process:any) => {
+					onReports: reports => console.log(reports),
+					onCompileSuccess: book => {
+						book.parts[1].chapters[0].builderProcesses.forEach(process => {
 							var $html = this.resolveImagePaths(process.result);
 							this.jq.empty().append($html);
 						});
