@@ -15,6 +15,8 @@ var File = pathwatcher.File;
 
 import ReVIEW = require("review.js");
 
+import V = require("./const");
+
 class ReVIEWPreviewView extends _atom.ScrollView {
 
 	editorId:string;
@@ -191,7 +193,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		if (this.file) {
 			return "language-review://" + this.getPath();
 		} else {
-			return "language-review://editor/" + this.editorId;
+			return "language-review://" + V.previewHost + "/" + this.editorId;
 		}
 	}
 

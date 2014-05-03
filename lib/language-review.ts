@@ -3,6 +3,7 @@
 
 import url = require("url");
 
+import V = require("./const");
 import ReVIEWPreviewView = require("./review-preview-view");
 
 class Controller {
@@ -13,7 +14,7 @@ class Controller {
 	};
 
 	activate():void {
-		atom.workspaceView.command("language-review:toggle-preview", ()=> {
+		atom.workspaceView.command(V.protocol + "toggle-preview", ()=> {
 			this.toggle();
 		});
 
@@ -27,33 +28,31 @@ class Controller {
 			}
 
 			var protocol = tmpUrl.protocol;
-			if (protocol !== "language-review:") {
+			if (protocol !== V.protocol) {
 				return;
 			}
 			var host = tmpUrl.host;
-			if (host === "editor") {
+			if (host === V.previewHost) {
 				return new ReVIEWPreviewView({editorId: pathName.substring(1)});
 			} else {
+				// TODO
 				return new ReVIEWPreviewView({filePath: pathName});
 			}
 		});
 	}
 
 	toggle():void {
-		console.log("toggle!");
 		var editor = atom.workspace.getActiveEditor();
 		if (!editor) {
 			return;
 		}
 
 		var grammars:string[] = atom.config.get("language-review.grammars") || [];
-		console.log(editor.getGrammar().scopeName);
-		console.log(grammars);
 		if (!grammars.some(grammar => grammar === editor.getGrammar().scopeName)) {
 			return;
 		}
 
-		var uri = "language-review://editor/" + editor.id;
+		var uri = V.protocol + "//" + V.previewHost + "/" + editor.id;
 
 		var previewPane = atom.workspace.paneForUri(uri);
 
@@ -76,5 +75,5 @@ class Controller {
 	}
 }
 
-var controller: any = new Controller();
+var controller:any = new Controller();
 export = controller;
