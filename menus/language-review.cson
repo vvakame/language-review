@@ -4,7 +4,7 @@
     'label': 'Re:VIEW'
     'submenu': [
       'label': 'Toggle Preview'
-      'command': 'review-preview:toggle'
+      'command': 'language-review:toggle-preview'
     ]
   ]
 ]

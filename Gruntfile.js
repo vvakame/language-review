@@ -23,7 +23,7 @@ module.exports = function (grunt) {
 				declaration: false             // generate a declaration .d.ts file for every output js file. [true | false (default)]
 			},
 			clientMain: {
-				src: ['<%= opt.client.tsMain %>/review-preview.ts']
+				src: ['<%= opt.client.tsMain %>/language-review.ts']
 			}
 		},
 		tslint: {

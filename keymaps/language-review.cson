@@ -1,0 +1,9 @@
+'.workspace':
+  'ctrl-M': 'language-review:toggle-preview'
+
+'.review-preview':
+  'cmd-+': 'language-review:zoom-in'
+  'cmd-=': 'language-review:zoom-in'
+  'cmd--': 'language-review:zoom-out'
+  'cmd-_': 'language-review:zoom-out'
+  'cmd-0': 'language-review:reset-zoom'

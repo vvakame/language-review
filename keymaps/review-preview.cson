@@ -1,9 +1,0 @@
-'.workspace':
-  'ctrl-M': 'review-preview:toggle'
-
-'.markdown-preview':
-  'cmd-+': 'review-preview:zoom-in'
-  'cmd-=': 'review-preview:zoom-in'
-  'cmd--': 'review-preview:zoom-out'
-  'cmd-_': 'review-preview:zoom-out'
-  'cmd-0': 'review-preview:reset-zoom'

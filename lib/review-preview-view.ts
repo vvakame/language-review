@@ -104,15 +104,15 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		this.subscribe(this, "core:move-up", ()=> this.jq.scrollUp());
 		this.subscribe(this, "core:move-down", ()=> this.jq.scrollDown());
 
-		this.subscribeToCommand(atom.workspaceView, "review-preview:zoom-in", ()=> {
+		this.subscribeToCommand(atom.workspaceView, "language-review:zoom-in", ()=> {
 			var zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
 			this.jq.css("zoom", zoomLevel + 0.1);
 		});
-		this.subscribeToCommand(atom.workspaceView, "review-preview:zoom-out", ()=> {
+		this.subscribeToCommand(atom.workspaceView, "language-review:zoom-out", ()=> {
 			var zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
 			this.jq.css("zoom", zoomLevel - 0.1);
 		});
-		this.subscribeToCommand(atom.workspaceView, "review-preview:reset-zoom", ()=> {
+		this.subscribeToCommand(atom.workspaceView, "language-review:reset-zoom", ()=> {
 			this.jq.css("zoom", 1);
 		});
 
@@ -189,9 +189,9 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 
 	getUri():string {
 		if (this.file) {
-			return "review-preview://" + this.getPath();
+			return "language-review://" + this.getPath();
 		} else {
-			return "review-preview://editor/" + this.editorId;
+			return "language-review://editor/" + this.editorId;
 		}
 	}
 

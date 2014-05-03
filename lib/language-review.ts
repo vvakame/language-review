@@ -12,7 +12,7 @@ var obj = {
 		]
 	},
 	activate: ()=> {
-		atom.workspaceView.command("review-preview:toggle", ()=> {
+		atom.workspaceView.command("language-review:toggle-preview", ()=> {
 			obj.toggle();
 		});
 
@@ -26,7 +26,7 @@ var obj = {
 			}
 
 			var protocol = tmpUrl.protocol;
-			if (protocol !== "review-preview:") {
+			if (protocol !== "language-review:") {
 				return;
 			}
 			var host = tmpUrl.host;
@@ -51,7 +51,7 @@ var obj = {
 			return;
 		}
 
-		var uri = "review-preview://editor/" + editor.id;
+		var uri = "language-review://editor/" + editor.id;
 
 		var previewPane = atom.workspace.paneForUri(uri);
 
