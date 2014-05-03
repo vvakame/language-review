@@ -15,7 +15,7 @@ class Controller {
 
 	activate():void {
 		atom.workspaceView.command(V.protocol + "toggle-preview", ()=> {
-			this.toggle();
+			this.togglePreview();
 		});
 
 		atom.workspace.registerOpener(urlToOpen => {
@@ -41,7 +41,7 @@ class Controller {
 		});
 	}
 
-	toggle():void {
+	togglePreview():void {
 		var editor = atom.workspace.getActiveEditor();
 		if (!editor) {
 			return;
