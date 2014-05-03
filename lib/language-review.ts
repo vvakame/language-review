@@ -5,15 +5,16 @@ import url = require("url");
 
 import ReVIEWPreviewView = require("./review-preview-view");
 
-var obj = {
-	configDefaults: {
+class Controller {
+	configDefaults = {
 		grammars: [
 			"source.review"
 		]
-	},
-	activate: ()=> {
+	};
+
+	activate():void {
 		atom.workspaceView.command("language-review:toggle-preview", ()=> {
-			obj.toggle();
+			this.toggle();
 		});
 
 		atom.workspace.registerOpener(urlToOpen => {
@@ -36,8 +37,9 @@ var obj = {
 				return new ReVIEWPreviewView({filePath: pathName});
 			}
 		});
-	},
-	toggle: ()=> {
+	}
+
+	toggle():void {
 		console.log("toggle!");
 		var editor = atom.workspace.getActiveEditor();
 		if (!editor) {
@@ -72,6 +74,7 @@ var obj = {
 			}
 		});
 	}
-};
+}
 
-export = obj;
+var controller: any = new Controller();
+export = controller;
