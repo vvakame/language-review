@@ -2,6 +2,8 @@
 /// <reference path="../typings/atom/atom.d.ts" />
 /// <reference path="../typings/pathwatcher/pathwatcher.d.ts" />
 
+/// <reference path="../node_modules/review.js/dist/review.js.d.ts" />
+
 import path = require("path");
 import _atom = require("atom");
 
@@ -11,7 +13,7 @@ var $$$ = _atom.$$$;
 import pathwatcher = require("pathwatcher");
 var File = pathwatcher.File;
 
-var ReVIEW:any = require("review.js");
+import ReVIEW = require("review.js");
 
 class ReVIEWPreviewView extends _atom.ScrollView {
 
@@ -148,7 +150,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		};
 		var result:{[path:string]:string;} = {
 		};
-		ReVIEW.start((review:any) => {
+		ReVIEW.start(review => {
 			review.initConfig({
 				read: (path:any) => files[path],
 				write: (path:any, content:any) => result[path] = content,
