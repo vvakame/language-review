@@ -1,6 +1,12 @@
-var constValue = {
-	protocol: "language-review:",
-	previewHost: "preview"
-};
+/// <reference path="../typings/atom/atom.d.ts" />
 
-export = constValue;
+import _atom = require("atom");
+import ReVIEWResultView = require("./review-result-view");
+
+export var protocol = "language-review:";
+export var previewHost = "preview";
+export var reviewScopeName = "source.review";
+
+export interface IReVIEWedEditorView extends _atom.EditorView {
+	reviewResultView: ReVIEWResultView;
+}

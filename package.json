@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "review.js": "0.2.4",
-    "pathwatcher": "1.1.1"
+    "pathwatcher": "1.1.1",
+    "emissary": "1.2.1"
   },
   "devDependencies": {
     "grunt": "0.4.4",

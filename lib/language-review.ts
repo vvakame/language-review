@@ -2,9 +2,11 @@
 /// <reference path="../typings/atom/atom.d.ts" />
 
 import url = require("url");
+import _atom = require("atom");
 
 import V = require("./const");
 import ReVIEWPreviewView = require("./review-preview-view");
+import ReVIEWResultView = require("./review-result-view");
 
 class Controller {
 	configDefaults = {
@@ -12,6 +14,9 @@ class Controller {
 			"source.review"
 		]
 	};
+
+	resultViews:ReVIEWResultView[] = [];
+	editorViewSubscription:{ off():any; };
 
 	activate():void {
 		atom.workspaceView.command(V.protocol + "toggle-preview", ()=> {
@@ -39,6 +44,28 @@ class Controller {
 				return new ReVIEWPreviewView({filePath: pathName});
 			}
 		});
+
+		this.enableCompileResult();
+	}
+
+	enableCompileResult() {
+		this.editorViewSubscription = atom.workspaceView.eachEditorView((editorView:_atom.EditorView)=> {
+			this.injectLintViewIntoEditorView(editorView);
+		});
+	}
+
+	disableCompileResult() {
+		if (this.editorViewSubscription) {
+			this.editorViewSubscription.off();
+			this.editorViewSubscription = null;
+		}
+		this.resultViews.forEach(resultView => {
+			resultView.jq.remove();
+		});
+		this.resultViews = [];
+	}
+
+	toggleCompileResult() {
 	}
 
 	togglePreview():void {
@@ -72,6 +99,17 @@ class Controller {
 				previousActivePane.activate();
 			}
 		});
+	}
+
+	injectLintViewIntoEditorView(editorView:_atom.EditorView) {
+		if (!editorView.getPane()) {
+			return;
+		}
+		if (!editorView.attached) {
+			return;
+		}
+		var resultView = new ReVIEWResultView(<V.IReVIEWedEditorView>editorView);
+		this.resultViews.push(resultView);
 	}
 }
 
