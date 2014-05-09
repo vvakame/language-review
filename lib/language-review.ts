@@ -22,6 +22,9 @@ class Controller {
 		atom.workspaceView.command(V.protocol + "toggle-preview", ()=> {
 			this.togglePreview();
 		});
+		atom.workspaceView.command(V.protocol + "toggle-compile", ()=> {
+			this.toggleCompileResult();
+		});
 
 		atom.workspace.registerOpener(urlToOpen => {
 			console.log(urlToOpen);
@@ -48,6 +51,10 @@ class Controller {
 		this.enableCompileResult();
 	}
 
+	deactivate() {
+		this.disableCompileResult();
+	}
+
 	enableCompileResult() {
 		this.editorViewSubscription = atom.workspaceView.eachEditorView((editorView:_atom.EditorView)=> {
 			this.injectLintViewIntoEditorView(editorView);
@@ -66,6 +73,11 @@ class Controller {
 	}
 
 	toggleCompileResult() {
+		if (this.editorViewSubscription) {
+			this.disableCompileResult();
+		} else {
+			this.enableCompileResult();
+		}
 	}
 
 	togglePreview():void {
