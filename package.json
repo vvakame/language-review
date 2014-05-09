@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "review.js": "0.2.4",
-    "pathwatcher": "1.1.1",
+    "pathwatcher": "1.2.4",
     "emissary": "1.2.1"
   },
   "devDependencies": {
     "grunt": "0.4.4",
     "grunt-contrib-clean": "0.5.0",
-    "grunt-ts": "1.10.0",
+    "grunt-ts": "1.11.2",
     "typescript": "1.0.0",
     "grunt-tslint": "0.4.1",
     "grunt-tsd": "0.1.0",
