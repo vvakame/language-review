@@ -8,5 +8,8 @@ node_modules/
 .tscache/
 typings/
 
+example/sample.js
+example/sample.rb
+
 lib/**/*.js
 lib/**/*.js.map
