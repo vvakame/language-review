@@ -10,9 +10,6 @@ var $ = tooltip.$;
 
 var color = require("color");
 
-// TypeScriptコンパイラの制約回避
-vm.runInNewContext("Tooltip = $.fn.tooltip.Constructor;", tooltip, "adhoc.vm");
-
 import V = require("./const");
 import ViolationView = require("./violation-view");
 
@@ -39,23 +36,26 @@ class ViolationTooltip extends tooltip.Tooltip {
 				return;
 			}
 
-			var that = this;
-
 			var $tip = this.tip();
+			var title = this.getTitle();
 
-			this.setContent();
+			$tip.find(".tooltip-inner")[this.options.html ? "html" : "text"](title);
+			$tip.removeClass("fade in top-left top-right bottom-left bottom-right");
 
 			if (this.options.animation) {
 				$tip.addClass("fade");
 			}
 
-			var placement = typeof this.options.placement == "function" ?
-				this.options.placement.call(this, $tip[0], this.$element[0]) :
-				this.options.placement;
+			var placement:string;
+			if (typeof this.options.placement == "function") {
+				placement = this.options.placement.call(this, $tip[0], this.$element[0]);
+			} else {
+				placement = this.options.placement;
+			}
 
 			var autoToken = /\s?auto?\s?/i;
 			var autoPlace = autoToken.test(placement);
-			if (autoPlace) {
+			if (autoToken.test(placement)) {
 				placement = placement.replace(autoToken, "") || "bottom-right";
 			}
 
@@ -179,14 +179,6 @@ class ViolationTooltip extends tooltip.Tooltip {
 		if (replace) {
 			$tip.offset(offset);
 		}
-	}
-
-	setContent() {
-		var $tip = this.tip();
-		var title = this.getTitle();
-
-		$tip.find(".tooltip-inner")[this.options.html ? "html" : "text"](title);
-		$tip.removeClass("fade in top-left top-right bottom-left bottom-right");
 	}
 
 	getLogicalPosition():{left: number; top:number; width:number; height: number; right: number; bottom:number;} {

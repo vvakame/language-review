@@ -81,7 +81,8 @@ class ReVIEWResultView extends _atom.View {
 	onCompileStarted() {
 		this.editorDisplayUpdateSubscription = this.subscribe(this.editorView, "editor:display-updated", ()=> {
 			if (this.pendingReports) {
-				// TODO
+				this.addViolationViews(this.pendingReports);
+				this.pendingReports = null;
 			}
 			this.updateGutterMarkers();
 		});

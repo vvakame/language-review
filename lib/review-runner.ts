@@ -23,7 +23,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		this.buffer = editor.getBuffer();
 	}
 
-	startWatching() {
+	startWatching():void {
 		console.log("debug ReVIEWRunner startWatching");
 		if (this.grammerChangeSubscription) {
 			return;
@@ -36,7 +36,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		});
 	}
 
-	stopWatching() {
+	stopWatching():void {
 		console.log("debug ReVIEWRunner stopWatching");
 		if (!this.grammerChangeSubscription) {
 			return;
@@ -46,7 +46,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		this.grammerChangeSubscription = null;
 	}
 
-	configureRunner() {
+	configureRunner():void {
 		var scopeName = this.editor.getGrammar().scopeName;
 		console.log("debug ReVIEWRunner configureRunner grammar " + scopeName);
 		if (V.reviewScopeName === scopeName) {
@@ -56,7 +56,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		}
 	}
 
-	activate() {
+	activate():void {
 		console.log("debug ReVIEWRunner activate");
 		if (!this.wasAlreadyActivated) {
 			this.emit("activate");
@@ -70,7 +70,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		});
 	}
 
-	deactivate() {
+	deactivate():void {
 		console.log("debug ReVIEWRunner deactivate");
 		if (this.bufferSubscription) {
 			this.bufferSubscription.off();
@@ -88,7 +88,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		throw new Error();
 	}
 
-	doCompile() {
+	doCompile():void {
 		console.log("debug ReVIEWRunner doCompile");
 
 		var files:{[path:string]:string;} = {
@@ -122,7 +122,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		});
 	}
 
-	getFilePath() {
+	getFilePath():string {
 		return this.buffer.getUri();
 	}
 }

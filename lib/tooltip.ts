@@ -22,6 +22,20 @@ vm.runInNewContext(code, sandbox, "tooltip.js");
 export var jQuery:JQueryStatic = sandbox.jQuery;
 export var $:JQueryStatic = sandbox.jQuery;
 
+export interface IViolationTooltipOptions {
+	animation?:boolean;
+	placement?: string;
+	selector?:any;
+	template?:string;
+	trigger?:string;
+	title?:string;
+	delay?:any; // number or {show: number; hide: number; }
+	html?:boolean;
+	container?:any;
+}
+
+// TypeScriptコンパイラの制約回避
+vm.runInNewContext("Tooltip = $.fn.tooltip.Constructor;", module.exports, "adhoc.vm");
 export declare class Tooltip {
 	static DEFAULTS:IViolationTooltipOptions;
 
@@ -80,16 +94,4 @@ export declare class Tooltip {
 	toggle(e:any):any;
 
 	destroy():void;
-}
-
-export interface IViolationTooltipOptions {
-	animation?:boolean;
-	placement?: string;
-	selector?:any;
-	template?:string;
-	trigger?:string;
-	title?:string;
-	delay?:any; // number or {show: number; hide: number; }
-	html?:boolean;
-	container?:any;
 }
