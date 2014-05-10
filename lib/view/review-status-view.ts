@@ -44,6 +44,10 @@ class ReVIEWStatusView extends _atom.View {
 
 	getActiveReVIEWRunner():ReVIEWRunner {
 		var editorView = atom.workspaceView.getActiveView();
+		if (!editorView) {
+			// EditorView1つも開いてないパターン
+			return null;
+		}
 		var reviewResultView = (<V.IReVIEWedEditorView>editorView).reviewResultView;
 		if (reviewResultView && reviewResultView.reviewRunner) {
 			return reviewResultView.reviewRunner;
@@ -70,7 +74,11 @@ class ReVIEWStatusView extends _atom.View {
 	}
 
 	update(reports?:ReVIEW.ProcessReport[]) {
-		var grammarName = this.statusBarView.getActiveItem().getGrammar().scopeName;
+		var view = this.statusBarView.getActiveItem();
+		var grammarName:string;
+		if (view && typeof view.getGrammar === "function") {
+			grammarName = view.getGrammar().scopeName;
+		}
 		if (V.reviewScopeName === grammarName) {
 			this.displayName("Re:VIEW");
 			if (!reports) {
