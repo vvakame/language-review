@@ -14,3 +14,4 @@ It is used primarily in Japan.
 本パッケージはMITライセンスで配布しています。
 
 本パッケージはApache License Version 2.0で配布されている[yanzmのSublime Text2用Re:VIEWプラグイン](https://github.com/yanzm/ReVIEW)の成果物(review.tmLanguage)を含みます。
+本パッケージはApache License Version 2.0で配布されている[atom-lintパッケージ](https://atom.io/packages/atom-lint)の成果物を真似したものを含みます。
