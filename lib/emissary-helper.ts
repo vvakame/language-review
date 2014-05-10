@@ -11,23 +11,25 @@ import emissary = require("emissary");
 export class EmitterSubscriberBase implements Emissary.IEmitter, Emissary.ISubscriber {
 
 	static emissarified() {
-		delete EmitterSubscriberBase.prototype.on;
-		delete EmitterSubscriberBase.prototype.once;
-		delete EmitterSubscriberBase.prototype.signal;
-		delete EmitterSubscriberBase.prototype.behavior;
-		delete EmitterSubscriberBase.prototype.emit;
-		delete EmitterSubscriberBase.prototype.off;
-		delete EmitterSubscriberBase.prototype.pauseEvents;
-		delete EmitterSubscriberBase.prototype.resumeEvents;
-		delete EmitterSubscriberBase.prototype.incrementSubscriptionCount;
-		delete EmitterSubscriberBase.prototype.decrementSubscriptionCount;
-		delete EmitterSubscriberBase.prototype.getSubscriptionCount;
-		delete EmitterSubscriberBase.prototype.hasSubscriptions;
-		delete EmitterSubscriberBase.prototype.subscribeWith;
-		delete EmitterSubscriberBase.prototype.addSubscription;
-		delete EmitterSubscriberBase.prototype.subscribe;
-		delete EmitterSubscriberBase.prototype.subscribeToCommand;
-		delete EmitterSubscriberBase.prototype.unsubscribe;
+		delete this.prototype.on;
+		delete this.prototype.once;
+		delete this.prototype.signal;
+		delete this.prototype.behavior;
+		delete this.prototype.emit;
+		delete this.prototype.off;
+		delete this.prototype.pauseEvents;
+		delete this.prototype.resumeEvents;
+		delete this.prototype.incrementSubscriptionCount;
+		delete this.prototype.decrementSubscriptionCount;
+		delete this.prototype.getSubscriptionCount;
+		delete this.prototype.hasSubscriptions;
+		delete this.prototype.subscribeWith;
+		delete this.prototype.addSubscription;
+		delete this.prototype.subscribe;
+		delete this.prototype.subscribeToCommand;
+		delete this.prototype.unsubscribe;
+		emissary.Emitter.includeInto(this);
+		emissary.Subscriber.includeInto(this);
 	}
 
 	// overwrite by emissary.Emitter.includeInto(ReVIEWRunner);
@@ -104,5 +106,3 @@ export class EmitterSubscriberBase implements Emissary.IEmitter, Emissary.ISubsc
 }
 
 EmitterSubscriberBase.emissarified();
-emissary.Emitter.includeInto(EmitterSubscriberBase);
-emissary.Subscriber.includeInto(EmitterSubscriberBase);

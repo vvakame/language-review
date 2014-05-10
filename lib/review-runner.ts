@@ -2,8 +2,12 @@
 /// <reference path="../typings/emissary/emissary.d.ts" />
 /// <reference path="../typings/text-buffer/text-buffer.d.ts" />
 
+/// <reference path="../node_modules/review.js/dist/review.js.d.ts" />
+
 import emissaryHelper = require("./emissary-helper");
 import V = require("./const");
+
+import ReVIEW = require("review.js");
 
 class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
@@ -73,16 +77,53 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		this.emit("deactivate");
 	}
 
+	on(eventNames:"compile", callback:(reports:ReVIEW.ProcessReport[])=>any):any;
+
+	on(eventNames:string, handler:Function):any;
+
+	// 後でReVIEWRunner.emissarified();している。特殊化されたオーバーロードのため。
+	on(eventNames:string, handler:Function):any {
+		throw new Error();
+	}
+
 	doCompile() {
 		console.log("debug ReVIEWRunner doCompile");
 
-
-		this.emit("compile", {}, []);
+		var files:{[path:string]:string;} = {
+			"ch01.re": this.editor.buffer.getText()
+		};
+		var result:{[path:string]:string;} = {
+		};
+		ReVIEW.start(review => {
+			review.initConfig({
+				read: path => files[path],
+				write: (path, content) => result[path] = content,
+				listener: {
+					onReports: reports => {
+						this.emit("compile", reports);
+					},
+					onCompileSuccess: book => {
+						console.log(book);
+					},
+					onCompileFailed: () => {
+					}
+				},
+				builders: [new ReVIEW.Build.HtmlBuilder(false)],
+				book: {
+					preface: [],
+					chapters: [
+						"ch01.re"
+					],
+					afterword: []
+				}
+			});
+		});
 	}
 
 	getFilePath() {
 		return this.buffer.getUri();
 	}
 }
+ReVIEWRunner.emissarified();
 
 export = ReVIEWRunner;

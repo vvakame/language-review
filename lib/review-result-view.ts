@@ -28,7 +28,7 @@ class ReVIEWResultView extends _atom.View {
 	editor:AtomCore.IEditor;
 	gutterView:AtomCore.IGutterView;
 	editorDisplayUpdateSubscription:Emissary.ISubscription;
-	pendingViolations:any[];
+	pendingReports:ReVIEW.ProcessReport[];
 
 	constructor(public editorView:V.IReVIEWedEditorView) {
 		super();
@@ -47,9 +47,9 @@ class ReVIEWResultView extends _atom.View {
 			console.log("ReVIEWResultView ReVIEWRunner deactivate");
 			this.onCompileSuspended();
 		});
-		this.reviewRunner.on("compile", (error:any, violations:any)=> {
+		this.reviewRunner.on("compile", reports=> {
 			console.log("ReVIEWResultView ReVIEWRunner compile");
-			this.onCompileResult(error, violations);
+			this.onCompileResult(reports);
 		});
 		this.reviewRunner.startWatching();
 	}
@@ -71,7 +71,7 @@ class ReVIEWResultView extends _atom.View {
 
 	onCompileStarted() {
 		this.editorDisplayUpdateSubscription = this.subscribe(this.editorView, "editor:display-updated", ()=> {
-			if (this.pendingViolations) {
+			if (this.pendingReports) {
 				// TODO
 			}
 			this.updateGutterMarkers();
@@ -87,21 +87,19 @@ class ReVIEWResultView extends _atom.View {
 		this.updateGutterMarkers();
 	}
 
-	onCompileResult(error:any, violations:any) {
+	onCompileResult(reports:ReVIEW.ProcessReport[]) {
 		this.removeViolationViews();
 
-		if (error) {
-			console.log(error);
-		} else if (this.editorView.active) {
-			this.addViolationViews(violations);
+		if (this.editorView.active) {
+			this.addViolationViews(reports);
 		} else {
-			this.pendingViolations = violations;
+			this.pendingReports = reports;
 		}
 
 		this.updateGutterMarkers();
 	}
 
-	addViolationViews(violations:any) {
+	addViolationViews(reports:ReVIEW.ProcessReport[]) {
 
 	}
 
