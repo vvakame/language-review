@@ -6,31 +6,34 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "node/node.d.ts": {
-      "commit": "b2300eae588b002c71febfb45fb6f8d2db605a52"
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
     },
     "atom/atom.d.ts": {
-      "commit": "b2300eae588b002c71febfb45fb6f8d2db605a52"
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
     },
     "space-pen/space-pen.d.ts": {
-      "commit": "b2300eae588b002c71febfb45fb6f8d2db605a52"
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
     },
     "emissary/emissary.d.ts": {
-      "commit": "b2300eae588b002c71febfb45fb6f8d2db605a52"
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
     },
     "text-buffer/text-buffer.d.ts": {
-      "commit": "b2300eae588b002c71febfb45fb6f8d2db605a52"
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
+    },
+    "status-bar/status-bar.d.ts": {
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
     },
     "mixto/mixto.d.ts": {
-      "commit": "b2300eae588b002c71febfb45fb6f8d2db605a52"
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
     },
     "jquery/jquery.d.ts": {
-      "commit": "b2300eae588b002c71febfb45fb6f8d2db605a52"
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
     },
     "pathwatcher/pathwatcher.d.ts": {
-      "commit": "b2300eae588b002c71febfb45fb6f8d2db605a52"
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
     },
     "q/Q.d.ts": {
-      "commit": "b2300eae588b002c71febfb45fb6f8d2db605a52"
+      "commit": "c1899c1de0d78d0c82d2e81d5c0d5b1519855a61"
     }
   }
 }
