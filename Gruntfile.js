@@ -111,7 +111,7 @@ module.exports = function (grunt) {
   grunt.registerTask(
     'prepare-test',
     "テストの前準備をする。",
-    ['default', 'ts:clientTest', 'exec:test']);
+    ['default', 'ts:clientTest']);
 
   grunt.registerTask(
     'test',
