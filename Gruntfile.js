@@ -6,7 +6,8 @@ module.exports = function (grunt) {
       client: {
         "jsMain": "lib/js",
         "tsMain": "lib",
-        "tsTypings": "typings"
+        "tsTypings": "typings",
+        "tsTest": "spec"
       }
     },
 
@@ -24,6 +25,9 @@ module.exports = function (grunt) {
       },
       clientMain: {
         src: ['<%= opt.client.tsMain %>/language-review.ts']
+      },
+      clientTest: {
+        src: ['<%= opt.client.tsTest %>/**/*.ts']
       }
     },
     tslint: {
@@ -66,7 +70,11 @@ module.exports = function (grunt) {
           // client
           '<%= opt.client.tsMain %>/**/*.js',
           '<%= opt.client.tsMain %>/**/*.d.ts',
-          '<%= opt.client.tsMain %>/**/*.js.map'
+          '<%= opt.client.tsMain %>/**/*.js.map',
+          // test
+          '<%= opt.client.tsTest %>/**/*.js',
+          '<%= opt.client.tsTest %>/**/*.d.ts',
+          '<%= opt.client.tsTest %>/**/*.js.map'
         ]
       },
       bower: {
@@ -82,6 +90,11 @@ module.exports = function (grunt) {
           "<%= opt.client.tsTypings %>"
         ]
       }
+    },
+    exec: {
+      test: {
+        command: 'apm test'
+      }
     }
   });
 
@@ -94,6 +107,11 @@ module.exports = function (grunt) {
     'default',
     "必要なコンパイルを行いAtomプラグインとして実行できるようにする。",
     ['clean:clientScript', 'ts:clientMain', 'tslint']);
+
+  grunt.registerTask(
+    'test',
+    "必要なコンパイルを行いAtomプラグインとして実行できるようにする。",
+    ['default', 'ts:clientTest', 'exec:test']);
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };

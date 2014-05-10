@@ -20,7 +20,7 @@ import V = require("../util/const");
 class ReVIEWPreviewView extends _atom.ScrollView {
 
 	editorId:string;
-	file:pathwatcher.IFile;
+	file:PathWatcher.IFile;
 	editor:AtomCore.IEditor;
 
 	static deserialize(state:any):ReVIEWPreviewView {
