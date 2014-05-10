@@ -109,9 +109,14 @@ module.exports = function (grunt) {
     ['clean:clientScript', 'ts:clientMain', 'tslint']);
 
   grunt.registerTask(
-    'test',
-    "必要なコンパイルを行いAtomプラグインとして実行できるようにする。",
+    'prepare-test',
+    "テストの前準備をする。",
     ['default', 'ts:clientTest', 'exec:test']);
+
+  grunt.registerTask(
+    'test',
+    "テストを実行する。",
+    ['prepare-test', 'exec:test']);
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };

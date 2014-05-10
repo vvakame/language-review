@@ -17,7 +17,7 @@ echo "Downloading package dependencies..."
 atom/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm update
 
 echo "Setup & Builds"
-npm install -g grunt-cli && grunt setup && grunt default
+npm install -g grunt-cli && grunt setup && grunt prepare-test
 
 if [ $? -ne 0 ]; then
     exit 1
