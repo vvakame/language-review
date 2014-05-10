@@ -21,10 +21,14 @@ import ReVIEWRunner = require("./review-runner");
 class ReVIEWResultView extends _atom.View {
 
 	static content():any {
-		return this.div({class: "review-preview native-key-bindings", tabindex: -1});
+		return this.div({class: "review-compile"});
 	}
 
 	reviewRunner:ReVIEWRunner;
+	editor:AtomCore.IEditor;
+	gutterView:AtomCore.IGutterView;
+	editorDisplayUpdateSubscription:Emissary.ISubscription;
+	pendingViolations:any[];
 
 	constructor(public editorView:V.IReVIEWedEditorView) {
 		super();
@@ -32,7 +36,21 @@ class ReVIEWResultView extends _atom.View {
 		this.editorView.reviewResultView = this;
 		this.editorView.overlayer.append(this.jq);
 
+		this.gutterView = this.editorView.gutter;
+
 		this.reviewRunner = new ReVIEWRunner(this.editorView.getEditor());
+		this.reviewRunner.on("activate", ()=> {
+			console.log("ReVIEWResultView ReVIEWRunner activate");
+			this.onCompileStarted();
+		});
+		this.reviewRunner.on("deactivate", ()=> {
+			console.log("ReVIEWResultView ReVIEWRunner deactivate");
+			this.onCompileSuspended();
+		});
+		this.reviewRunner.on("compile", (error:any, violations:any)=> {
+			console.log("ReVIEWResultView ReVIEWRunner compile");
+			this.onCompileResult(error, violations);
+		});
 		this.reviewRunner.startWatching();
 	}
 
@@ -44,10 +62,59 @@ class ReVIEWResultView extends _atom.View {
 	beforeRemove() {
 		console.log("debug ReVIEWResultView beforeRemove");
 		this.reviewRunner.stopWatching();
+		this.editorView.reviewResultView = null;
 	}
 
 	refresh() {
 		console.log("debug ReVIEWResultView refresh");
+	}
+
+	onCompileStarted() {
+		this.editorDisplayUpdateSubscription = this.subscribe(this.editorView, "editor:display-updated", ()=> {
+			if (this.pendingViolations) {
+				// TODO
+			}
+			this.updateGutterMarkers();
+		});
+	}
+
+	onCompileSuspended() {
+		if (this.editorDisplayUpdateSubscription) {
+			this.editorDisplayUpdateSubscription.off();
+			this.editorDisplayUpdateSubscription = null;
+		}
+		this.removeViolationViews();
+		this.updateGutterMarkers();
+	}
+
+	onCompileResult(error:any, violations:any) {
+		this.removeViolationViews();
+
+		if (error) {
+			console.log(error);
+		} else if (this.editorView.active) {
+			this.addViolationViews(violations);
+		} else {
+			this.pendingViolations = violations;
+		}
+
+		this.updateGutterMarkers();
+	}
+
+	addViolationViews(violations:any) {
+
+	}
+
+	removeViolationViews() {
+
+	}
+
+	getValidViolationViews() {
+
+	}
+
+	updateGutterMarkers() {
+
 	}
 }
 

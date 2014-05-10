@@ -1,12 +1,13 @@
 /// <reference path="../typings/atom/atom.d.ts" />
 /// <reference path="../typings/emissary/emissary.d.ts" />
+/// <reference path="../typings/text-buffer/text-buffer.d.ts" />
 
 import emissaryHelper = require("./emissary-helper");
 import V = require("./const");
 
 class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
-	buffer:AtomCore.ITextBuffer;
+	buffer:TextBuffer.ITextBuffer;
 	grammerChangeSubscription:Emissary.ISubscription;
 	wasAlreadyActivated:boolean;
 	bufferSubscription:Emissary.ISubscription;
@@ -22,14 +23,10 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 			return;
 		}
 
+		this.configureRunner();
+
 		this.grammerChangeSubscription = this.subscribe(this.editor, "grammar-changed", ()=> {
-			var scopeName = this.editor.getGrammar().scopeName;
-			console.log("debug ReVIEWRunner startWatching grammar-changed " + scopeName);
-			if (V.reviewScopeName === scopeName) {
-				this.activate();
-			} else {
-				this.deactivate();
-			}
+			this.configureRunner();
 		});
 	}
 
@@ -41,6 +38,16 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
 		this.grammerChangeSubscription.off();
 		this.grammerChangeSubscription = null;
+	}
+
+	configureRunner() {
+		var scopeName = this.editor.getGrammar().scopeName;
+		console.log("debug ReVIEWRunner configureRunner grammar " + scopeName);
+		if (V.reviewScopeName === scopeName) {
+			this.activate();
+		} else {
+			this.deactivate();
+		}
 	}
 
 	activate() {
@@ -68,6 +75,13 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
 	doCompile() {
 		console.log("debug ReVIEWRunner doCompile");
+
+
+		this.emit("compile", {}, []);
+	}
+
+	getFilePath() {
+		return this.buffer.getUri();
 	}
 }
 
