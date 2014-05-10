@@ -17,6 +17,7 @@ import ReVIEW = require("review.js");
 
 import V = require("./const");
 import ReVIEWRunner = require("./review-runner");
+import ViolationView = require("./violation-view");
 
 class ReVIEWResultView extends _atom.View {
 
@@ -29,6 +30,7 @@ class ReVIEWResultView extends _atom.View {
 	gutterView:AtomCore.IGutterView;
 	editorDisplayUpdateSubscription:Emissary.ISubscription;
 	pendingReports:ReVIEW.ProcessReport[];
+	violationViews:ViolationView[] = [];
 
 	constructor(public editorView:V.IReVIEWedEditorView) {
 		super();
@@ -36,6 +38,7 @@ class ReVIEWResultView extends _atom.View {
 		this.editorView.reviewResultView = this;
 		this.editorView.overlayer.append(this.jq);
 
+		this.editor = this.editorView.getEditor();
 		this.gutterView = this.editorView.gutter;
 
 		this.reviewRunner = new ReVIEWRunner(this.editorView.getEditor());
@@ -100,19 +103,35 @@ class ReVIEWResultView extends _atom.View {
 	}
 
 	addViolationViews(reports:ReVIEW.ProcessReport[]) {
-
+		reports.forEach(report => {
+			var violationView = new ViolationView(this, report);
+			this.violationViews.push(violationView);
+		});
 	}
 
 	removeViolationViews() {
-
-	}
-
-	getValidViolationViews() {
-
+		this.violationViews.forEach(violationView=> {
+			violationView.jq.remove();
+		});
+		this.violationViews = [];
 	}
 
 	updateGutterMarkers() {
+		var gutterView:JQuery = <any>this.gutterView;
+		if (!gutterView.isVisible()) {
+			return;
+		}
 
+		this.gutterView.removeClassFromAllLines("review-error");
+
+		if (this.violationViews.length === 0) {
+			return;
+		}
+		this.violationViews.forEach(violationView => {
+			var line = violationView.getCurrentBufferStartPosition().row;
+			var klass = "review-error";
+			this.gutterView.addClassToLine(line, klass);
+		});
 	}
 }
 

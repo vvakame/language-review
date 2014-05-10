@@ -1,7 +1,20 @@
-@import "syntax-variables";
-
 // https://github.com/atom/markdown-preview/blob/master/stylesheets/markdown-preview.less
+// https://github.com/yujinakayama/atom-lint/blob/master/stylesheets/atom-lint.less
+@import 'ui-variables';
+@import "syntax-variables";
+@import 'octicon-utf-codes';
 
 .review-preview {
   background-color: #fff;
+}
+
+.editor .gutter .line-number {
+  &.review-error .icon-right {
+    visibility: visible;
+
+    &:before {
+      content: @alert;
+      color: @text-color-error;
+    }
+  }
 }
