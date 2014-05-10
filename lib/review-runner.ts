@@ -4,6 +4,8 @@
 
 /// <reference path="../node_modules/review.js/dist/review.js.d.ts" />
 
+// check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-runner.coffee
+
 import emissaryHelper = require("./emissary-helper");
 import V = require("./const");
 

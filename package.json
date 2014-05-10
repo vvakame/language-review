@@ -12,6 +12,7 @@
   "dependencies": {
     "review.js": "0.2.4",
     "pathwatcher": "1.2.4",
+    "color": "0.6.0",
     "emissary": "1.2.1",
     "text-buffer": "2.2.2"
   },
@@ -21,6 +22,7 @@
     "grunt-ts": "1.11.2",
     "typescript": "1.0.0",
     "grunt-tslint": "0.4.1",
+    "grunt-bower-task": "0.3.4",
     "grunt-tsd": "0.1.0",
     "matchdep": "0.3.0"
   }

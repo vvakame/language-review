@@ -4,6 +4,8 @@
 
 /// <reference path="../node_modules/review.js/dist/review.js.d.ts" />
 
+// check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-view.coffee
+
 import path = require("path");
 import _atom = require("atom");
 
@@ -122,14 +124,16 @@ class ReVIEWResultView extends _atom.View {
 			return;
 		}
 
-		this.gutterView.removeClassFromAllLines("review-error");
+		this.gutterView.removeClassFromAllLines("review-" + ReVIEW.ReportLevel[ReVIEW.ReportLevel.Info].toLowerCase());
+		this.gutterView.removeClassFromAllLines("review-" + ReVIEW.ReportLevel[ReVIEW.ReportLevel.Warning].toLowerCase());
+		this.gutterView.removeClassFromAllLines("review-" + ReVIEW.ReportLevel[ReVIEW.ReportLevel.Error].toLowerCase());
 
 		if (this.violationViews.length === 0) {
 			return;
 		}
 		this.violationViews.forEach(violationView => {
 			var line = violationView.getCurrentBufferStartPosition().row;
-			var klass = "review-error";
+			var klass = "review-" + ReVIEW.ReportLevel[violationView.report.level].toLowerCase();
 			this.gutterView.addClassToLine(line, klass);
 		});
 	}

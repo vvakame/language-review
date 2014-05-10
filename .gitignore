@@ -7,6 +7,8 @@ node_modules/
 
 .tscache/
 typings/
+bower-task/
+bower_components/
 
 example/sample.js
 example/sample.rb

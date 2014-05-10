@@ -8,7 +8,179 @@
   background-color: #fff;
 }
 
+.review-compile {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  .violation {
+    position: absolute;
+  }
+
+  .violation-arrow {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-top-width: 0;
+
+    &.violation-warning {
+      border-bottom-color: @text-color-warning;
+    }
+
+    // .error is already defined in /Applications/Atom.app/Contents/Resources/app/static/utilities.less
+    // and it adds unexpected CSS animation.
+    &.violation-error {
+      border-bottom-color: @text-color-error;
+    }
+  }
+
+  .violation-area {
+    position: absolute;
+    top: 0;
+  }
+
+  .violation-border {
+    border-bottom-style: dotted;
+    border-bottom-width: 1px;
+
+    @fadeOutRatio: 20%;
+
+    &.violation-warning {
+      border-bottom-color: fadeout(@text-color-warning, @fadeOutRatio);
+    }
+
+    &.violation-error {
+      border-bottom-color: fadeout(@text-color-error, @fadeOutRatio);
+    }
+  }
+
+  .tooltip {
+    font-family: @font-family;
+    max-width: 430px;
+
+    @tooltip-arrow-width: 5px;
+    @tooltip-arrow-distance-from-target: 1px;
+
+    .top() {
+      margin-top: -@tooltip-arrow-distance-from-target;
+      padding: @tooltip-arrow-width 0;
+      .tooltip-arrow {
+        border-bottom-width: 0 !important;
+      }
+    }
+
+    .bottom() {
+      margin-top: @tooltip-arrow-distance-from-target;
+      padding: @tooltip-arrow-width 0;
+      .tooltip-arrow {
+        border-top-width: 0 !important;
+      }
+    }
+
+    .right() {
+      .tooltip-arrow {
+        left: 0 !important;
+        border-left-width: 0 !important;
+      }
+    }
+
+    .left() {
+      .tooltip-arrow {
+        left: auto !important;
+        right: 0 !important;
+        border-right-width: 0 !important;
+      }
+    }
+
+    &.top-right {
+      .top();
+      .right();
+      .tooltip-inner {
+        border-bottom-left-radius: 0 !important;
+      }
+    }
+
+    &.bottom-right {
+      .bottom();
+      .right();
+      .tooltip-inner {
+        border-top-left-radius: 0 !important;
+      }
+    }
+
+    &.bottom-left {
+      .bottom();
+      .left();
+      .tooltip-inner {
+        border-top-right-radius: 0 !important;
+      }
+    }
+
+    &.top-left {
+      .top();
+      .left();
+      .tooltip-inner {
+        border-bottom-right-radius: 0 !important;
+      }
+    }
+
+    .tooltip-inner {
+      white-space: pre-wrap;
+      text-align: left;
+
+      .attachment {
+        margin-top: 5px;
+      }
+
+      .code-label {
+        margin: 0;
+      }
+
+      code, pre {
+        border: 1px solid transparent;
+      }
+
+      code {
+        text-shadow: none;
+      }
+
+      pre {
+        margin: 5px 0;
+        padding: 4px 8px;
+        white-space: pre;
+        word-wrap: normal;
+        overflow: scroll;
+        font-size: 10px;
+        background-color: transparent;
+        border: 1px solid transparent;
+      }
+    }
+  }
+}
+
 .editor .gutter .line-number {
+  &.review-info .icon-right {
+    visibility: visible;
+
+    &:before {
+      content: @alert;
+      color: @text-color-info;
+    }
+  }
+
+  &.review-warning .icon-right {
+    visibility: visible;
+
+    &:before {
+      content: @alert;
+      color: @text-color-warning;
+    }
+  }
+
   &.review-error .icon-right {
     visibility: visible;
 
