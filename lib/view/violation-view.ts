@@ -15,7 +15,6 @@ import ReVIEW = require("review.js");
 
 import V = require("../util/const");
 import ViolationTooltip = require("../tooltip/validation-tooltip");
-import tooltip = require("../tooltip/tooltip");
 import ReVIEWResultView = require("./review-result-view");
 
 class ViolationView extends _atom.View {
@@ -48,7 +47,7 @@ class ViolationView extends _atom.View {
 		this.editor = resultView.editor;
 
 		this.initializeSubviews();
-		this.initializeStates();
+		this.initializeStatus();
 
 		this.prepareTooltip();
 		this.trackEdit();
@@ -70,7 +69,7 @@ class ViolationView extends _atom.View {
 		this.$area.addClass("violation-" + ReVIEW.ReportLevel[this.report.level].toLowerCase());
 	}
 
-	initializeStates() {
+	initializeStatus() {
 		var node = this.report.nodes[0];
 		var screenRange = this.editor.screenRangeForBufferRange(this.syntaxTreeToRange(node));
 		this.screenStartPosition = screenRange.start;
@@ -80,7 +79,6 @@ class ViolationView extends _atom.View {
 	}
 
 	syntaxTreeToRange(node:ReVIEW.Parse.SyntaxTree):TextBuffer.IRange {
-		// TODO endの実装が間違ってる気がする…
 		var range = _TextBuffer.Range.fromObject({
 			start: {
 				row: node.line - 1,
@@ -91,16 +89,19 @@ class ViolationView extends _atom.View {
 				column: node.column - 1 + (node.endPos - node.offset)
 			}
 		});
-		console.log("syntaxTreeToRange", range);
 		return range;
 	}
 
 	prepareTooltip() {
-		this.tooltip({
-			title: this.report.message,
-			html: false,
-			container: this.resultView,
-			selector: this.jq.find(".violation-area")
+		this.jq.each((index:number, element:HTMLElement) => {
+			var $this = $(element);
+			var data = new ViolationTooltip(this.editorView, element, {
+				title: this.report.message,
+				html: false,
+				container: this.resultView,
+				selector: this.jq.find(".violation-area")
+			});
+			$this.data("bs.tooltip", data);
 		});
 	}
 
@@ -124,7 +125,7 @@ class ViolationView extends _atom.View {
 				}
 			} else {
 				this.hideHighlight();
-				this.tooltip("hide");
+				this.tooltipHide();
 			}
 		});
 	}
@@ -142,7 +143,7 @@ class ViolationView extends _atom.View {
 			if (this.isValid) {
 				this.toggleTooltipWithCursorPosition();
 			} else {
-				this.tooltip("hide");
+				this.tooltipHide();
 			}
 		});
 	}
@@ -192,9 +193,9 @@ class ViolationView extends _atom.View {
 		var cursorPosition = this.editor.getCursor().getScreenPosition();
 
 		if (cursorPosition.row === this.screenStartPosition.row && cursorPosition.column === this.screenStartPosition.column) {
-			this.tooltip("show");
+			this.tooltipShow();
 		} else {
-			this.tooltip("hide");
+			this.tooltipHide();
 		}
 	}
 
@@ -206,24 +207,22 @@ class ViolationView extends _atom.View {
 		return new _TextBuffer.Range(this.screenStartPosition, this.screenEndPosition);
 	}
 
-	tooltip(message:string):void;
+	tooltipShow() {
+		this.operateTooltip(tooltip=> tooltip.show());
+	}
 
-	tooltip(option:tooltip.IViolationTooltipOptions):void;
+	tooltipHide() {
+		this.operateTooltip(tooltip=> tooltip.hide());
+	}
 
-	tooltip(option:any):void {
-		var violationView = this;
-		this.jq.each(function () {
-			console.log("ViolationView tooltip option=" + option);
-			var $this = $(this);
-			var data:ViolationTooltip = $this.data("bs.tooltip");
+	tooltipDestroy() {
+		this.operateTooltip(tooltip=> tooltip.destroy());
+	}
 
-			if (!data) {
-				data = new ViolationTooltip(violationView.editorView, this, option);
-				$this.data("bs.tooltip", data);
-			}
-			if (typeof option === "string") {
-				(<any>data)[option]();
-			}
+	operateTooltip(operation:(violationTooltip:ViolationTooltip)=>void):void {
+		this.jq.each((index, element) => {
+			var data:ViolationTooltip = $(element).data("bs.tooltip");
+			operation(data);
 		});
 	}
 
@@ -231,7 +230,7 @@ class ViolationView extends _atom.View {
 		if (this.marker) {
 			this.marker.destroy();
 		}
-		this.tooltip("destroy");
+		this.tooltipDestroy();
 	}
 }
 
