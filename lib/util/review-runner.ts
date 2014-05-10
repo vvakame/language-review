@@ -17,6 +17,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 	grammerChangeSubscription:Emissary.ISubscription;
 	wasAlreadyActivated:boolean;
 	bufferSubscription:Emissary.ISubscription;
+	lastReports:ReVIEW.ProcessReport[];
 
 	constructor(public editor:AtomCore.IEditor) {
 		super();
@@ -102,6 +103,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 				write: (path, content) => result[path] = content,
 				listener: {
 					onReports: reports => {
+						this.lastReports = reports;
 						this.emit("compile", reports);
 					},
 					onCompileSuccess: book => {
@@ -123,7 +125,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		});
 	}
 
-	getFilePath():string {
+	get filePath():string {
 		return this.buffer.getUri();
 	}
 }

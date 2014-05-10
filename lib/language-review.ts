@@ -7,6 +7,7 @@ import _atom = require("atom");
 import V = require("./util/const");
 import ReVIEWPreviewView = require("./view/review-preview-view");
 import ReVIEWResultView = require("./view/review-result-view");
+import ReVIEWStatusView = require("./view/review-status-view");
 
 class Controller {
 	configDefaults = {
@@ -15,6 +16,7 @@ class Controller {
 		]
 	};
 
+	reviewStatusView:ReVIEWStatusView;
 	resultViews:ReVIEWResultView[] = [];
 	editorViewSubscription:{ off():any; };
 
@@ -57,11 +59,20 @@ class Controller {
 
 	enableCompileResult() {
 		this.editorViewSubscription = atom.workspaceView.eachEditorView((editorView:_atom.EditorView)=> {
-			this.injectLintViewIntoEditorView(editorView);
+			this.injectResultViewIntoEditorView(editorView);
+		});
+
+		this.injectStatusViewIntoStatusBar();
+		atom.packages.once("activated", ()=> {
+			this.injectStatusViewIntoStatusBar();
 		});
 	}
 
 	disableCompileResult() {
+		if (this.reviewStatusView) {
+			this.reviewStatusView.jq.remove();
+			this.reviewStatusView = null;
+		}
 		if (this.editorViewSubscription) {
 			this.editorViewSubscription.off();
 			this.editorViewSubscription = null;
@@ -113,7 +124,7 @@ class Controller {
 		});
 	}
 
-	injectLintViewIntoEditorView(editorView:_atom.EditorView) {
+	injectResultViewIntoEditorView(editorView:_atom.EditorView) {
 		if (!editorView.getPane()) {
 			return;
 		}
@@ -122,6 +133,18 @@ class Controller {
 		}
 		var resultView = new ReVIEWResultView(<V.IReVIEWedEditorView>editorView);
 		this.resultViews.push(resultView);
+	}
+
+	injectStatusViewIntoStatusBar() {
+		if (this.reviewStatusView) {
+			return;
+		}
+		var statusBar = atom.workspaceView.statusBar;
+		if (!statusBar) {
+			return;
+		}
+		this.reviewStatusView = new ReVIEWStatusView(statusBar);
+		statusBar.prependRight(this.reviewStatusView);
 	}
 }
 

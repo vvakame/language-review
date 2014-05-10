@@ -190,3 +190,34 @@
     }
   }
 }
+
+.status-bar .review-status {
+  .icon {
+    margin-left: 5px;
+  }
+
+  .icon:before {
+    @font-size: 12px;
+    width: @font-size;
+    height: @font-size;
+    font-size: @font-size;
+    top: 0;
+    margin-right: 2px;
+  }
+
+  .review-clean:before {
+    color: @text-color-success;
+  }
+
+  .review-info:before {
+    color: @text-color-info;
+  }
+
+  .review-warning:before {
+    color: @text-color-warning;
+  }
+
+  .review-error:before {
+    color: @text-color-error;
+  }
+}
