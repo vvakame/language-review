@@ -160,6 +160,10 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 							var $html = this.resolveImagePaths(process.result);
 							this.jq.empty().append($html);
 						});
+					},
+					onCompileFailed: () => {
+						// NOTE: ここ消すとreview.js内部で process.exit(1); される
+						false;
 					}
 				},
 				builders: [new ReVIEW.Build.HtmlBuilder(false)],
