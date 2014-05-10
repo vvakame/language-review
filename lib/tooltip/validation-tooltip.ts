@@ -9,7 +9,6 @@ import tooltip = require("./tooltip");
 var $ = tooltip.$;
 
 var color = require("color");
-import ViolationView = require("../view/violation-view");
 
 class ViolationTooltip extends tooltip.Tooltip {
 	static DEFAULTS:tooltip.IViolationTooltipOptions = $.extend({}, tooltip.Tooltip.DEFAULTS, { placement: "bottom-right auto" });
@@ -45,7 +44,7 @@ class ViolationTooltip extends tooltip.Tooltip {
 			}
 
 			var placement:string;
-			if (typeof this.options.placement == "function") {
+			if (typeof this.options.placement === "function") {
 				placement = this.options.placement.call(this, $tip[0], this.$element[0]);
 			} else {
 				placement = this.options.placement;
@@ -99,14 +98,14 @@ class ViolationTooltip extends tooltip.Tooltip {
 
 		var placement = orgPlacement.split("-");
 
-		if (placement[0] == "bottom" && (pos.top + pos.height + actualHeight > editorHeight)) {
+		if (placement[0] === "bottom" && (pos.top + pos.height + actualHeight > editorHeight)) {
 			placement[0] = "top";
-		} else if (placement[0] == "top" && (pos.top - actualHeight < 0)) {
+		} else if (placement[0] === "top" && (pos.top - actualHeight < 0)) {
 			placement[0] = "bottom";
 		}
-		if (placement[1] == "right" && (pos.right + actualWidth > editorWidth)) {
+		if (placement[1] === "right" && (pos.right + actualWidth > editorWidth)) {
 			placement[1] = "left";
-		} else if (placement[1] == "left" && (pos.left - actualWidth < editorLeft)) {
+		} else if (placement[1] === "left" && (pos.left - actualWidth < editorLeft)) {
 			placement[1] = "right";
 		}
 
@@ -151,7 +150,7 @@ class ViolationTooltip extends tooltip.Tooltip {
 		var actualWidth = $tip[0].offsetWidth;
 		var actualHeight = $tip[0].offsetHeight;
 
-		if (placement == "top" && actualHeight != height) {
+		if (placement === "top" && actualHeight !== height) {
 			replace = true;
 			offset.top = offset.top + height - actualHeight;
 		}

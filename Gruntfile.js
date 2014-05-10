@@ -28,55 +28,7 @@ module.exports = function (grunt) {
     },
     tslint: {
       options: {
-        formatter: "prose",
-        configuration: {
-          // https://github.com/palantir/tslint#supported-rules
-          "rules": {
-            "bitwise": true,
-            "classname": true,
-            "curly": true,
-            "debug": false,
-            "dupkey": true,
-            "eofline": true,
-            "eqeqeq": true,
-            "evil": true,
-            "forin": false, // TODO 解消方法よくわからない
-            // "indent": [false, 4], // WebStormのFormatterと相性が悪い
-            "labelpos": true,
-            "label-undefined": true,
-            // "maxlen": [false, 140],
-            "noarg": true,
-            "noconsole": [false,
-              "debug",
-              "info",
-              "time",
-              "timeEnd",
-              "trace"
-            ],
-            "noconstruct": true,
-            "nounreachable": false, // switch で怒られるので
-            "noempty": false, // プロパティアクセス付き引数有りのコンストラクタまで怒られるので
-            "oneline": [true,
-              "check-open-brace",
-              "check-catch",
-              "check-else",
-              "check-whitespace"
-            ],
-            "quotemark": [true, "double"],
-            "radix": false, // 10の基数指定するのめんどいので
-            "semicolon": true,
-            "sub": true,
-            "trailing": true,
-            "varname": false, // _hoge とかが許可されなくなるので…
-            "whitespace": [false, // WebStormのFormatterと相性が悪い
-              "check-branch",
-              "check-decl",
-              "check-operator",
-              "check-separator" ,
-              "check-type"
-            ]
-          }
-        }
+        configuration: grunt.file.readJSON("tslint.json")
       },
       files: {
         src: ['<%= opt.client.tsMain %>/**/*.ts']

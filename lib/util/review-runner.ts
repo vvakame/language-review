@@ -105,9 +105,10 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 						this.emit("compile", reports);
 					},
 					onCompileSuccess: book => {
-						console.log(book);
+						console.log("onCompileSuccess", book);
 					},
 					onCompileFailed: () => {
+						console.log("onCompileFailed");
 					}
 				},
 				builders: [new ReVIEW.Build.HtmlBuilder(false)],

@@ -175,7 +175,6 @@ class ViolationView extends _atom.View {
 			"border-left-width": arrowSize
 		});
 
-		var borderThickness = 1;
 		var borderOffset = arrowSize / 2;
 		this.$area.css({
 			left: borderOffset, // Avoid protruding left edge of the border from the arrow
@@ -222,7 +221,7 @@ class ViolationView extends _atom.View {
 				data = new ViolationTooltip(violationView.editorView, this, option);
 				$this.data("bs.tooltip", data);
 			}
-			if (typeof option == "string") {
+			if (typeof option === "string") {
 				(<any>data)[option]();
 			}
 		});

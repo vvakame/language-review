@@ -144,9 +144,6 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 	}
 
 	renderReVIEWText(text:string) {
-		console.log(text);
-		var sanitize = true;
-		var breaks = atom.config.get("review-preview.breakOnSingleNewline");
 		var files:{[path:string]:string;} = {
 			"ch01.re": text
 		};
@@ -163,8 +160,6 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 							var $html = this.resolveImagePaths(process.result);
 							this.jq.empty().append($html);
 						});
-					},
-					onCompileFailed: () => {
 					}
 				},
 				builders: [new ReVIEW.Build.HtmlBuilder(false)],

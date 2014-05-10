@@ -6,14 +6,7 @@
 
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-view.coffee
 
-import path = require("path");
 import _atom = require("atom");
-
-var $ = _atom.$;
-var $$$ = _atom.$$$;
-
-import pathwatcher = require("pathwatcher");
-var File = pathwatcher.File;
 
 import ReVIEW = require("review.js");
 
@@ -152,7 +145,7 @@ class ReVIEWResultView extends _atom.View {
 	}
 
 	moveToOtherViolation(comparator:(a:TextBuffer.IPoint, b:TextBuffer.IPoint)=>boolean, getOne:(value:ViolationView[])=>ViolationView) {
-		if (this.violationViews.length == 0) {
+		if (this.violationViews.length === 0) {
 			atom.beep();
 			return;
 		}
