@@ -1,6 +1,8 @@
 '.workspace':
-  'ctrl-M': 'language-review:toggle-preview'
-
+  'ctrl-R': 'language-review:toggle-preview'
+'.editor':
+  'ctrl-alt-[': 'language-review:move-to-previous-violation'
+  'ctrl-alt-]': 'language-review:move-to-next-violation'
 '.review-preview':
   'cmd-+': 'language-review:zoom-in'
   'cmd-=': 'language-review:zoom-in'

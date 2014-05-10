@@ -57,6 +57,9 @@ class ReVIEWResultView extends _atom.View {
 			this.onCompileResult(reports);
 		});
 		this.reviewRunner.startWatching();
+
+		this.editorView.command(V.protocol + "move-to-next-violation", ()=> this.moveToNextViolation());
+		this.editorView.command(V.protocol + "move-to-previous-violation", ()=> this.moveToPreviousViolation());
 	}
 
 	get jq():JQuery {
@@ -136,6 +139,33 @@ class ReVIEWResultView extends _atom.View {
 			var klass = "review-" + ReVIEW.ReportLevel[violationView.report.level].toLowerCase();
 			this.gutterView.addClassToLine(line, klass);
 		});
+	}
+
+	moveToNextViolation() {
+		this.moveToOtherViolation((a, b)=> a.isGreaterThan(b), (values)=>values.shift());
+	}
+
+	moveToPreviousViolation() {
+		this.moveToOtherViolation((a, b)=> a.isLessThan(b), (values)=>values.pop());
+	}
+
+	moveToOtherViolation(comparator:(a:TextBuffer.IPoint, b:TextBuffer.IPoint)=>boolean, getOne:(value:ViolationView[])=>ViolationView) {
+		if (this.violationViews.length == 0) {
+			atom.beep();
+			return;
+		}
+
+		var currentCursorPosition = this.editor.getCursor().getScreenPosition();
+		var neighborViolationViews = this.violationViews.filter(violationView=> {
+			var violationPosition = violationView.screenStartPosition;
+			return comparator(violationPosition, currentCursorPosition);
+		});
+		var neighborViolationView = getOne(neighborViolationViews);
+		if (neighborViolationView) {
+			this.editor.setCursorScreenPosition(neighborViolationView.screenStartPosition);
+		} else {
+			atom.beep();
+		}
 	}
 }
 
