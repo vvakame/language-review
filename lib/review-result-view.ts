@@ -69,8 +69,9 @@ class ReVIEWResultView extends _atom.View {
 
 	beforeRemove() {
 		console.log("debug ReVIEWResultView beforeRemove");
+		this.removeViolationViews();
+		this.updateGutterMarkers();
 		this.reviewRunner.stopWatching();
-		this.editorView.reviewResultView = null;
 	}
 
 	refresh() {
