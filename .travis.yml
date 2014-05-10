@@ -1,0 +1,10 @@
+# https://github.com/atom/ci/blob/master/README.md
+
+language: objective-c
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
+script: 'cat ./build-package.sh | sh'
