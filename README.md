@@ -1,4 +1,4 @@
-# Re:VIEW support for Atom
+# Re:VIEW support for Atom [![Build Status](https://travis-ci.org/vvakame/language-review.svg?branch=master)](https://travis-ci.org/vvakame/language-review)
 
 [Re:VIEW](https://github.com/kmuto/review) is flexible document format/conversion system.
 It is used primarily in Japan.
