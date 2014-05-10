@@ -1,9 +1,9 @@
-/// <reference path="../typings/node/node.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
-/// <reference path="../typings/atom/atom.d.ts" />
-/// <reference path="../typings/text-buffer/text-buffer.d.ts" />
+/// <reference path="../../typings/node/node.d.ts" />
+/// <reference path="../../typings/jquery/jquery.d.ts" />
+/// <reference path="../../typings/atom/atom.d.ts" />
+/// <reference path="../../typings/text-buffer/text-buffer.d.ts" />
 
-/// <reference path="../node_modules/review.js/dist/review.js.d.ts" />
+/// <reference path="../../node_modules/review.js/dist/review.js.d.ts" />
 
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/violation-view.coffee
 
@@ -13,10 +13,10 @@ import _TextBuffer = require("text-buffer");
 
 import ReVIEW = require("review.js");
 
-import V = require("./const");
-import ViolationTooltip = require("./validation-tooltip");
+import V = require("../util/const");
+import ViolationTooltip = require("../tooltip/validation-tooltip");
+import tooltip = require("../tooltip/tooltip");
 import ReVIEWResultView = require("./review-result-view");
-import tooltip = require("./tooltip");
 
 class ViolationView extends _atom.View {
 
@@ -219,7 +219,7 @@ class ViolationView extends _atom.View {
 			var data:ViolationTooltip = $this.data("bs.tooltip");
 
 			if (!data) {
-				data = new ViolationTooltip(violationView, this, option);
+				data = new ViolationTooltip(violationView.editorView, this, option);
 				$this.data("bs.tooltip", data);
 			}
 			if (typeof option == "string") {

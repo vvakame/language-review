@@ -112,9 +112,9 @@ module.exports = function (grunt) {
       clientScript: {
         src: [
           // client
-          '<%= opt.client.tsMain %>/*.js',
-          '<%= opt.client.tsMain %>/*.d.ts',
-          '<%= opt.client.tsMain %>/*.js.map'
+          '<%= opt.client.tsMain %>/**/*.js',
+          '<%= opt.client.tsMain %>/**/*.d.ts',
+          '<%= opt.client.tsMain %>/**/*.js.map'
         ]
       },
       bower: {

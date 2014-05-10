@@ -1,16 +1,14 @@
-/// <reference path="../typings/node/node.d.ts" />
-/// <reference path="../typings/atom/atom.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
+/// <reference path="../../typings/node/node.d.ts" />
+/// <reference path="../../typings/atom/atom.d.ts" />
+/// <reference path="../../typings/jquery/jquery.d.ts" />
 
 import _atom = require("atom");
 
-/* tslint:disable */
-var vm = require("vm");
-var fs = require("fs");
+import vm = require("vm");
+import fs = require("fs");
 
-var fileName = __dirname + "/../bower-task/main-js/bootstrap/tooltip.js";
+var fileName = __dirname + "/../../bower-task/main-js/bootstrap/tooltip.js";
 var code = fs.readFileSync(fileName, {encoding: "utf-8"});
-/* tslint:enable */
 
 var sandbox:any = {
 	jQuery: _atom.$,

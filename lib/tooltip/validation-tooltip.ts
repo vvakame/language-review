@@ -1,24 +1,22 @@
-/// <reference path="../typings/node/node.d.ts" />
-/// <reference path="../typings/jquery/jquery.d.ts" />
+/// <reference path="../../typings/node/node.d.ts" />
+/// <reference path="../../typings/jquery/jquery.d.ts" />
 
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/violation-tooltip.coffee
 
-import vm = require("vm");
+import _atom = require("atom");
 
 import tooltip = require("./tooltip");
 var $ = tooltip.$;
 
 var color = require("color");
-
-import V = require("./const");
-import ViolationView = require("./violation-view");
+import ViolationView = require("../view/violation-view");
 
 class ViolationTooltip extends tooltip.Tooltip {
 	static DEFAULTS:tooltip.IViolationTooltipOptions = $.extend({}, tooltip.Tooltip.DEFAULTS, { placement: "bottom-right auto" });
 
 	editorUnderlayer:JQuery;
 
-	constructor(public violationView:ViolationView, element:HTMLElement, options:tooltip.IViolationTooltipOptions) {
+	constructor(public editorView:_atom.EditorView, element:HTMLElement, options:tooltip.IViolationTooltipOptions) {
 		super(element, options);
 	}
 
@@ -239,13 +237,13 @@ class ViolationTooltip extends tooltip.Tooltip {
 		return this.editorUnderlayer;
 	}
 
-	getEditorView():V.IReVIEWedEditorView {
-		return this.violationView.resultView.editorView;
+	getEditorView():_atom.EditorView {
+		return this.editorView;
 	}
 
 	getEditorViewAsJQuery():JQuery {
 		// adhoc TypeScriptの制約としてJQueryを辛くなく継承する方法わからなかったので…
-		return <any>this.violationView.resultView.editorView;
+		return <any>this.editorView;
 	}
 }
 

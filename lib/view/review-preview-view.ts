@@ -1,8 +1,8 @@
-/// <reference path="../typings/node/node.d.ts" />
-/// <reference path="../typings/atom/atom.d.ts" />
-/// <reference path="../typings/pathwatcher/pathwatcher.d.ts" />
+/// <reference path="../../typings/node/node.d.ts" />
+/// <reference path="../../typings/atom/atom.d.ts" />
+/// <reference path="../../typings/pathwatcher/pathwatcher.d.ts" />
 
-/// <reference path="../node_modules/review.js/dist/review.js.d.ts" />
+/// <reference path="../../node_modules/review.js/dist/review.js.d.ts" />
 
 import path = require("path");
 import _atom = require("atom");
@@ -15,7 +15,7 @@ var File = pathwatcher.File;
 
 import ReVIEW = require("review.js");
 
-import V = require("./const");
+import V = require("../util/const");
 
 class ReVIEWPreviewView extends _atom.ScrollView {
 

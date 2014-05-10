@@ -1,4 +1,4 @@
-/// <reference path="../typings/emissary/emissary.d.ts" />
+/// <reference path="../../typings/emissary/emissary.d.ts" />
 
 // このファイルについて
 // emissary.Emitter.includeInto などでprototypeにメソッドを生やせる

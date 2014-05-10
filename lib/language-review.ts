@@ -4,9 +4,9 @@
 import url = require("url");
 import _atom = require("atom");
 
-import V = require("./const");
-import ReVIEWPreviewView = require("./review-preview-view");
-import ReVIEWResultView = require("./review-result-view");
+import V = require("./util/const");
+import ReVIEWPreviewView = require("./view/review-preview-view");
+import ReVIEWResultView = require("./view/review-result-view");
 
 class Controller {
 	configDefaults = {
