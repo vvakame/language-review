@@ -8,6 +8,7 @@ import V = require("./util/const");
 import ReVIEWPreviewView = require("./view/review-preview-view");
 import ReVIEWResultView = require("./view/review-result-view");
 import ReVIEWStatusView = require("./view/review-status-view");
+import ReVIEWOutlineView = require("./view/review-outline-view");
 
 class Controller {
 	configDefaults = {
@@ -19,6 +20,7 @@ class Controller {
 	reviewStatusView:ReVIEWStatusView;
 	resultViews:ReVIEWResultView[] = [];
 	editorViewSubscription:{ off():any; };
+	outlineView:ReVIEWOutlineView;
 
 	activate():void {
 		atom.workspaceView.command(V.protocol + "toggle-preview", ()=> {
@@ -26,6 +28,9 @@ class Controller {
 		});
 		atom.workspaceView.command(V.protocol + "toggle-compile", ()=> {
 			this.toggleCompileResult();
+		});
+		atom.workspaceView.command(V.protocol + "toggle-outline", ()=> {
+			this.toggleOutline();
 		});
 
 		atom.workspace.registerOpener(urlToOpen => {
@@ -122,6 +127,13 @@ class Controller {
 				previousActivePane.activate();
 			}
 		});
+	}
+
+	toggleOutline() {
+		if (!this.outlineView) {
+			this.outlineView = new ReVIEWOutlineView();
+		}
+		this.outlineView.toggle();
 	}
 
 	injectResultViewIntoEditorView(editorView:_atom.EditorView) {

@@ -9,3 +9,11 @@
   'cmd--': 'language-review:zoom-out'
   'cmd-_': 'language-review:zoom-out'
   'cmd-0': 'language-review:reset-zoom'
+'.platform-darwin, .platform-darwin .review-editor .editor':
+  'cmd-shift-o': 'language-review:toggle-outline'
+
+'.platform-win32, .platform-win32 .review-editor .editor':
+  'ctrl-shift-o': 'language-review:toggle-outline'
+
+'.platform-linux, .platform-linux .review-editor .editor':
+  'ctrl-shift-o': 'language-review:toggle-outline'
