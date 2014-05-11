@@ -6,37 +6,37 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "node/node.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "atom/atom.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "space-pen/space-pen.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "emissary/emissary.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "text-buffer/text-buffer.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "status-bar/status-bar.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "mixto/mixto.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "jquery/jquery.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "pathwatcher/pathwatcher.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "q/Q.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     },
     "jasmine/jasmine.d.ts": {
-      "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+      "commit": "e9b0f608b1ca18344b2a916048594c8f30b0df10"
     }
   }
 }
