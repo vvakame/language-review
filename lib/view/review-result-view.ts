@@ -45,7 +45,7 @@ class ReVIEWResultView extends _atom.View {
 			console.log("ReVIEWResultView ReVIEWRunner deactivate");
 			this.onCompileSuspended();
 		});
-		this.reviewRunner.on("compile", reports=> {
+		this.reviewRunner.on("report", reports=> {
 			console.log("ReVIEWResultView ReVIEWRunner compile");
 			this.onCompileResult(reports);
 		});

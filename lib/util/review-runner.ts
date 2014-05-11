@@ -17,7 +17,11 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 	grammerChangeSubscription:Emissary.ISubscription;
 	wasAlreadyActivated:boolean;
 	bufferSubscription:Emissary.ISubscription;
+
+	lastAcceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes;
+	lastSymbols:ReVIEW.ISymbol[];
 	lastReports:ReVIEW.ProcessReport[];
+	lastBook:ReVIEW.Book;
 
 	constructor(public editor:AtomCore.IEditor) {
 		super();
@@ -80,7 +84,15 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		this.emit("deactivate");
 	}
 
-	on(eventNames:"compile", callback:(reports:ReVIEW.ProcessReport[])=>any):any;
+	on(eventNames:"syntax", callback:(acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes)=>any):any;
+
+	on(eventNames:"symbol", callback:(symbols:ReVIEW.ISymbol[])=>any):any;
+
+	on(eventNames:"report", callback:(reports:ReVIEW.ProcessReport[])=>any):any;
+
+	on(eventNames:"compile-success", callback:(book:ReVIEW.Book)=>any):any;
+
+	on(eventNames:"compile-failed", callback:()=>any):any;
 
 	on(eventNames:string, handler:Function):any;
 
@@ -102,15 +114,30 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 				read: path => files[path],
 				write: (path, content) => result[path] = content,
 				listener: {
+					onAcceptables: acceptableSyntaxes => {
+						console.log("onAcceptables", acceptableSyntaxes);
+						this.lastAcceptableSyntaxes = acceptableSyntaxes;
+						this.emit("syntax", acceptableSyntaxes);
+					},
+					onSymbols: symbols => {
+						console.log("onSymbols", symbols);
+						this.lastSymbols = symbols;
+						this.emit("symbol", symbols);
+					},
 					onReports: reports => {
+						console.log("onReports", reports);
 						this.lastReports = reports;
-						this.emit("compile", reports);
+						this.emit("report", reports);
 					},
 					onCompileSuccess: book => {
 						console.log("onCompileSuccess", book);
+						this.lastBook = book;
+						this.emit("compile-success", book);
 					},
 					onCompileFailed: () => {
 						console.log("onCompileFailed");
+						this.lastBook = null;
+						this.emit("compile-failed");
 					}
 				},
 				builders: [new ReVIEW.Build.HtmlBuilder(false)],
