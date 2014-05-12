@@ -3,11 +3,6 @@
 .DS_Store
 npm-debug.log
 .gitignore
-.travis.yml
-bower.json
-build-package.sh
-tsd.json
-tslint.json
 
 # for WebStorm
 .idea/
@@ -20,6 +15,13 @@ node_modules/
 bower-task/jquery/
 bower_components/
 Gruntfile.js
+bower.json
+tsd.json
+tslint.json
+
+# for Travis-CI
+.travis.yml
+build-package.sh
 
 # others
 example/
