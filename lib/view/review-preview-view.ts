@@ -17,6 +17,7 @@ var File = pathwatcher.File;
 import Q = require("q");
 
 import V = require("../util/const");
+import logger = require("../util/logger");
 import ReVIEWRunner = require("../util/review-runner");
 
 class ReVIEWPreviewView extends _atom.ScrollView {
@@ -144,7 +145,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 			this.showLoading();
 		});
 		this.runner.on("report", reports=> {
-			console.log(reports);
+			logger.log(reports);
 		});
 		this.runner.on("compile-success", book=> {
 			changeHandler();

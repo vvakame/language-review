@@ -9,6 +9,7 @@ var $$ = _atom.$$;
 import ReVIEW = require("review.js");
 
 // import V = require("../util/const");
+import logger = require("../util/logger");
 import ReVIEWRunner = require("../util/review-runner");
 
 class ReVIEWOutlineView extends _atom.SelectListView {
@@ -49,11 +50,11 @@ class ReVIEWOutlineView extends _atom.SelectListView {
 			if (runner.lastSymbols) {
 				symbols = runner.lastSymbols.filter(symbol => symbol.symbolName === "hd");
 			} else {
-				console.log("not compiled...");
+				logger.log("not compiled...");
 				atom.beep();
 			}
 		} else {
-			console.log("unknown state... ", view);
+			logger.error("unknown state... ", view);
 			atom.beep();
 			debugger;
 		}

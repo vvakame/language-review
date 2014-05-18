@@ -19,6 +19,7 @@ import Q = require("q");
 import ReVIEW = require("review.js");
 
 import V = require("../util/const");
+import logger = require("../util/logger");
 import ReVIEWRunner = require("../util/review-runner");
 
 class ReVIEWSyntaxListView extends _atom.ScrollView {
@@ -173,7 +174,7 @@ class ReVIEWSyntaxListView extends _atom.ScrollView {
 							$("<span>").text(" : 定義 説明").appendTo($syntax);
 							break;
 						default:
-							console.log("test", syntax);
+							logger.warn("test", syntax);
 							break;
 					}
 					break;

@@ -5,6 +5,7 @@ import url = require("url");
 import _atom = require("atom");
 
 import V = require("./util/const");
+import logger = require("./util/logger");
 import ReVIEWPreviewView = require("./view/review-preview-view");
 import ReVIEWResultView = require("./view/review-result-view");
 import ReVIEWStatusView = require("./view/review-status-view");
@@ -15,7 +16,8 @@ class Controller {
 	configDefaults = {
 		grammars: [
 			"source.review"
-		]
+		],
+		debug: false
 	};
 
 	reviewStatusView:ReVIEWStatusView;
@@ -38,7 +40,7 @@ class Controller {
 		});
 
 		atom.workspace.registerOpener((urlToOpen:string):_atom.View => {
-			console.log(urlToOpen);
+			logger.log(urlToOpen);
 			var tmpUrl = url.parse(urlToOpen);
 
 			var pathName = tmpUrl.pathname;

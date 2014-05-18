@@ -11,6 +11,7 @@ import _atom = require("atom");
 import ReVIEW = require("review.js");
 
 import V = require("../util/const");
+import logger = require("../util/logger");
 import ReVIEWRunner = require("../util/review-runner");
 import ViolationView = require("./violation-view");
 
@@ -38,15 +39,15 @@ class ReVIEWResultView extends _atom.View {
 
 		this.reviewRunner = new ReVIEWRunner({editor: this.editorView.getEditor()});
 		this.reviewRunner.on("activate", ()=> {
-			console.log("ReVIEWResultView ReVIEWRunner activate");
+			logger.log("ReVIEWResultView ReVIEWRunner activate");
 			this.onCompileStarted();
 		});
 		this.reviewRunner.on("deactivate", ()=> {
-			console.log("ReVIEWResultView ReVIEWRunner deactivate");
+			logger.log("ReVIEWResultView ReVIEWRunner deactivate");
 			this.onCompileSuspended();
 		});
 		this.reviewRunner.on("report", reports=> {
-			console.log("ReVIEWResultView ReVIEWRunner compile");
+			logger.log("ReVIEWResultView ReVIEWRunner compile");
 			this.onCompileResult(reports);
 		});
 		this.reviewRunner.startWatching();
@@ -61,14 +62,14 @@ class ReVIEWResultView extends _atom.View {
 	}
 
 	beforeRemove() {
-		console.log("debug ReVIEWResultView beforeRemove");
+		logger.log("debug ReVIEWResultView beforeRemove");
 		this.removeViolationViews();
 		this.updateGutterMarkers();
 		this.reviewRunner.stopWatching();
 	}
 
 	refresh() {
-		console.log("debug ReVIEWResultView refresh");
+		logger.log("debug ReVIEWResultView refresh");
 	}
 
 	onCompileStarted() {

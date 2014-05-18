@@ -9,6 +9,7 @@
 
 import emissaryHelper = require("./emissary-helper");
 import V = require("./const");
+import logger = require("./logger");
 
 import ReVIEW = require("review.js");
 
@@ -44,22 +45,22 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 	}
 
 	startWatching():void {
-		console.log("debug ReVIEWRunner startWatching");
+		logger.log("debug ReVIEWRunner startWatching");
 		this.watcher.startWatching();
 	}
 
 	stopWatching():void {
-		console.log("debug ReVIEWRunner stopWatching");
+		logger.log("debug ReVIEWRunner stopWatching");
 		this.watcher.stopWatching();
 	}
 
 	activate():void {
-		console.log("debug ReVIEWRunner activate");
+		logger.log("debug ReVIEWRunner activate");
 		this.watcher.activate();
 	}
 
 	deactivate():void {
-		console.log("debug ReVIEWRunner deactivate");
+		logger.log("debug ReVIEWRunner deactivate");
 		this.watcher.deactivate();
 	}
 
@@ -83,7 +84,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 	}
 
 	doCompile():void {
-		console.log("debug ReVIEWRunner doCompile");
+		logger.log("debug ReVIEWRunner doCompile");
 		this.emit("start");
 
 		setTimeout(()=> {
@@ -98,27 +99,27 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 					write: (path, content) => result[path] = content,
 					listener: {
 						onAcceptables: acceptableSyntaxes => {
-							console.log("onAcceptables", acceptableSyntaxes);
+							logger.log("onAcceptables", acceptableSyntaxes);
 							this.lastAcceptableSyntaxes = acceptableSyntaxes;
 							this.emit("syntax", acceptableSyntaxes);
 						},
 						onSymbols: symbols => {
-							console.log("onSymbols", symbols);
+							logger.log("onSymbols", symbols);
 							this.lastSymbols = symbols;
 							this.emit("symbol", symbols);
 						},
 						onReports: reports => {
-							console.log("onReports", reports);
+							logger.log("onReports", reports);
 							this.lastReports = reports;
 							this.emit("report", reports);
 						},
 						onCompileSuccess: book => {
-							console.log("onCompileSuccess", book);
+							logger.log("onCompileSuccess", book);
 							this.lastBook = book;
 							this.emit("compile-success", book);
 						},
 						onCompileFailed: () => {
-							console.log("onCompileFailed");
+							logger.log("onCompileFailed");
 							this.lastBook = null;
 							this.emit("compile-failed");
 						}
@@ -170,7 +171,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 	}
 
 	startWatching():void {
-		console.log("debug ReVIEWRunner startWatching");
+		logger.log("debug ReVIEWRunner startWatching");
 		if (this.grammerChangeSubscription) {
 			return;
 		}
@@ -183,7 +184,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 	}
 
 	stopWatching():void {
-		console.log("debug ReVIEWRunner stopWatching");
+		logger.log("debug ReVIEWRunner stopWatching");
 		if (!this.grammerChangeSubscription) {
 			return;
 		}
@@ -194,7 +195,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 
 	configureRunner():void {
 		var scopeName = this.editor.getGrammar().scopeName;
-		console.log("debug ReVIEWRunner configureRunner grammar " + scopeName);
+		logger.log("debug ReVIEWRunner configureRunner grammar " + scopeName);
 		if (V.reviewScopeName === scopeName) {
 			this.activate();
 		} else {
@@ -203,7 +204,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 	}
 
 	activate():void {
-		console.log("debug ReVIEWRunner activate");
+		logger.log("debug ReVIEWRunner activate");
 		if (!this.wasAlreadyActivated) {
 			this.emit("activate");
 		}
@@ -222,7 +223,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 	}
 
 	deactivate():void {
-		console.log("debug ReVIEWRunner deactivate");
+		logger.log("debug ReVIEWRunner deactivate");
 		if (this.bufferSubscription) {
 			this.bufferSubscription.off();
 			this.bufferSubscription = null;
@@ -250,7 +251,7 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
 	}
 
 	startWatching():void {
-		console.log("debug ReVIEWRunner startWatching");
+		logger.log("debug ReVIEWRunner startWatching");
 		if (this.fileRemovedSubscription) {
 			return;
 		}
@@ -263,7 +264,7 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
 	}
 
 	stopWatching():void {
-		console.log("debug ReVIEWRunner stopWatching");
+		logger.log("debug ReVIEWRunner stopWatching");
 		if (!this.fileRemovedSubscription) {
 			return;
 		}
@@ -281,7 +282,7 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
 	}
 
 	activate():void {
-		console.log("debug ReVIEWRunner activate");
+		logger.log("debug ReVIEWRunner activate");
 		if (!this.wasAlreadyActivated) {
 			this.emit("activate");
 		}
@@ -297,7 +298,7 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
 
 
 	deactivate():void {
-		console.log("debug ReVIEWRunner deactivate");
+		logger.log("debug ReVIEWRunner deactivate");
 		if (this.contentChangedSubscription) {
 			this.contentChangedSubscription.off();
 			this.contentChangedSubscription = null;
