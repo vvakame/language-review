@@ -14,7 +14,8 @@
     "pathwatcher": "1.2.4",
     "color": "0.6.0",
     "emissary": "1.2.1",
-    "text-buffer": "2.2.2"
+    "text-buffer": "2.2.2",
+    "q": "1.0.1"
   },
   "devDependencies": {
     "grunt": "0.4.4",

@@ -1,6 +1,7 @@
 /// <reference path="../../typings/node/node.d.ts" />
 /// <reference path="../../typings/atom/atom.d.ts" />
 /// <reference path="../../typings/pathwatcher/pathwatcher.d.ts" />
+/// <reference path="../../typings/q/Q.d.ts" />
 
 /// <reference path="../../node_modules/review.js/dist/review.js.d.ts" />
 
@@ -13,15 +14,18 @@ var $$$ = _atom.$$$;
 import pathwatcher = require("pathwatcher");
 var File = pathwatcher.File;
 
-import ReVIEW = require("review.js");
+import Q = require("q");
 
 import V = require("../util/const");
+import ReVIEWRunner = require("../util/review-runner");
 
 class ReVIEWPreviewView extends _atom.ScrollView {
 
 	editorId:string;
 	file:PathWatcher.IFile;
 	editor:AtomCore.IEditor;
+
+	runner:ReVIEWRunner;
 
 	static deserialize(state:any):ReVIEWPreviewView {
 		return new ReVIEWPreviewView(state);
@@ -37,9 +41,20 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		this.editorId = params.editorId;
 
 		if (this.editorId) {
-			this.resolveEditor(this.editorId);
+			var promise = this.resolveEditor(this.editorId);
+			promise.then(editor=> {
+				this.runner = new ReVIEWRunner({editor: editor}, {highFrequency: true});
+				this.handleEvents();
+			}).catch(reason=> {
+				// The editor this preview was created for has been closed so close
+				// this preview since a preview cannot be rendered without an editor
+				var view = this.jq.parents(".pane").view();
+				if (view) {
+					view.destroyItem(this);
+				}
+			});
 		} else {
-			this.file = new File(params.filePath);
+			this.runner = new ReVIEWRunner({file: new File(params.filePath)});
 			this.handleEvents();
 		}
 	}
@@ -58,23 +73,21 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 	}
 
 	destroy() {
+		this.runner.deactivate();
 		this.unsubscribe();
 	}
 
-	resolveEditor(editorId:string) {
-		var resolve = ()=> {
-			this.editor = this.editorForId(editorId);
+	resolveEditor(editorId:string):Q.Promise<AtomCore.IEditor> {
+		var deferred = Q.defer<AtomCore.IEditor>();
 
-			if (this.editor) {
+		var resolve = ()=> {
+			var editor = this.editorForId(editorId);
+
+			if (editor) {
 				this.jq.trigger("title-changed");
-				this.handleEvents();
+				deferred.resolve(editor);
 			} else {
-				// The editor this preview was created for has been closed so close
-				// this preview since a preview cannot be rendered without an editor
-				var view = this.jq.parents(".pane").view();
-				if (view) {
-					view.destroyItem(this);
-				}
+				deferred.reject(null);
 			}
 		};
 
@@ -86,6 +99,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 				this.renderReVIEW();
 			});
 		}
+		return deferred.promise;
 	}
 
 	editorForId(editorId:string) {
@@ -119,63 +133,38 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		});
 
 		var changeHandler = ()=> {
-			this.renderReVIEW();
 			var pane = atom.workspace.paneForUri(this.getUri());
 			if (pane && pane !== atom.workspace.getActivePane()) {
 				pane.activateItem(this);
 			}
 		};
 
-		if (this.file) {
-			this.subscribe(this.file, "contents-changed", changeHandler);
-		} else if (this.editor) {
-			this.subscribe(this.editor.getBuffer(), "contents-modified", changeHandler);
+		this.runner.activate();
+
+		this.runner.on("start", ()=> {
+			this.showLoading();
+		});
+		this.runner.on("report", reports=> {
+			console.log(reports);
+		});
+		this.runner.on("compile-success", book=> {
+			changeHandler();
+			book.parts[1].chapters[0].builderProcesses.forEach(process => {
+				var $html = this.resolveImagePaths(process.result);
+				this.jq.empty().append($html);
+			});
+		});
+		this.runner.on("compile-failed", ()=> {
+			changeHandler();
+		});
+
+		if (this.runner.editor) {
 			this.subscribe(this.editor, "path-changed", () => this.jq.trigger("title-changed"));
 		}
 	}
 
 	renderReVIEW() {
-		this.showLoading();
-		if (this.file) {
-			this.file.read().then(contents=> this.renderReVIEWText(contents));
-		} else if (this.editor) {
-			this.renderReVIEWText(this.editor.getText());
-		}
-	}
-
-	renderReVIEWText(text:string) {
-		var files:{[path:string]:string;} = {
-			"ch01.re": text
-		};
-		var result:{[path:string]:string;} = {
-		};
-		ReVIEW.start(review => {
-			review.initConfig({
-				read: path => files[path],
-				write: (path, content) => result[path] = content,
-				listener: {
-					onReports: reports => console.log(reports),
-					onCompileSuccess: book => {
-						book.parts[1].chapters[0].builderProcesses.forEach(process => {
-							var $html = this.resolveImagePaths(process.result);
-							this.jq.empty().append($html);
-						});
-					},
-					onCompileFailed: () => {
-						// NOTE: ここ消すとreview.js内部で process.exit(1); される
-						false;
-					}
-				},
-				builders: [new ReVIEW.Build.HtmlBuilder(false)],
-				book: {
-					preface: [],
-					chapters: [
-						"ch01.re"
-					],
-					afterword: []
-				}
-			});
-		});
+		this.runner.doCompile();
 	}
 
 	getTitle():string {
@@ -197,11 +186,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 	}
 
 	getPath():string {
-		if (this.file) {
-			return this.file.getPath();
-		} else {
-			this.editor.getPath();
-		}
+		return this.runner.getFilePath();
 	}
 
 	showError(result:any = {}) {

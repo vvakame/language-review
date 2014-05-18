@@ -16,18 +16,28 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
 	private watcher:IContentWatcher;
 
+	editor:AtomCore.IEditor;
+	file:PathWatcher.IFile;
+
 	lastAcceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes;
 	lastSymbols:ReVIEW.ISymbol[];
 	lastReports:ReVIEW.ProcessReport[];
 	lastBook:ReVIEW.Book;
 
-	constructor(params:{ editor?:AtomCore.IEditor; file?: PathWatcher.IFile; }) {
+	constructor(params:{ editor:AtomCore.IEditor; }, options?:{ highFrequency?:boolean; });
+
+	constructor(params:{ file:PathWatcher.IFile; }, options?:{ highFrequency?:boolean; });
+
+	constructor(params:{ editor?:AtomCore.IEditor; file?: PathWatcher.IFile; }, public options:{ highFrequency?:boolean; } = {}) {
 		super();
 
-		if (params.editor) {
-			this.watcher = new EditorContentWatcher(this, params.editor);
-		} else if (params.file) {
-			this.watcher = new FileContentWatcher(this, params.file);
+		this.editor = params.editor;
+		this.file = params.file;
+
+		if (this.editor) {
+			this.watcher = new EditorContentWatcher(this, this.editor);
+		} else if (this.file) {
+			this.watcher = new FileContentWatcher(this, this.file);
 		} else {
 			throw new Error("editor or file are required");
 		}
@@ -53,6 +63,8 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 		this.watcher.deactivate();
 	}
 
+	on(eventNames:"start", callback:()=>any):any;
+
 	on(eventNames:"syntax", callback:(acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes)=>any):any;
 
 	on(eventNames:"symbol", callback:(symbols:ReVIEW.ISymbol[])=>any):any;
@@ -72,53 +84,64 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
 	doCompile():void {
 		console.log("debug ReVIEWRunner doCompile");
+		this.emit("start");
 
-		var files:{[path:string]:string;} = {
-			"ch01.re": this.watcher.getContent()
-		};
-		var result:{[path:string]:string;} = {
-		};
-		ReVIEW.start(review => {
-			review.initConfig({
-				read: path => files[path],
-				write: (path, content) => result[path] = content,
-				listener: {
-					onAcceptables: acceptableSyntaxes => {
-						console.log("onAcceptables", acceptableSyntaxes);
-						this.lastAcceptableSyntaxes = acceptableSyntaxes;
-						this.emit("syntax", acceptableSyntaxes);
+		setTimeout(()=> {
+			var files:{[path:string]:string;} = {
+				"ch01.re": this.watcher.getContent()
+			};
+			var result:{[path:string]:string;} = {
+			};
+			ReVIEW.start(review => {
+				review.initConfig({
+					read: path => files[path],
+					write: (path, content) => result[path] = content,
+					listener: {
+						onAcceptables: acceptableSyntaxes => {
+							console.log("onAcceptables", acceptableSyntaxes);
+							this.lastAcceptableSyntaxes = acceptableSyntaxes;
+							this.emit("syntax", acceptableSyntaxes);
+						},
+						onSymbols: symbols => {
+							console.log("onSymbols", symbols);
+							this.lastSymbols = symbols;
+							this.emit("symbol", symbols);
+						},
+						onReports: reports => {
+							console.log("onReports", reports);
+							this.lastReports = reports;
+							this.emit("report", reports);
+						},
+						onCompileSuccess: book => {
+							console.log("onCompileSuccess", book);
+							this.lastBook = book;
+							this.emit("compile-success", book);
+						},
+						onCompileFailed: () => {
+							console.log("onCompileFailed");
+							this.lastBook = null;
+							this.emit("compile-failed");
+						}
 					},
-					onSymbols: symbols => {
-						console.log("onSymbols", symbols);
-						this.lastSymbols = symbols;
-						this.emit("symbol", symbols);
-					},
-					onReports: reports => {
-						console.log("onReports", reports);
-						this.lastReports = reports;
-						this.emit("report", reports);
-					},
-					onCompileSuccess: book => {
-						console.log("onCompileSuccess", book);
-						this.lastBook = book;
-						this.emit("compile-success", book);
-					},
-					onCompileFailed: () => {
-						console.log("onCompileFailed");
-						this.lastBook = null;
-						this.emit("compile-failed");
+					builders: [new ReVIEW.Build.HtmlBuilder(false)],
+					book: {
+						preface: [],
+						chapters: [
+							"ch01.re"
+						],
+						afterword: []
 					}
-				},
-				builders: [new ReVIEW.Build.HtmlBuilder(false)],
-				book: {
-					preface: [],
-					chapters: [
-						"ch01.re"
-					],
-					afterword: []
-				}
+				});
 			});
 		});
+	}
+
+	getContent() {
+		return this.watcher.getContent();
+	}
+
+	getFilePath() {
+		return this.watcher.getFilePath();
 	}
 }
 
@@ -189,11 +212,14 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 		if (this.bufferSubscription) {
 			return;
 		}
-		this.bufferSubscription = this.subscribe(this.buffer, "saved reloaded", ()=> {
+		var subscribeEvents = "saved reloaded";
+		if (this.runner.options.highFrequency) {
+			subscribeEvents += " contents-modified";
+		}
+		this.bufferSubscription = this.subscribe(this.buffer, subscribeEvents, ()=> {
 			this.runner.doCompile();
 		});
 	}
-
 
 	deactivate():void {
 		console.log("debug ReVIEWRunner deactivate");
