@@ -9,6 +9,7 @@ import ReVIEWPreviewView = require("./view/review-preview-view");
 import ReVIEWResultView = require("./view/review-result-view");
 import ReVIEWStatusView = require("./view/review-status-view");
 import ReVIEWOutlineView = require("./view/review-outline-view");
+import ReVIEWSyntaxListView = require("./view/review-syntax-list-view");
 
 class Controller {
 	configDefaults = {
@@ -32,8 +33,11 @@ class Controller {
 		atom.workspaceView.command(V.protocol + "toggle-outline", ()=> {
 			this.toggleOutline();
 		});
+		atom.workspaceView.command(V.protocol + "toggle-syntax-list", ()=> {
+			this.toggleSyntaxList();
+		});
 
-		atom.workspace.registerOpener(urlToOpen => {
+		atom.workspace.registerOpener((urlToOpen:string):_atom.View => {
 			console.log(urlToOpen);
 			var tmpUrl = url.parse(urlToOpen);
 
@@ -49,6 +53,8 @@ class Controller {
 			var host = tmpUrl.host;
 			if (host === V.previewHost) {
 				return new ReVIEWPreviewView({editorId: pathName.substring(1)});
+			} else if (host === V.syntaxListHost) {
+				return new ReVIEWSyntaxListView({editorId: pathName.substring(1)});
 			} else {
 				// TODO
 				return new ReVIEWPreviewView({filePath: pathName});
@@ -121,9 +127,9 @@ class Controller {
 		atom.workspace.open(uri, {
 			split: "right",
 			searchAllPanes: true
-		}).done(previewView => {
-			if (previewView instanceof ReVIEWPreviewView) {
-				(<ReVIEWPreviewView>previewView).renderReVIEW();
+		}).done(view => {
+			if (view instanceof ReVIEWPreviewView) {
+				(<ReVIEWPreviewView>view).renderReVIEW();
 				previousActivePane.activate();
 			}
 		});
@@ -157,6 +163,39 @@ class Controller {
 		}
 		this.reviewStatusView = new ReVIEWStatusView(statusBar);
 		statusBar.prependRight(this.reviewStatusView);
+	}
+
+	toggleSyntaxList() {
+		var editor = atom.workspace.getActiveEditor();
+		if (!editor) {
+			return;
+		}
+
+		var grammars:string[] = atom.config.get("language-review.grammars") || [];
+		if (!grammars.some(grammar => grammar === editor.getGrammar().scopeName)) {
+			return;
+		}
+
+		var uri = V.protocol + "//" + V.syntaxListHost + "/" + editor.id;
+
+		var previewPane = atom.workspace.paneForUri(uri);
+
+		if (previewPane) {
+			previewPane.destroyItem(previewPane.itemForUri(uri));
+			return;
+		}
+
+		var previousActivePane = atom.workspace.getActivePane();
+
+		atom.workspace.open(uri, {
+			split: "right",
+			searchAllPanes: true
+		}).done(view => {
+			if (view instanceof ReVIEWSyntaxListView) {
+				(<ReVIEWSyntaxListView>view).renderSyntaxList();
+				previousActivePane.activate();
+			}
+		});
 	}
 }
 

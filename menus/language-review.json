@@ -17,6 +17,10 @@
             {
               "label": "Toggle Outline",
               "command": "language-review:toggle-outline"
+            },
+            {
+              "label": "Toggle Syntax List",
+              "command": "language-review:toggle-syntax-list"
             }
           ]
         }

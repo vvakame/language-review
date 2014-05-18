@@ -1,25 +1,27 @@
 /// <reference path="../../typings/node/node.d.ts" />
 /// <reference path="../../typings/atom/atom.d.ts" />
 /// <reference path="../../typings/pathwatcher/pathwatcher.d.ts" />
-/// <reference path="../../typings/q/Q.d.ts" />
 
 /// <reference path="../../node_modules/review.js/dist/review.js.d.ts" />
+
+// check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-view.coffee
 
 import path = require("path");
 import _atom = require("atom");
 
 var $ = _atom.$;
-var $$$ = _atom.$$$;
 
 import pathwatcher = require("pathwatcher");
 var File = pathwatcher.File;
 
 import Q = require("q");
 
+import ReVIEW = require("review.js");
+
 import V = require("../util/const");
 import ReVIEWRunner = require("../util/review-runner");
 
-class ReVIEWPreviewView extends _atom.ScrollView {
+class ReVIEWSyntaxListView extends _atom.ScrollView {
 
 	editorId:string;
 	file:PathWatcher.IFile;
@@ -27,12 +29,14 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 
 	runner:ReVIEWRunner;
 
-	static deserialize(state:any):ReVIEWPreviewView {
-		return new ReVIEWPreviewView(state);
+	acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes;
+
+	static deserialize(state:any):ReVIEWSyntaxListView {
+		return new ReVIEWSyntaxListView(state);
 	}
 
 	static content():any {
-		return this.div({class: "review-preview native-key-bindings", tabindex: -1});
+		return this.div({class: "review-syntax-list native-key-bindings", tabindex: -1});
 	}
 
 	constructor(params:{editorId?:string; filePath?:string;} = {}) {
@@ -53,10 +57,12 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 					view.destroyItem(this);
 				}
 			});
-		} else {
+		} else if (params.filePath) {
 			this.file = new File(params.filePath);
 			this.runner = new ReVIEWRunner({file: this.file});
 			this.handleEvents();
+		} else {
+			throw new Error("editorId or filePath are required");
 		}
 	}
 
@@ -67,7 +73,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 
 	serialize() {
 		return {
-			deserializer: "ReVIEWPreviewView",
+			deserializer: "ReVIEWSyntaxListView",
 			filePath: this.file ? this.getPath() : null,
 			editorId: this.editorId
 		};
@@ -116,7 +122,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 
 	handleEvents() {
 		this.subscribe(atom.syntax, "grammar-added grammar-updated", ()=> {
-			setTimeout(()=> this.renderReVIEW(), 250);
+			setTimeout(()=> this.renderSyntaxList(), 250);
 		});
 		this.subscribe(this, "core:move-up", ()=> this.jq.scrollUp());
 		this.subscribe(this, "core:move-down", ()=> this.jq.scrollDown());
@@ -133,48 +139,74 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 			this.jq.css("zoom", 1);
 		});
 
-		var changeHandler = ()=> {
-			var pane = atom.workspace.paneForUri(this.getUri());
-			if (pane && pane !== atom.workspace.getActivePane()) {
-				pane.activateItem(this);
-			}
-		};
-
-		this.runner.on("start", ()=> {
-			this.showLoading();
-		});
-		this.runner.on("report", reports=> {
-			console.log(reports);
-		});
-		this.runner.on("compile-success", book=> {
-			changeHandler();
-			book.parts[1].chapters[0].builderProcesses.forEach(process => {
-				var $html = this.resolveImagePaths(process.result);
-				this.jq.empty().append($html);
-			});
-		});
-		this.runner.on("compile-failed", ()=> {
-			changeHandler();
+		this.runner.on("syntax", acceptableSyntaxes=> {
+			this.acceptableSyntaxes = acceptableSyntaxes;
+			this.renderSyntaxList();
 		});
 
 		this.runner.activate();
-
-		if (this.runner.editor) {
-			this.subscribe(this.editor, "path-changed", () => this.jq.trigger("title-changed"));
-		}
 	}
 
-	renderReVIEW() {
-		this.runner.doCompile();
+	renderSyntaxList() {
+		if (!this.acceptableSyntaxes) {
+			return;
+		}
+
+		var $div = $("<div>");
+		$("<h1>").text("Re:VIEW記法の説明").appendTo($div);
+		var SyntaxType = ReVIEW.Build.SyntaxType;
+		this.acceptableSyntaxes.acceptableSyntaxes.forEach(syntax=> {
+			var $syntax = $("<div>");
+			switch (syntax.type) {
+				case SyntaxType.Other:
+					switch (syntax.symbolName) {
+						case "headline":
+							$("<span>").text("={???} タイトル").appendTo($syntax);
+							break;
+						case "ulist":
+							$("<span>").text(" * 文字列").appendTo($syntax);
+							break;
+						case "olist":
+							$("<span>").text(" 1. 文字列").appendTo($syntax);
+							break;
+						case "dlist":
+							$("<span>").text(" : 定義 説明").appendTo($syntax);
+							break;
+						default:
+							console.log("test", syntax);
+							break;
+					}
+					break;
+				case SyntaxType.Inline:
+					$("<span>").text("@<" + syntax.symbolName + ">{}").appendTo($syntax);
+					break;
+				case SyntaxType.Block:
+					syntax.argsLength.forEach(len=> {
+						var text = "//" + syntax.symbolName;
+						for (var i = 0; i < len; i++) {
+							text += "[???]";
+						}
+						$("<div>").text(text).appendTo($syntax);
+					});
+					break;
+			}
+			var $description = $("<pre>").text(syntax.description);
+			$description.appendTo($syntax);
+			$syntax.append("<hr>");
+			$syntax.appendTo($div);
+			$syntax.data("syntax", syntax);
+		});
+		this.jq.empty();
+		this.jq.append($div);
 	}
 
 	getTitle():string {
 		if (this.file) {
-			return path.basename(this.getPath()) + " Preview";
+			return path.basename(this.getPath()) + " Syntax List";
 		} else if (this.editor) {
-			return this.editor.getTitle() + " Preview";
+			return this.editor.getTitle() + " Syntax List";
 		} else {
-			return "Re:VIEW Preview";
+			return "Re:VIEW Syntax List";
 		}
 	}
 
@@ -182,7 +214,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		if (this.file) {
 			return "language-review://" + this.getPath();
 		} else {
-			return "language-review://" + V.previewHost + "/" + this.editorId;
+			return "language-review://" + V.syntaxListHost + "/" + this.editorId;
 		}
 	}
 
@@ -194,40 +226,8 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		}
 		return null;
 	}
-
-	showError(result:any = {}) {
-		var failureMessage = result.message;
-
-		this.jq.html($$$(function () {
-			this.h2("Previewing Re:VIEW Failed");
-			if (failureMessage) {
-				return this.h3(failureMessage);
-			}
-		}));
-	}
-
-	showLoading() {
-		this.jq.html($$$(function () {
-			this.div({class: "review-spinner"}, "Loading Re:VIEW\u2026");
-		}));
-	}
-
-	resolveImagePaths(html:any):JQuery {
-		var $html = $(html);
-		var imgList = $html.find("img");
-		for (var i = 0; i < imgList.length; i++) {
-			var img = $(imgList[i]);
-			var src = img.attr("src");
-			if (src.match(/^(https?:\/\/)/)) {
-				continue;
-			}
-			img.attr("src", path.resolve(path.dirname(this.getPath()), src));
-		}
-
-		return $html;
-	}
 }
 
-atom.deserializers.add(ReVIEWPreviewView);
+atom.deserializers.add(ReVIEWSyntaxListView);
 
-export = ReVIEWPreviewView;
+export = ReVIEWSyntaxListView;
