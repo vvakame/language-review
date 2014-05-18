@@ -45,22 +45,22 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 	}
 
 	startWatching():void {
-		logger.log("debug ReVIEWRunner startWatching");
+		logger.log();
 		this.watcher.startWatching();
 	}
 
 	stopWatching():void {
-		logger.log("debug ReVIEWRunner stopWatching");
+		logger.log();
 		this.watcher.stopWatching();
 	}
 
 	activate():void {
-		logger.log("debug ReVIEWRunner activate");
+		logger.log();
 		this.watcher.activate();
 	}
 
 	deactivate():void {
-		logger.log("debug ReVIEWRunner deactivate");
+		logger.log();
 		this.watcher.deactivate();
 	}
 
@@ -84,7 +84,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 	}
 
 	doCompile():void {
-		logger.log("debug ReVIEWRunner doCompile");
+		logger.log();
 		this.emit("start");
 
 		setTimeout(()=> {
@@ -99,27 +99,27 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 					write: (path, content) => result[path] = content,
 					listener: {
 						onAcceptables: acceptableSyntaxes => {
-							logger.log("onAcceptables", acceptableSyntaxes);
+							logger.log(acceptableSyntaxes);
 							this.lastAcceptableSyntaxes = acceptableSyntaxes;
 							this.emit("syntax", acceptableSyntaxes);
 						},
 						onSymbols: symbols => {
-							logger.log("onSymbols", symbols);
+							logger.log(symbols);
 							this.lastSymbols = symbols;
 							this.emit("symbol", symbols);
 						},
 						onReports: reports => {
-							logger.log("onReports", reports);
+							logger.log(reports);
 							this.lastReports = reports;
 							this.emit("report", reports);
 						},
 						onCompileSuccess: book => {
-							logger.log("onCompileSuccess", book);
+							logger.log(book);
 							this.lastBook = book;
 							this.emit("compile-success", book);
 						},
 						onCompileFailed: () => {
-							logger.log("onCompileFailed");
+							logger.log();
 							this.lastBook = null;
 							this.emit("compile-failed");
 						}
@@ -171,7 +171,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 	}
 
 	startWatching():void {
-		logger.log("debug ReVIEWRunner startWatching");
+		logger.log();
 		if (this.grammerChangeSubscription) {
 			return;
 		}
@@ -184,7 +184,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 	}
 
 	stopWatching():void {
-		logger.log("debug ReVIEWRunner stopWatching");
+		logger.log();
 		if (!this.grammerChangeSubscription) {
 			return;
 		}
@@ -195,7 +195,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 
 	configureRunner():void {
 		var scopeName = this.editor.getGrammar().scopeName;
-		logger.log("debug ReVIEWRunner configureRunner grammar " + scopeName);
+		logger.log("configureRunner grammar " + scopeName);
 		if (V.reviewScopeName === scopeName) {
 			this.activate();
 		} else {
@@ -204,7 +204,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 	}
 
 	activate():void {
-		logger.log("debug ReVIEWRunner activate");
+		logger.log();
 		if (!this.wasAlreadyActivated) {
 			this.emit("activate");
 		}
@@ -223,7 +223,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 	}
 
 	deactivate():void {
-		logger.log("debug ReVIEWRunner deactivate");
+		logger.log();
 		if (this.bufferSubscription) {
 			this.bufferSubscription.off();
 			this.bufferSubscription = null;
@@ -251,7 +251,7 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
 	}
 
 	startWatching():void {
-		logger.log("debug ReVIEWRunner startWatching");
+		logger.log();
 		if (this.fileRemovedSubscription) {
 			return;
 		}
@@ -264,7 +264,7 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
 	}
 
 	stopWatching():void {
-		logger.log("debug ReVIEWRunner stopWatching");
+		logger.log();
 		if (!this.fileRemovedSubscription) {
 			return;
 		}
@@ -282,7 +282,7 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
 	}
 
 	activate():void {
-		logger.log("debug ReVIEWRunner activate");
+		logger.log();
 		if (!this.wasAlreadyActivated) {
 			this.emit("activate");
 		}
@@ -298,7 +298,7 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
 
 
 	deactivate():void {
-		logger.log("debug ReVIEWRunner deactivate");
+		logger.log();
 		if (this.contentChangedSubscription) {
 			this.contentChangedSubscription.off();
 			this.contentChangedSubscription = null;
