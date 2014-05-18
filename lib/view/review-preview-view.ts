@@ -54,7 +54,8 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 				}
 			});
 		} else {
-			this.runner = new ReVIEWRunner({file: new File(params.filePath)});
+			this.file = new File(params.filePath);
+			this.runner = new ReVIEWRunner({file: this.file});
 			this.handleEvents();
 		}
 	}
@@ -67,7 +68,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 	serialize() {
 		return {
 			deserializer: "ReVIEWPreviewView",
-			filePath: this.getPath(),
+			filePath: this.file ? this.getPath() : null,
 			editorId: this.editorId
 		};
 	}
@@ -82,6 +83,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 
 		var resolve = ()=> {
 			var editor = this.editorForId(editorId);
+			this.editor = editor;
 
 			if (editor) {
 				this.jq.trigger("title-changed");
@@ -96,7 +98,6 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		} else {
 			atom.packages.once("activated", ()=> {
 				resolve();
-				this.renderReVIEW();
 			});
 		}
 		return deferred.promise;
@@ -186,7 +187,12 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 	}
 
 	getPath():string {
-		return this.runner.getFilePath();
+		if (this.file) {
+			return this.file.getPath();
+		} else if (this.editor) {
+			return this.editor.getPath();
+		}
+		return null;
 	}
 
 	showError(result:any = {}) {
