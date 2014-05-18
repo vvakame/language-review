@@ -36,7 +36,7 @@ class ReVIEWResultView extends _atom.View {
 		this.editor = this.editorView.getEditor();
 		this.gutterView = this.editorView.gutter;
 
-		this.reviewRunner = new ReVIEWRunner(this.editorView.getEditor());
+		this.reviewRunner = new ReVIEWRunner({editor: this.editorView.getEditor()});
 		this.reviewRunner.on("activate", ()=> {
 			console.log("ReVIEWResultView ReVIEWRunner activate");
 			this.onCompileStarted();
