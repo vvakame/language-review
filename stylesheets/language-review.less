@@ -5,8 +5,11 @@
 @import 'octicon-utf-codes';
 
 .review-preview {
+  font-family: @font-family;
   background-color: #fff;
   overflow: scroll;
+  box-sizing: border-box;
+  padding: 20px;
 
   // FirstStepReVIEWのcssより
   .column {
@@ -18,6 +21,11 @@
     h2:before, h3:before, h4:before, h5:before {
       content: "■コラム: ";
     }
+  }
+
+  // https://github.com/atom/markdown-preview/blob/master/stylesheets/markdown-preview.less
+  a {
+    color: #4183c4;
   }
 }
 
