@@ -7,6 +7,14 @@
 console.log("test");
 //}
 
+//table[hoge][ほげ]{
+hoge	fuga
+---------------
+ほげ	ふが
+//}
+
+@<raw>{|html|raw記法ですよー。}
+
 == すごいRe:VIEW楽しく使おう
 
 Cmd+Shift+Oでアウトラインも表示できるよ！
