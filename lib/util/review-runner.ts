@@ -95,8 +95,11 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 			};
 			ReVIEW.start(review => {
 				review.initConfig({
-					read: path => files[path],
-					write: (path, content) => result[path] = content,
+					read: path => Promise.resolve(files[path]),
+					write: (path, content) => {
+						result[path] = content;
+						return Promise.resolve<void>(null);
+					},
 					listener: {
 						onAcceptables: acceptableSyntaxes => {
 							logger.log(acceptableSyntaxes);
