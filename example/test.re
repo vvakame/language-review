@@ -1,6 +1,10 @@
 = Re:VIEWをはじめよう！
 
 サンプル！
+
+raw記法で無理矢理太字にするぞ！@<raw>{<strong>太字！</strong>}
+raw記法じゃないとエスケープされるぞ！<strong>太字！</strong>
+
 はんぱない@<list>{sample}だ！
 
 //list[sample][サンプル]{
@@ -12,8 +16,6 @@ hoge	fuga
 ---------------
 ほげ	ふが
 //}
-
-@<raw>{|html|raw記法ですよー。}
 
 == すごいRe:VIEW楽しく使おう
 
