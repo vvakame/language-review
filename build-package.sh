@@ -3,7 +3,7 @@
 echo "Downloading node v0.11.13..."
 curl -s -O http://nodejs.org/dist/v0.11.13/node-v0.11.13-darwin-x64.tar.gz
 tar -zxf node-v0.11.13-darwin-x64.tar.gz
-export PATH=$PATH:$PWD/node-v0.11.13-darwin-x64/bin
+export PATH=$PWD/node-v0.11.13-darwin-x64/bin:$PATH
 node -v
 
 echo "Downloading latest Atom release..."
