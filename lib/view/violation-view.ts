@@ -106,7 +106,7 @@ class ViolationView extends _atom.View {
 	}
 
 	trackEdit() {
-		var options = { invalidation: "inside", persistent: false };
+		var options = { invalide: "inside", persistent: false };
 		this.marker = this.editor.markScreenRange(this.getCurrentScreenRange(), options);
 		var klass = "review-" + ReVIEW.ReportLevel[this.report.level].toLowerCase();
 		this.editor.decorateMarker(this.marker, {type: "gutter", class: klass});
