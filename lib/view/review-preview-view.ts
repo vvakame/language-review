@@ -149,7 +149,7 @@ class ReVIEWPreviewView extends _atom.ScrollView {
 		});
 		this.runner.on("compile-success", book=> {
 			changeHandler();
-			book.parts[1].chapters[0].builderProcesses.forEach(process => {
+			book.allChunks[0].builderProcesses.forEach(process => {
 				var $html = this.resolveImagePaths(process.result);
 				this.jq.empty().append($html);
 			});

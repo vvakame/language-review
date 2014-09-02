@@ -129,11 +129,9 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 					},
 					builders: [new ReVIEW.Build.HtmlBuilder(false)],
 					book: {
-						preface: [],
-						chapters: [
+						contents: [
 							"ch01.re"
-						],
-						afterword: []
+						]
 					}
 				});
 			});
