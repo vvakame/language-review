@@ -23,7 +23,6 @@ class ReVIEWResultView extends _atom.View {
 
 	reviewRunner:ReVIEWRunner;
 	editor:AtomCore.IEditor;
-	gutterView:AtomCore.IGutterView;
 	editorDisplayUpdateSubscription:Emissary.ISubscription;
 	pendingReports:ReVIEW.ProcessReport[];
 	violationViews:ViolationView[] = [];
@@ -35,7 +34,6 @@ class ReVIEWResultView extends _atom.View {
 		this.editorView.overlayer.append(this.jq);
 
 		this.editor = this.editorView.getEditor();
-		this.gutterView = this.editorView.gutter;
 
 		this.reviewRunner = new ReVIEWRunner({editor: this.editorView.getEditor()});
 		this.reviewRunner.on("activate", ()=> {
@@ -64,7 +62,6 @@ class ReVIEWResultView extends _atom.View {
 	beforeRemove() {
 		logger.log();
 		this.removeViolationViews();
-		this.updateGutterMarkers();
 		this.reviewRunner.stopWatching();
 	}
 
@@ -78,7 +75,6 @@ class ReVIEWResultView extends _atom.View {
 				this.addViolationViews(this.pendingReports);
 				this.pendingReports = null;
 			}
-			this.updateGutterMarkers();
 		});
 	}
 
@@ -88,7 +84,6 @@ class ReVIEWResultView extends _atom.View {
 			this.editorDisplayUpdateSubscription = null;
 		}
 		this.removeViolationViews();
-		this.updateGutterMarkers();
 	}
 
 	onCompileResult(reports:ReVIEW.ProcessReport[]) {
@@ -99,8 +94,6 @@ class ReVIEWResultView extends _atom.View {
 		} else {
 			this.pendingReports = reports;
 		}
-
-		this.updateGutterMarkers();
 	}
 
 	addViolationViews(reports:ReVIEW.ProcessReport[]) {
@@ -115,26 +108,6 @@ class ReVIEWResultView extends _atom.View {
 			violationView.jq.remove();
 		});
 		this.violationViews = [];
-	}
-
-	updateGutterMarkers() {
-		var gutterView:JQuery = <any>this.gutterView;
-		if (!gutterView.isVisible()) {
-			return;
-		}
-
-		this.gutterView.removeClassFromAllLines("review-" + ReVIEW.ReportLevel[ReVIEW.ReportLevel.Info].toLowerCase());
-		this.gutterView.removeClassFromAllLines("review-" + ReVIEW.ReportLevel[ReVIEW.ReportLevel.Warning].toLowerCase());
-		this.gutterView.removeClassFromAllLines("review-" + ReVIEW.ReportLevel[ReVIEW.ReportLevel.Error].toLowerCase());
-
-		if (this.violationViews.length === 0) {
-			return;
-		}
-		this.violationViews.forEach(violationView => {
-			var line = violationView.getCurrentBufferStartPosition().row;
-			var klass = "review-" + ReVIEW.ReportLevel[violationView.report.level].toLowerCase();
-			this.gutterView.addClassToLine(line, klass);
-		});
 	}
 
 	moveToNextViolation() {

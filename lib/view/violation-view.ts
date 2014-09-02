@@ -108,6 +108,8 @@ class ViolationView extends _atom.View {
 	trackEdit() {
 		var options = { invalidation: "inside", persistent: false };
 		this.marker = this.editor.markScreenRange(this.getCurrentScreenRange(), options);
+		var klass = "review-" + ReVIEW.ReportLevel[this.report.level].toLowerCase();
+		this.editor.decorateMarker(this.marker, {type: "gutter", class: klass});
 		this.marker.on("changed", (event:any)=> {
 			this.screenStartPosition = event.newTailScreenPosition;
 			this.screenEndPosition = event.newHeadScreenPosition;
