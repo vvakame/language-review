@@ -83,7 +83,10 @@ class ReVIEWStatusView extends _atom.View {
 			this.displayName("Re:VIEW");
 			if (!reports) {
 				// 他のファイルの編集から戻ってきた時 active-buffer-changed
-				reports = this.getActiveReVIEWRunner().lastReports;
+				var runner = this.getActiveReVIEWRunner();
+				if (runner) {
+					reports = runner.lastReports;
+				}
 			}
 			this.displaySummary(reports);
 		} else {
