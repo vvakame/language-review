@@ -78,7 +78,6 @@ export function log(...args:any[]):void {
 	"use strict";
 
 	if (isEnableOutput()) {
-		var args:any[] = <any>arguments;
 		logHelper(()=> {
 			console.log.apply(console, args);
 		});
@@ -89,7 +88,6 @@ export function warn(...args:any[]):void {
 	"use strict";
 
 	if (isEnableOutput()) {
-		var args:any[] = <any>arguments;
 		logHelper(()=> {
 			console.warn.apply(console, args);
 		});
@@ -100,7 +98,6 @@ export function error(...args:any[]):void {
 	"use strict";
 
 	if (isEnableOutput()) {
-		var args:any[] = <any>arguments;
 		logHelper(()=> {
 			console.error.apply(console, args);
 		});

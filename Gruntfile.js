@@ -50,17 +50,11 @@ module.exports = function (grunt) {
         }
       }
     },
-    tsd: {
+    dtsm: {
       client: {
         options: {
-          // execute a command
-          command: 'reinstall',
-
-          //optional: always get from HEAD
-          latest: false,
-
           // optional: specify config file
-          config: './tsd.json'
+          confog: './dtsm.json'
         }
       }
     },
@@ -84,7 +78,7 @@ module.exports = function (grunt) {
           "bower_componenets"
         ]
       },
-      tsd: {
+      dtsm: {
         src: [
           // tsd installed
           "<%= opt.client.tsTypings %>"
@@ -101,7 +95,7 @@ module.exports = function (grunt) {
   grunt.registerTask(
     'setup',
     "プロジェクトの初期セットアップを行う。",
-    ['clean', 'bower', 'tsd']);
+    ['clean', 'bower', 'dtsm']);
 
   grunt.registerTask(
     'default',
