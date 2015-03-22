@@ -33,13 +33,11 @@ export class EmitterSubscriberBase implements Emissary.IEmitter, Emissary.ISubsc
 	}
 
 	// overwrite by emissary.Emitter.includeInto(ReVIEWRunner);
-	on(eventNames:string, handler:Function):any // return value type are Signal
-	{
+	on(eventNames:string, handler:Function):any /* return value type are Signal */ {
 		throw new Error();
 	}
 
-	once(eventName:string, handler:Function):any // return value type are Signal
-	{
+	once(eventName:string, handler:Function):any /* return value type are Signal */ {
 		throw new Error();
 	}
 

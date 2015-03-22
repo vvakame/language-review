@@ -275,7 +275,7 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
 	}
 
 	configureRunner():void {
-		if (this.file.exists()) {
+		if (this.file.existsSync()) {
 			this.activate();
 		} else {
 			this.deactivate();
