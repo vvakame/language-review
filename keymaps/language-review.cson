@@ -1,6 +1,6 @@
-'.workspace':
+'.atom-workspace':
   'ctrl-R': 'language-review:toggle-preview'
-'.editor':
+'.atom-text-editor':
   'ctrl-alt-[': 'language-review:move-to-previous-violation'
   'ctrl-alt-]': 'language-review:move-to-next-violation'
 '.review-preview':
@@ -9,11 +9,11 @@
   'cmd--': 'language-review:zoom-out'
   'cmd-_': 'language-review:zoom-out'
   'cmd-0': 'language-review:reset-zoom'
-'.platform-darwin, .platform-darwin .review-editor .editor':
+'.platform-darwin, .platform-darwin .review-editor .atom-text-editor':
   'cmd-shift-o': 'language-review:toggle-outline'
 
-'.platform-win32, .platform-win32 .review-editor .editor':
+'.platform-win32, .platform-win32 .review-editor .atom-text-editor':
   'ctrl-shift-o': 'language-review:toggle-outline'
 
-'.platform-linux, .platform-linux .review-editor .editor':
+'.platform-linux, .platform-linux .review-editor .atom-text-editor':
   'ctrl-shift-o': 'language-review:toggle-outline'
