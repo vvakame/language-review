@@ -1,5 +1,6 @@
 .DS_Store
 npm-debug.log
+tsconfig.json
 
 .idea/
 
