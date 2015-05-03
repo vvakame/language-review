@@ -10,6 +10,7 @@ declare module AtomCore {
         addWarning(message: string, options?: { detail?: any; dismissable?: boolean; icon?: string; }): INotification;
     }
     interface INotification {
+        dismiss(): void;
         // TBD
     }
 }

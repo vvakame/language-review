@@ -44,22 +44,20 @@ class ReVIEWOutlineView extends _atom.SelectListView {
 
 		var symbols:ReVIEW.ISymbol[] = [];
 
-		var view:any = atom.workspaceView.getActiveView();
-		if (view && view.reviewResultView && view.reviewResultView.reviewRunner) {
-			var runner:ReVIEWRunner = view.reviewResultView.reviewRunner;
+		let editor = atom.workspace.getActiveEditor();
+		let runner = new ReVIEWRunner({ editor: editor });
+		runner.on("report", reports => {
+			logger.log("Re:VIEW linter ReVIEWRunner compile");
 			if (runner.lastSymbols) {
-				symbols = runner.lastSymbols.filter(symbol => symbol.symbolName === "hd");
+				let symbols = runner.lastSymbols.filter(symbol => symbol.symbolName === "hd");
+				this.setItems(symbols);
 			} else {
 				logger.log("not compiled...");
 				atom.beep();
 			}
-		} else {
-			logger.error("unknown state... ", view);
-			atom.beep();
-			debugger;
-		}
+		});
+		runner.doCompile();
 
-		this.setItems(symbols);
 		(<any>atom.workspaceView).append(this.jq);
 		this.focusFilterEditor();
 	}

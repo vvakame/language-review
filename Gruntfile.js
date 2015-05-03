@@ -24,7 +24,10 @@ module.exports = function (grunt) {
         declaration: false             // generate a declaration .d.ts file for every output js file. [true | false (default)]
       },
       clientMain: {
-        src: ['<%= opt.client.tsMain %>/language-review.ts']
+        src: [
+          '<%= opt.client.tsMain %>/language-review.ts',
+          '<%= opt.client.tsMain %>/linter.ts'
+        ]
       },
       clientTest: {
         src: ['<%= opt.client.tsTest %>/**/*.ts']
@@ -75,13 +78,6 @@ module.exports = function (grunt) {
           '<%= opt.client.tsTest %>/**/*.js.map'
         ]
       },
-      bower: {
-        src: [
-          // bower installed
-          "bower-task/",
-          "bower_componenets"
-        ]
-      },
       dtsm: {
         src: [
           // tsd installed
@@ -99,12 +95,12 @@ module.exports = function (grunt) {
   grunt.registerTask(
     'setup',
     "プロジェクトの初期セットアップを行う。",
-    ['clean', 'bower', 'dtsm']);
+    ['clean', 'dtsm']);
 
   grunt.registerTask(
     'default',
     "必要なコンパイルを行いAtomプラグインとして実行できるようにする。",
-    ['clean:clientScript', 'ts:clientMain', 'tslint']);
+    ['clean:clientScript', 'ts:clientMain'/*, 'tslint' */]);
 
   grunt.registerTask(
     'prepare-test',
