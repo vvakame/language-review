@@ -35,7 +35,10 @@ module.exports = function (grunt) {
         configuration: grunt.file.readJSON("tslint.json")
       },
       files: {
-        src: ['<%= opt.client.tsMain %>/**/*.ts']
+        src: [
+          '<%= opt.client.tsMain %>/**/*.ts',
+          '!<%= opt.client.tsMain %>/typings/**/*.ts',
+        ]
       }
     },
     bower: {
@@ -65,6 +68,7 @@ module.exports = function (grunt) {
           '<%= opt.client.tsMain %>/**/*.js',
           '<%= opt.client.tsMain %>/**/*.d.ts',
           '<%= opt.client.tsMain %>/**/*.js.map',
+          '!<%= opt.client.tsMain %>/typings/**/*.d.ts',
           // test
           '<%= opt.client.tsTest %>/**/*.js',
           '<%= opt.client.tsTest %>/**/*.d.ts',

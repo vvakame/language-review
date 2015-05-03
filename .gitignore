@@ -18,9 +18,11 @@ lib/**/*.js
 lib/**/*.js.map
 spec/**/*.js
 spec/**/*.js.map
+!lib/typings/
 
 # alternative of .npmignore... http://discuss.atom.io/t/how-to-use-the-npmignore/9208
 # 解決方法が見つかったら以下の行を消して grunt clean して git commit -a すること
 !lib/**/*.js
 !lib/**/*.js.map
 !bower-task/main-js/**/*.js
+

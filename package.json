@@ -6,22 +6,28 @@
   "repository": "https://github.com/vvakame/language-review",
   "license": "MIT",
   "engines": {
-    "atom": ">=0.180.0",
+    "atom": "*",
     "node": "*"
   },
+  "linter-package": true,
+  "linter-implementation": "../lib/linter",
   "dependencies": {
     "review.js": "0.6.3",
     "pathwatcher": "4.3.1",
     "color": "0.8.0",
     "emissary": "1.3.3",
     "text-buffer": "5.0.2",
-    "q": "1.2.0"
+    "q": "1.2.0",
+    "atom-package-dependencies": "1.0.3"
+  },
+  "package-dependencies": {
+    "linter": "//this field will be ignored right now"
   },
   "devDependencies": {
     "grunt": "0.4.5",
     "grunt-contrib-clean": "0.6.0",
     "grunt-ts": "3.0.0",
-    "typescript": "1.4.1",
+    "typescript": "1.5.0-beta",
     "grunt-tslint": "2.0.0",
     "grunt-bower-task": "0.4.0",
     "grunt-dtsm": "0.2.7",
