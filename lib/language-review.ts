@@ -2,12 +2,13 @@
 /// <reference path="../typings/atom/atom.d.ts" />
 
 /// <reference path="./typings/atom/atom.d.ts" />
+/// <reference path="./typings/atom-space-pen-views/atom-space-pen-views.d.ts" />
 /// <reference path="./typings/atom-package-dependencies/atom-package-dependencies.d.ts" />
 
 /// <reference path="../typings/es6-promise/es6-promise.d.ts" />
 
 import url = require("url");
-import _atom = require("atom");
+import {View} from "atom-space-pen-views";
 
 import apd = require("atom-package-dependencies");
 
@@ -18,11 +19,17 @@ import ReVIEWOutlineView = require("./view/review-outline-view");
 import ReVIEWSyntaxListView = require("./view/review-syntax-list-view");
 
 class Controller {
-	configDefaults = {
-		grammars: [
-			V.reviewScopeName
-		],
-		debug: false
+	config = {
+		debugLanguageReVIEW: {
+			title: "Debug: language-review. please do not use this option.",
+			type: 'boolean',
+			default: false
+		},
+		grammar: {
+			title: "grammer scope. please do not change this option.",
+			type: 'string',
+			default: V.reviewScopeName
+		}
 	};
 
 	editorViewSubscription:{ off():any; };
@@ -50,17 +57,17 @@ class Controller {
 	}
 
 	readyToActivate() {
-		atom.workspaceView.command(V.protocol + "toggle-preview", ()=> {
+		atom.commands.add("atom-workspace", V.protocol + "toggle-preview", ()=> {
 			this.togglePreview();
 		});
-		atom.workspaceView.command(V.protocol + "toggle-outline", ()=> {
+		atom.commands.add("atom-workspace", V.protocol + "toggle-outline", ()=> {
 			this.toggleOutline();
 		});
-		atom.workspaceView.command(V.protocol + "toggle-syntax-list", ()=> {
+		atom.commands.add("atom-workspace", V.protocol + "toggle-syntax-list", ()=> {
 			this.toggleSyntaxList();
 		});
 
-		atom.workspace.registerOpener((urlToOpen:string):_atom.View => {
+		atom.workspace.addOpener((urlToOpen:string): View => {
 			logger.log(urlToOpen);
 			var tmpUrl = url.parse(urlToOpen);
 
@@ -89,19 +96,18 @@ class Controller {
 	}
 
 	togglePreview():void {
-		var editor = atom.workspace.getActiveEditor();
+		var editor = atom.workspace.getActiveTextEditor();
 		if (!editor) {
 			return;
 		}
 
-		var grammars:string[] = atom.config.get("language-review.grammars") || [];
-		if (!grammars.some(grammar => grammar === editor.getGrammar().scopeName)) {
+		if (atom.config.get("language-review.grammar") !== editor.getGrammar().scopeName) {
 			return;
 		}
 
 		var uri = V.protocol + "//" + V.previewHost + "/" + editor.id;
 
-		var previewPane = atom.workspace.paneForUri(uri);
+		var previewPane = atom.workspace.paneForURI(uri);
 
 		if (previewPane) {
 			previewPane.destroyItem(previewPane.itemForUri(uri));
@@ -129,19 +135,18 @@ class Controller {
 	}
 
 	toggleSyntaxList() {
-		var editor = atom.workspace.getActiveEditor();
+		var editor = atom.workspace.getActiveTextEditor();
 		if (!editor) {
 			return;
 		}
 
-		var grammars:string[] = atom.config.get("language-review.grammars") || [];
-		if (!grammars.some(grammar => grammar === editor.getGrammar().scopeName)) {
+		if (atom.config.get("language-review.grammar") !== editor.getGrammar().scopeName) {
 			return;
 		}
 
 		var uri = V.protocol + "//" + V.syntaxListHost + "/" + editor.id;
 
-		var previewPane = atom.workspace.paneForUri(uri);
+		var previewPane = atom.workspace.paneForURI(uri);
 
 		if (previewPane) {
 			previewPane.destroyItem(previewPane.itemForUri(uri));

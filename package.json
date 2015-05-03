@@ -18,7 +18,8 @@
     "emissary": "1.3.3",
     "text-buffer": "5.2.0",
     "q": "1.3.0",
-    "atom-package-dependencies": "1.0.3"
+    "atom-package-dependencies": "1.0.3",
+    "atom-space-pen-views": "2.0.4"
   },
   "package-dependencies": {
     "linter": "//this field will be ignored right now"

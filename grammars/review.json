@@ -1,4 +1,5 @@
 {
+    "scopeName": "source.re",
     "fileTypes" : ["re"],
     "name" : "Re:VIEW",
     "patterns": [

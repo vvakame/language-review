@@ -2,9 +2,9 @@
 
 /// <reference path="../../node_modules/review.js/dist/review.js.d.ts" />
 
-import _atom = require("atom");
 
-var $$ = _atom.$$;
+import {SelectListView, $, $$} from "atom-space-pen-views";
+import {Point} from "atom";
 
 import ReVIEW = require("review.js");
 
@@ -12,7 +12,7 @@ import ReVIEW = require("review.js");
 import logger = require("../util/logger");
 import ReVIEWRunner = require("../util/review-runner");
 
-class ReVIEWOutlineView extends _atom.SelectListView {
+class ReVIEWOutlineView extends SelectListView {
 	static activate() {
 		new ReVIEWOutlineView();
 	}
@@ -44,7 +44,7 @@ class ReVIEWOutlineView extends _atom.SelectListView {
 
 		var symbols:ReVIEW.ISymbol[] = [];
 
-		let editor = atom.workspace.getActiveEditor();
+		let editor = atom.workspace.getActiveTextEditor();
 		let runner = new ReVIEWRunner({ editor: editor });
 		runner.on("report", reports => {
 			logger.log("Re:VIEW linter ReVIEWRunner compile");
@@ -58,8 +58,12 @@ class ReVIEWOutlineView extends _atom.SelectListView {
 		});
 		runner.doCompile();
 
-		(<any>atom.workspaceView).append(this.jq);
+		$(atom.views.getView(atom.workspace)).append(this.jq); // TODO is this implementation on the right way?
 		this.focusFilterEditor();
+	}
+
+	cancelled() {
+		this.jq.remove();
 	}
 
 	viewForItem(symbol:ReVIEW.ISymbol):JQuery {
@@ -93,7 +97,7 @@ class ReVIEWOutlineView extends _atom.SelectListView {
 			return;
 		}
 		var editor:AtomCore.IEditor = view.getEditor();
-		var point = _atom.Point.fromObject({row: symbol.node.line - 1, column: 0});
+		var point = Point.fromObject({row: symbol.node.line - 1, column: 0});
 		editor.setCursorScreenPosition(point);
 	}
 }

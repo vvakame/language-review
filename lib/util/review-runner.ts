@@ -15,305 +15,298 @@ import ReVIEW = require("review.js");
 
 class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
-	private watcher:IContentWatcher;
+    private watcher: IContentWatcher;
 
-	editor:AtomCore.IEditor;
-	file:PathWatcher.IFile;
+    editor: AtomCore.IEditor;
+    file: PathWatcher.IFile;
 
-	lastAcceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes;
-	lastSymbols:ReVIEW.ISymbol[];
-	lastReports:ReVIEW.ProcessReport[];
-	lastBook:ReVIEW.Book;
+    lastAcceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes;
+    lastSymbols: ReVIEW.ISymbol[];
+    lastReports: ReVIEW.ProcessReport[];
+    lastBook: ReVIEW.Book;
 
-	constructor(params:{ editor:AtomCore.IEditor; }, options?:{ highFrequency?:boolean; });
+    constructor(params: { editor: AtomCore.IEditor; });
 
-	constructor(params:{ file:PathWatcher.IFile; }, options?:{ highFrequency?:boolean; });
+    constructor(params: { file: PathWatcher.IFile; });
 
-	constructor(params:{ editor?:AtomCore.IEditor; file?: PathWatcher.IFile; }, public options:{ highFrequency?:boolean; } = {}) {
-		super();
+    constructor(params: { editor?: AtomCore.IEditor; file?: PathWatcher.IFile; }) {
+        super();
 
-		this.editor = params.editor;
-		this.file = params.file;
+        this.editor = params.editor;
+        this.file = params.file;
 
-		if (this.editor) {
-			this.watcher = new EditorContentWatcher(this, this.editor);
-		} else if (this.file) {
-			this.watcher = new FileContentWatcher(this, this.file);
-		} else {
-			throw new Error("editor or file are required");
-		}
-	}
+        if (this.editor) {
+            this.watcher = new EditorContentWatcher(this, this.editor);
+        } else if (this.file) {
+            this.watcher = new FileContentWatcher(this, this.file);
+        } else {
+            throw new Error("editor or file are required");
+        }
+    }
 
-	startWatching():void {
-		logger.log();
-		this.watcher.startWatching();
-	}
+    startWatching(): void {
+        logger.log();
+        this.watcher.startWatching();
+    }
 
-	stopWatching():void {
-		logger.log();
-		this.watcher.stopWatching();
-	}
+    stopWatching(): void {
+        logger.log();
+        this.watcher.stopWatching();
+    }
 
-	activate():void {
-		logger.log();
-		this.watcher.activate();
-	}
+    activate(): void {
+        logger.log();
+        this.watcher.activate();
+    }
 
-	deactivate():void {
-		logger.log();
-		this.watcher.deactivate();
-	}
+    deactivate(): void {
+        logger.log();
+        this.watcher.deactivate();
+    }
 
-	on(eventNames:"start", callback:()=>any):any;
+    on(eventNames: "start", callback: () => any): any;
 
-	on(eventNames:"syntax", callback:(acceptableSyntaxes:ReVIEW.Build.AcceptableSyntaxes)=>any):any;
+    on(eventNames: "syntax", callback: (acceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes) => any): any;
 
-	on(eventNames:"symbol", callback:(symbols:ReVIEW.ISymbol[])=>any):any;
+    on(eventNames: "symbol", callback: (symbols: ReVIEW.ISymbol[]) => any): any;
 
-	on(eventNames:"report", callback:(reports:ReVIEW.ProcessReport[])=>any):any;
+    on(eventNames: "report", callback: (reports: ReVIEW.ProcessReport[]) => any): any;
 
-	on(eventNames:"compile-success", callback:(book:ReVIEW.Book)=>any):any;
+    on(eventNames: "compile-success", callback: (book: ReVIEW.Book) => any): any;
 
-	on(eventNames:"compile-failed", callback:()=>any):any;
+    on(eventNames: "compile-failed", callback: () => any): any;
 
-	on(eventNames:string, handler:Function):any;
+    on(eventNames: string, handler: Function): any;
 
-	// 後でReVIEWRunner.emissarified();している。特殊化されたオーバーロードのため。
-	on(eventNames:string, handler:Function):any {
-		throw new Error();
-	}
+    // 後でReVIEWRunner.emissarified();している。特殊化されたオーバーロードのため。
+    on(eventNames: string, handler: Function): any {
+        throw new Error();
+    }
 
-	doCompile():void {
-		logger.log();
-		this.emit("start");
+    doCompile(): void {
+        logger.log();
+        this.emit("start");
 
-		setTimeout(()=> {
-			var files:{[path:string]:string;} = {
-				"ch01.re": this.watcher.getContent()
-			};
-			var result:{[path:string]:string;} = {
-			};
-			ReVIEW.start(review => {
-				review.initConfig({
-					read: path => Promise.resolve(files[path]),
-					write: (path, content) => {
-						result[path] = content;
-						return Promise.resolve<void>(null);
-					},
-					listener: {
-						onAcceptables: acceptableSyntaxes => {
-							logger.log(acceptableSyntaxes);
-							this.lastAcceptableSyntaxes = acceptableSyntaxes;
-							this.emit("syntax", acceptableSyntaxes);
-						},
-						onSymbols: symbols => {
-							logger.log(symbols);
-							this.lastSymbols = symbols;
-							this.emit("symbol", symbols);
-						},
-						onReports: reports => {
-							logger.log(reports);
-							this.lastReports = reports;
-							this.emit("report", reports);
-						},
-						onCompileSuccess: book => {
-							logger.log(book);
-							this.lastBook = book;
-							this.emit("compile-success", book);
-						},
-						onCompileFailed: () => {
-							logger.log();
-							this.lastBook = null;
-							this.emit("compile-failed");
-						}
-					},
-					builders: [new ReVIEW.Build.HtmlBuilder(false)],
-					book: {
-						contents: [
-							"ch01.re"
-						]
-					}
-				});
-			});
-		});
-	}
+        setTimeout(() => {
+            var files: { [path: string]: string; } = {
+                "ch01.re": this.watcher.getContent()
+            };
+            var result: { [path: string]: string; } = {
+            };
+            ReVIEW.start(review => {
+                review.initConfig({
+                    read: path => Promise.resolve(files[path]),
+                    write: (path, content) => {
+                        result[path] = content;
+                        return Promise.resolve<void>(null);
+                    },
+                    listener: {
+                        onAcceptables: acceptableSyntaxes => {
+                            logger.log(acceptableSyntaxes);
+                            this.lastAcceptableSyntaxes = acceptableSyntaxes;
+                            this.emit("syntax", acceptableSyntaxes);
+                        },
+                        onSymbols: symbols => {
+                            logger.log(symbols);
+                            this.lastSymbols = symbols;
+                            this.emit("symbol", symbols);
+                        },
+                        onReports: reports => {
+                            logger.log(reports);
+                            this.lastReports = reports;
+                            this.emit("report", reports);
+                        },
+                        onCompileSuccess: book => {
+                            logger.log(book);
+                            this.lastBook = book;
+                            this.emit("compile-success", book);
+                        },
+                        onCompileFailed: () => {
+                            logger.log();
+                            this.lastBook = null;
+                            this.emit("compile-failed");
+                        }
+                    },
+                    builders: [new ReVIEW.Build.HtmlBuilder(false)],
+                    book: {
+                        contents: [
+                            "ch01.re"
+                        ]
+                    }
+                });
+            });
+        });
+    }
 
-	getContent() {
-		return this.watcher.getContent();
-	}
+    getContent() {
+        return this.watcher.getContent();
+    }
 
-	getFilePath() {
-		return this.watcher.getFilePath();
-	}
+    getFilePath() {
+        return this.watcher.getFilePath();
+    }
 }
 
 ReVIEWRunner.emissarified();
 
 interface IContentWatcher {
-	startWatching():void;
-	stopWatching():void;
-	activate():void;
-	deactivate():void;
-	getContent():string;
-	getFilePath():string;
+    startWatching(): void;
+    stopWatching(): void;
+    activate(): void;
+    deactivate(): void;
+    getContent(): string;
+    getFilePath(): string;
 }
 
 class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implements IContentWatcher {
 
-	buffer:TextBuffer.ITextBuffer;
+    buffer: TextBuffer.ITextBuffer;
 
-	grammerChangeSubscription:Emissary.ISubscription;
-	wasAlreadyActivated:boolean;
-	bufferSubscription:Emissary.ISubscription;
+    grammerChangeSubscription: AtomCore.IDisposable;
+    wasAlreadyActivated: boolean;
+    bufferSubscription: AtomCore.IDisposable;
 
-	constructor(public runner:ReVIEWRunner, public editor:AtomCore.IEditor) {
-		super();
-		this.buffer = this.editor.getBuffer();
-	}
+    constructor(public runner: ReVIEWRunner, public editor: AtomCore.IEditor) {
+        super();
+        this.buffer = this.editor.getBuffer();
+    }
 
-	startWatching():void {
-		logger.log();
-		if (this.grammerChangeSubscription) {
-			return;
-		}
+    startWatching(): void {
+        logger.log();
+        if (this.grammerChangeSubscription) {
+            return;
+        }
 
-		this.configureRunner();
+        this.configureRunner();
 
-		this.grammerChangeSubscription = this.subscribe(this.editor, "grammar-changed", ()=> {
-			this.configureRunner();
-		});
-	}
+        this.grammerChangeSubscription = this.editor.onDidChangeGrammar(() => this.configureRunner());
+    }
 
-	stopWatching():void {
-		logger.log();
-		if (!this.grammerChangeSubscription) {
-			return;
-		}
+    stopWatching(): void {
+        logger.log();
+        if (!this.grammerChangeSubscription) {
+            return;
+        }
 
-		this.grammerChangeSubscription.off();
-		this.grammerChangeSubscription = null;
-	}
+        this.grammerChangeSubscription.dispose();
+        this.grammerChangeSubscription = null;
+    }
 
-	configureRunner():void {
-		var scopeName = this.editor.getGrammar().scopeName;
-		logger.log("configureRunner grammar " + scopeName);
-		if (V.reviewScopeName === scopeName) {
-			this.activate();
-		} else {
-			this.deactivate();
-		}
-	}
+    configureRunner(): void {
+        var scopeName = this.editor.getGrammar().scopeName;
+        logger.log("configureRunner grammar " + scopeName);
+        if (V.reviewScopeName === scopeName) {
+            this.activate();
+        } else {
+            this.deactivate();
+        }
+    }
 
-	activate():void {
-		logger.log();
-		if (!this.wasAlreadyActivated) {
-			this.emit("activate");
-		}
-		this.wasAlreadyActivated = true;
-		this.runner.doCompile();
-		if (this.bufferSubscription) {
-			return;
-		}
-		var subscribeEvents = "saved reloaded";
-		if (this.runner.options.highFrequency) {
-			subscribeEvents += " contents-modified";
-		}
-		this.bufferSubscription = this.subscribe(this.buffer, subscribeEvents, ()=> {
-			this.runner.doCompile();
-		});
-	}
+    activate(): void {
+        logger.log();
+        if (!this.wasAlreadyActivated) {
+            this.emit("activate");
+        }
+        this.wasAlreadyActivated = true;
+        this.runner.doCompile();
+        if (this.bufferSubscription) {
+            return;
+        }
+        this.bufferSubscription = this.buffer.onDidChange(() => this.runner.doCompile());
+    }
 
-	deactivate():void {
-		logger.log();
-		if (this.bufferSubscription) {
-			this.bufferSubscription.off();
-			this.bufferSubscription = null;
-		}
-		this.runner.emit("deactivate");
-	}
+    deactivate(): void {
+        logger.log();
+        if (this.bufferSubscription) {
+            this.bufferSubscription.dispose();
+            this.bufferSubscription = null;
+        }
+        this.runner.emit("deactivate");
+    }
 
-	getContent():string {
-		return this.editor.buffer.getText();
-	}
+    getContent(): string {
+        return this.editor.buffer.getText();
+    }
 
-	getFilePath():string {
-		return this.buffer.getUri();
-	}
+    getFilePath(): string {
+        return this.buffer.getUri();
+    }
 }
 
 class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements IContentWatcher {
 
-	fileRemovedSubscription:Emissary.ISubscription;
-	wasAlreadyActivated:boolean;
-	contentChangedSubscription:Emissary.ISubscription;
+    fileRemovedSubscription: AtomCore.IDisposable;
+    wasAlreadyActivated: boolean;
+    contentChangedSubscription: AtomCore.IDisposable;
 
-	constructor(public runner:ReVIEWRunner, public file:PathWatcher.IFile) {
-		super();
-	}
+    constructor(public runner: ReVIEWRunner, public file: PathWatcher.IFile) {
+        super();
+    }
 
-	startWatching():void {
-		logger.log();
-		if (this.fileRemovedSubscription) {
-			return;
-		}
+    startWatching(): void {
+        logger.log();
+        if (this.fileRemovedSubscription) {
+            return;
+        }
 
-		this.configureRunner();
+        this.configureRunner();
 
-		this.fileRemovedSubscription = this.subscribe(this.file, "removed", ()=> {
-			this.configureRunner();
-		});
-	}
+        this.file.onDidDelete
+        this.fileRemovedSubscription = this.file.onDidDelete(() => {
+            this.configureRunner();
+        });
+    }
 
-	stopWatching():void {
-		logger.log();
-		if (!this.fileRemovedSubscription) {
-			return;
-		}
+    stopWatching(): void {
+        logger.log();
+        if (!this.fileRemovedSubscription) {
+            return;
+        }
 
-		this.fileRemovedSubscription.off();
-		this.fileRemovedSubscription = null;
-	}
+        this.fileRemovedSubscription.dispose();
+        this.fileRemovedSubscription = null;
+    }
 
-	configureRunner():void {
-		if (this.file.existsSync()) {
-			this.activate();
-		} else {
-			this.deactivate();
-		}
-	}
+    configureRunner(): void {
+        if (this.file.existsSync()) {
+            this.activate();
+        } else {
+            this.deactivate();
+        }
+    }
 
-	activate():void {
-		logger.log();
-		if (!this.wasAlreadyActivated) {
-			this.emit("activate");
-		}
-		this.wasAlreadyActivated = true;
-		this.runner.doCompile();
-		if (this.contentChangedSubscription) {
-			return;
-		}
-		this.contentChangedSubscription = this.subscribe(this.file, "contents-changed", ()=> {
-			this.runner.doCompile();
-		});
-	}
+    activate(): void {
+        logger.log();
+        if (!this.wasAlreadyActivated) {
+            this.emit("activate");
+        }
+        this.wasAlreadyActivated = true;
+        this.runner.doCompile();
+        if (this.contentChangedSubscription) {
+            return;
+        }
+        this.contentChangedSubscription = this.file.onDidDelete(() => {
+            this.runner.doCompile();
+        });
+    }
 
 
-	deactivate():void {
-		logger.log();
-		if (this.contentChangedSubscription) {
-			this.contentChangedSubscription.off();
-			this.contentChangedSubscription = null;
-		}
-		this.runner.emit("deactivate");
-	}
+    deactivate(): void {
+        logger.log();
+        if (this.contentChangedSubscription) {
+            this.contentChangedSubscription.dispose();
+            this.contentChangedSubscription = null;
+        }
+        this.runner.emit("deactivate");
+    }
 
-	getContent():string {
-		return this.file.readSync(false);
-	}
+    getContent(): string {
+        return this.file.readSync(false);
+    }
 
-	getFilePath():string {
-		return this.file.getRealPathSync();
-	}
+    getFilePath(): string {
+        return this.file.getRealPathSync();
+    }
 }
 
 export = ReVIEWRunner;

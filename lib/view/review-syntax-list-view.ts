@@ -7,9 +7,8 @@
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-view.coffee
 
 import path = require("path");
-import _atom = require("atom");
 
-var $ = _atom.$;
+import {$, ScrollView} from "atom-space-pen-views";
 
 import pathwatcher = require("pathwatcher");
 var File = pathwatcher.File;
@@ -22,7 +21,7 @@ import V = require("../util/const");
 import logger = require("../util/logger");
 import ReVIEWRunner = require("../util/review-runner");
 
-class ReVIEWSyntaxListView extends _atom.ScrollView {
+class ReVIEWSyntaxListView extends ScrollView {
 
 	editorId:string;
 	file:PathWatcher.IFile;
@@ -48,7 +47,7 @@ class ReVIEWSyntaxListView extends _atom.ScrollView {
 		if (this.editorId) {
 			var promise = this.resolveEditor(this.editorId);
 			promise.then(editor=> {
-				this.runner = new ReVIEWRunner({editor: editor}, {highFrequency: true});
+				this.runner = new ReVIEWRunner({editor: editor});
 				this.handleEvents();
 			}).catch(reason=> {
 				// The editor this preview was created for has been closed so close
@@ -82,7 +81,6 @@ class ReVIEWSyntaxListView extends _atom.ScrollView {
 
 	destroy() {
 		this.runner.deactivate();
-		this.unsubscribe();
 	}
 
 	resolveEditor(editorId:string):Q.Promise<AtomCore.IEditor> {
@@ -103,7 +101,7 @@ class ReVIEWSyntaxListView extends _atom.ScrollView {
 		if (atom.workspace) {
 			resolve();
 		} else {
-			atom.packages.once("activated", ()=> {
+			atom.packages.onDidActivateInitialPackages(()=> {
 				resolve();
 			});
 		}
@@ -111,7 +109,7 @@ class ReVIEWSyntaxListView extends _atom.ScrollView {
 	}
 
 	editorForId(editorId:string) {
-		var foundEditors = atom.workspace.getEditors().filter(editor=> {
+		var foundEditors = atom.workspace.getTextEditors().filter(editor=> {
 			var id = editor.id;
 			if (!id) {
 				return false;
@@ -122,21 +120,18 @@ class ReVIEWSyntaxListView extends _atom.ScrollView {
 	}
 
 	handleEvents() {
-		this.subscribe(atom.syntax, "grammar-added grammar-updated", ()=> {
-			setTimeout(()=> this.renderSyntaxList(), 250);
-		});
-		this.subscribe(this, "core:move-up", ()=> this.jq.scrollUp());
-		this.subscribe(this, "core:move-down", ()=> this.jq.scrollDown());
+		atom.commands.add(<any>this, "core:move-up", ()=> this.jq.scrollUp());
+		atom.commands.add(<any>this, "core:move-down", ()=> this.jq.scrollDown());
 
-		this.subscribeToCommand(atom.workspaceView, "language-review:zoom-in", ()=> {
+		atom.commands.add("atom-workspace", "language-review:zoom-in", ()=> {
 			var zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
 			this.jq.css("zoom", zoomLevel + 0.1);
 		});
-		this.subscribeToCommand(atom.workspaceView, "language-review:zoom-out", ()=> {
+		atom.commands.add("atom-workspace", "language-review:zoom-out", ()=> {
 			var zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
 			this.jq.css("zoom", zoomLevel - 0.1);
 		});
-		this.subscribeToCommand(atom.workspaceView, "language-review:reset-zoom", ()=> {
+		atom.commands.add("atom-workspace", "language-review:reset-zoom", ()=> {
 			this.jq.css("zoom", 1);
 		});
 
@@ -211,7 +206,7 @@ class ReVIEWSyntaxListView extends _atom.ScrollView {
 		}
 	}
 
-	getUri():string {
+	getURI():string {
 		if (this.file) {
 			return "language-review://" + this.getPath();
 		} else {
