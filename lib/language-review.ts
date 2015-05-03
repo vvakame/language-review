@@ -1,38 +1,57 @@
 /// <reference path="../typings/node/node.d.ts" />
 /// <reference path="../typings/atom/atom.d.ts" />
 
+/// <reference path="./typings/atom/atom.d.ts" />
+/// <reference path="./typings/atom-package-dependencies/atom-package-dependencies.d.ts" />
+
 /// <reference path="../typings/es6-promise/es6-promise.d.ts" />
 
 import url = require("url");
 import _atom = require("atom");
 
+import apd = require("atom-package-dependencies");
+
 import V = require("./util/const");
 import logger = require("./util/logger");
 import ReVIEWPreviewView = require("./view/review-preview-view");
-import ReVIEWResultView = require("./view/review-result-view");
-import ReVIEWStatusView = require("./view/review-status-view");
 import ReVIEWOutlineView = require("./view/review-outline-view");
 import ReVIEWSyntaxListView = require("./view/review-syntax-list-view");
 
 class Controller {
 	configDefaults = {
 		grammars: [
-			"source.review"
+			V.reviewScopeName
 		],
 		debug: false
 	};
 
-	reviewStatusView:ReVIEWStatusView;
-	resultViews:ReVIEWResultView[] = [];
 	editorViewSubscription:{ off():any; };
 	outlineView:ReVIEWOutlineView;
 
 	activate():void {
+		let linter = apd.require("linter");
+		if (!linter) {
+			let notification = atom.notifications.addInfo("Re:VIEW: 足りない依存関係があるため、インストールを行っています。");
+			apd.install(() => {
+				atom.notifications.addSuccess("Re:VIEW: 準備ができました！");
+				notification.dismiss();
+
+				// Packages don't get loaded automatically as a result of an install
+        if (!apd.require("linter")) {
+					atom.packages.loadPackage("linter");
+				}
+
+				atom.packages.activatePackage("linter").then(() => this.readyToActivate());
+			});
+			return;
+		}
+
+		this.readyToActivate();
+	}
+
+	readyToActivate() {
 		atom.workspaceView.command(V.protocol + "toggle-preview", ()=> {
 			this.togglePreview();
-		});
-		atom.workspaceView.command(V.protocol + "toggle-compile", ()=> {
-			this.toggleCompileResult();
 		});
 		atom.workspaceView.command(V.protocol + "toggle-outline", ()=> {
 			this.toggleOutline();
@@ -64,46 +83,9 @@ class Controller {
 				return new ReVIEWPreviewView({filePath: pathName});
 			}
 		});
-
-		this.enableCompileResult();
 	}
 
 	deactivate() {
-		this.disableCompileResult();
-	}
-
-	enableCompileResult() {
-		this.editorViewSubscription = atom.workspaceView.eachEditorView((editorView:_atom.EditorView)=> {
-			this.injectResultViewIntoEditorView(editorView);
-		});
-
-		this.injectStatusViewIntoStatusBar();
-		atom.packages.once("activated", ()=> {
-			this.injectStatusViewIntoStatusBar();
-		});
-	}
-
-	disableCompileResult() {
-		if (this.reviewStatusView) {
-			this.reviewStatusView.jq.remove();
-			this.reviewStatusView = null;
-		}
-		if (this.editorViewSubscription) {
-			this.editorViewSubscription.off();
-			this.editorViewSubscription = null;
-		}
-		this.resultViews.forEach(resultView => {
-			resultView.jq.remove();
-		});
-		this.resultViews = [];
-	}
-
-	toggleCompileResult() {
-		if (this.editorViewSubscription) {
-			this.disableCompileResult();
-		} else {
-			this.enableCompileResult();
-		}
 	}
 
 	togglePreview():void {
@@ -144,29 +126,6 @@ class Controller {
 			this.outlineView = new ReVIEWOutlineView();
 		}
 		this.outlineView.toggle();
-	}
-
-	injectResultViewIntoEditorView(editorView:_atom.EditorView) {
-		if (!editorView.getPane()) {
-			return;
-		}
-		if (!editorView.attached) {
-			return;
-		}
-		var resultView = new ReVIEWResultView(<V.IReVIEWedEditorView>editorView);
-		this.resultViews.push(resultView);
-	}
-
-	injectStatusViewIntoStatusBar() {
-		if (this.reviewStatusView) {
-			return;
-		}
-		var statusBar = atom.workspaceView.statusBar;
-		if (!statusBar) {
-			return;
-		}
-		this.reviewStatusView = new ReVIEWStatusView(statusBar);
-		statusBar.prependRight(this.reviewStatusView);
 	}
 
 	toggleSyntaxList() {

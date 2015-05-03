@@ -1,8 +1,5 @@
 '.atom-workspace':
   'ctrl-R': 'language-review:toggle-preview'
-'.atom-text-editor':
-  'ctrl-alt-[': 'language-review:move-to-previous-violation'
-  'ctrl-alt-]': 'language-review:move-to-next-violation'
 '.review-preview':
   'cmd-+': 'language-review:zoom-in'
   'cmd-=': 'language-review:zoom-in'

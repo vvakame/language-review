@@ -11,10 +11,6 @@
               "command": "language-review:toggle-preview"
             },
             {
-              "label": "Toggle Compile",
-              "command": "language-review:toggle-compile"
-            },
-            {
               "label": "Toggle Outline",
               "command": "language-review:toggle-outline"
             },
