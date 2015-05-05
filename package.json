@@ -12,7 +12,7 @@
   "linter-package": true,
   "linter-implementation": "linter",
   "dependencies": {
-    "review.js": "0.6.3",
+    "review.js": "0.6.4",
     "pathwatcher": "4.4.0",
     "color": "0.8.0",
     "emissary": "1.3.3",
