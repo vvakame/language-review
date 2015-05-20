@@ -211,7 +211,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
         }
         this.wasAlreadyActivated = true;
         this.runner.doCompile();
-        if (this.bufferSubscriptions != null && Object.keys(this.bufferSubscriptions).length != 0) {
+        if (this.bufferSubscriptions !== null && Object.keys(this.bufferSubscriptions).length !== 0) {
             return;
         }
         this.bufferSubscriptions = this.bufferSubscriptions || [];
@@ -231,7 +231,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 
     deactivate(): void {
         logger.log();
-        if (Object.keys(this.bufferSubscriptions).length != 0) {
+        if (Object.keys(this.bufferSubscriptions).length !== 0) {
             this.bufferSubscriptions.forEach(subscription => subscription.dispose());
             this.bufferSubscriptions.length = 0;
         }
