@@ -164,8 +164,8 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 
     grammerChangeSubscription: AtomCore.IDisposable;
     wasAlreadyActivated: boolean;
-    bufferSubscriptions: AtomCore.IDisposable[];
-    lastKeyHitAt: number;
+    bufferSubscriptions: AtomCore.IDisposable[] = [];
+    lastKeyHitTimeoutId: any;
     static IN_EDIT_COMPILE_TIMEOUT: number = 3000;
 
     constructor(public runner: ReVIEWRunner, public editor: AtomCore.IEditor) {
@@ -211,19 +211,17 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
         }
         this.wasAlreadyActivated = true;
         this.runner.doCompile();
-        if (this.bufferSubscriptions !== undefined && Object.keys(this.bufferSubscriptions).length !== 0) {
+        if (this.bufferSubscriptions.length !== 0) {
             return;
         }
-        this.bufferSubscriptions = this.bufferSubscriptions || [];
         this.bufferSubscriptions.push(this.buffer.onDidChange(() => {
-            this.lastKeyHitAt = +new Date();
-            new Promise((resolve, reject) => {
-                setTimeout(resolve, EditorContentWatcher.IN_EDIT_COMPILE_TIMEOUT);
-            }).then(() => {
-                if (EditorContentWatcher.IN_EDIT_COMPILE_TIMEOUT < (+new Date()) - this.lastKeyHitAt) {
-                    this.runner.doCompile();
-                }
-            });
+            if (this.lastKeyHitTimeoutId) {
+                clearTimeout(this.lastKeyHitTimeoutId);
+            }
+            this.lastKeyHitTimeoutId = setTimeout(() => {
+                this.lastKeyHitTimeoutId = null;
+                this.runner.doCompile();
+            }, EditorContentWatcher.IN_EDIT_COMPILE_TIMEOUT);
         }));
         this.bufferSubscriptions.push(this.buffer.onDidSave(() => this.runner.doCompile()));
         this.bufferSubscriptions.push(this.buffer.onDidReload(() => this.runner.doCompile()));
@@ -231,10 +229,8 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 
     deactivate(): void {
         logger.log();
-        if (Object.keys(this.bufferSubscriptions).length !== 0) {
-            this.bufferSubscriptions.forEach(subscription => subscription.dispose());
-            this.bufferSubscriptions.length = 0;
-        }
+        this.bufferSubscriptions.forEach(subscription => subscription.dispose());
+        this.bufferSubscriptions = [];
         this.runner.emit("deactivate");
     }
 
