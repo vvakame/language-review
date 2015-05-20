@@ -164,7 +164,9 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 
     grammerChangeSubscription: AtomCore.IDisposable;
     wasAlreadyActivated: boolean;
-    bufferSubscription: AtomCore.IDisposable;
+    bufferSubscriptions: AtomCore.IDisposable[];
+    lastKeyHitAt: number;
+    static IN_EDIT_COMPILE_TIMEOUT: number = 3000;
 
     constructor(public runner: ReVIEWRunner, public editor: AtomCore.IEditor) {
         super();
@@ -209,17 +211,29 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
         }
         this.wasAlreadyActivated = true;
         this.runner.doCompile();
-        if (this.bufferSubscription) {
+        if (this.bufferSubscriptions != null && Object.keys(this.bufferSubscriptions).length != 0) {
             return;
         }
-        this.bufferSubscription = this.buffer.onDidChange(() => this.runner.doCompile());
+        this.bufferSubscriptions = this.bufferSubscriptions || [];
+        this.bufferSubscriptions.push(this.buffer.onDidChange(() => {
+            this.lastKeyHitAt = +new Date();
+            new Promise((resolve, reject) => {
+                setTimeout(resolve, EditorContentWatcher.IN_EDIT_COMPILE_TIMEOUT);
+            }).then(() => {
+                if (EditorContentWatcher.IN_EDIT_COMPILE_TIMEOUT < (+new Date()) - this.lastKeyHitAt) {
+                    this.runner.doCompile();
+                }
+            });
+        }));
+        this.bufferSubscriptions.push(this.buffer.onDidSave(() => this.runner.doCompile()));
+        this.bufferSubscriptions.push(this.buffer.onDidReload(() => this.runner.doCompile()));
     }
 
     deactivate(): void {
         logger.log();
-        if (this.bufferSubscription) {
-            this.bufferSubscription.dispose();
-            this.bufferSubscription = null;
+        if (Object.keys(this.bufferSubscriptions).length != 0) {
+            this.bufferSubscriptions.forEach(subscription => subscription.dispose());
+            this.bufferSubscriptions.length = 0;
         }
         this.runner.emit("deactivate");
     }

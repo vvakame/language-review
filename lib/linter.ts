@@ -36,6 +36,8 @@ class LinterReVIEW extends Linter {
         this.reviewRunner.on("report", reports=> {
             logger.log("Re:VIEW linter ReVIEWRunner compile");
             this.pendingReports = reports;
+            // identify atom-text-editor w/o relying on jQuery
+            atom.commands.dispatch(document.getElementsByTagName("atom-text-editor")[0], "linter:lint");
         });
         this.reviewRunner.startWatching();
     }
