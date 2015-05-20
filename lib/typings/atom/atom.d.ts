@@ -37,6 +37,8 @@ declare module AtomCore {
 declare module TextBuffer {
     interface ITextBuffer {
         onDidChange(callback: () => void): AtomCore.IDisposable;
+        onDidReload(callback: () => void): AtomCore.IDisposable;
+        onDidSave(callback: () => void): AtomCore.IDisposable;
     }
 }
 

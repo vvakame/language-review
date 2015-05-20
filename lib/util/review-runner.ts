@@ -164,7 +164,9 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
 
     grammerChangeSubscription: AtomCore.IDisposable;
     wasAlreadyActivated: boolean;
-    bufferSubscription: AtomCore.IDisposable;
+    bufferSubscriptions: AtomCore.IDisposable[] = [];
+    lastKeyHitTimeoutId: any;
+    static IN_EDIT_COMPILE_TIMEOUT: number = 3000;
 
     constructor(public runner: ReVIEWRunner, public editor: AtomCore.IEditor) {
         super();
@@ -209,18 +211,26 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
         }
         this.wasAlreadyActivated = true;
         this.runner.doCompile();
-        if (this.bufferSubscription) {
+        if (this.bufferSubscriptions.length !== 0) {
             return;
         }
-        this.bufferSubscription = this.buffer.onDidChange(() => this.runner.doCompile());
+        this.bufferSubscriptions.push(this.buffer.onDidChange(() => {
+            if (this.lastKeyHitTimeoutId) {
+                clearTimeout(this.lastKeyHitTimeoutId);
+            }
+            this.lastKeyHitTimeoutId = setTimeout(() => {
+                this.lastKeyHitTimeoutId = null;
+                this.runner.doCompile();
+            }, EditorContentWatcher.IN_EDIT_COMPILE_TIMEOUT);
+        }));
+        this.bufferSubscriptions.push(this.buffer.onDidSave(() => this.runner.doCompile()));
+        this.bufferSubscriptions.push(this.buffer.onDidReload(() => this.runner.doCompile()));
     }
 
     deactivate(): void {
         logger.log();
-        if (this.bufferSubscription) {
-            this.bufferSubscription.dispose();
-            this.bufferSubscription = null;
-        }
+        this.bufferSubscriptions.forEach(subscription => subscription.dispose());
+        this.bufferSubscriptions = [];
         this.runner.emit("deactivate");
     }
 
