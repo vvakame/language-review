@@ -211,7 +211,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
         }
         this.wasAlreadyActivated = true;
         this.runner.doCompile();
-        if (this.bufferSubscriptions !== null && Object.keys(this.bufferSubscriptions).length !== 0) {
+        if (this.bufferSubscriptions !== undefined && Object.keys(this.bufferSubscriptions).length !== 0) {
             return;
         }
         this.bufferSubscriptions = this.bufferSubscriptions || [];
