@@ -231,8 +231,8 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
             return;
         }
         this.bufferSubscriptions.push(this.buffer.onDidChange(() => this.triggerCompile(true)));
-        this.bufferSubscriptions.push(this.buffer.onDidSave(() => this.runner.doCompile()));
-        this.bufferSubscriptions.push(this.buffer.onDidReload(() => this.runner.doCompile()));
+        this.bufferSubscriptions.push(this.buffer.onDidSave(() => this.triggerCompile()));
+        this.bufferSubscriptions.push(this.buffer.onDidReload(() => this.triggerCompile()));
     }
 
     deactivate(): void {
