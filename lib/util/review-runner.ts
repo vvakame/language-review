@@ -1,5 +1,6 @@
 /// <reference path="../../typings/atom/atom.d.ts" />
 /// <reference path="../../typings/emissary/emissary.d.ts" />
+/// <reference path="../../typings/node/node.d.ts" />
 /// <reference path="../../typings/text-buffer/text-buffer.d.ts" />
 /// <reference path="../../typings/pathwatcher/pathwatcher.d.ts" />
 
@@ -12,6 +13,7 @@ import V = require("./const");
 import logger = require("./logger");
 
 import ReVIEW = require("review.js");
+import path = require("path");
 
 class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
@@ -86,15 +88,18 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
     doCompile(): void {
         logger.log();
         this.emit("start");
+        var currentPath:string = this.watcher.getFilePath() || "ch01.re";
+        var basePath:string = path.isAbsolute(currentPath) ? path.dirname(currentPath) : undefined;
+        var filename:string = path.basename(currentPath);
 
         setTimeout(() => {
-            var files: { [path: string]: string; } = {
-                "ch01.re": this.watcher.getContent()
-            };
+            var files: { [path: string]: string; } = {};
+            files[filename] = this.watcher.getContent();
             var result: { [path: string]: string; } = {
             };
             ReVIEW.start(review => {
                 review.initConfig({
+                basePath: basePath,
                     read: path => Promise.resolve(files[path]),
                     write: (path, content) => {
                         result[path] = content;
@@ -130,7 +135,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
                     builders: [new ReVIEW.Build.HtmlBuilder(false)],
                     book: {
                         contents: [
-                            "ch01.re"
+                            filename
                         ]
                     }
                 });
