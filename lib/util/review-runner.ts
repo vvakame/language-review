@@ -209,6 +209,21 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
         }
     }
 
+    triggerCompile(withDelay: boolean = false): void {
+        if (this.lastKeyHitTimeoutId) {
+            clearTimeout(this.lastKeyHitTimeoutId);
+        }
+        if (withDelay) {
+            this.lastKeyHitTimeoutId = setTimeout(() => {
+                this.lastKeyHitTimeoutId = null;
+                this.runner.doCompile();
+            }, EditorContentWatcher.IN_EDIT_COMPILE_TIMEOUT);
+        } else {
+            this.lastKeyHitTimeoutId = null;
+            this.runner.doCompile();
+        }
+    }
+
     activate(): void {
         logger.log();
         if (!this.wasAlreadyActivated) {
@@ -219,17 +234,9 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
         if (this.bufferSubscriptions.length !== 0) {
             return;
         }
-        this.bufferSubscriptions.push(this.buffer.onDidChange(() => {
-            if (this.lastKeyHitTimeoutId) {
-                clearTimeout(this.lastKeyHitTimeoutId);
-            }
-            this.lastKeyHitTimeoutId = setTimeout(() => {
-                this.lastKeyHitTimeoutId = null;
-                this.runner.doCompile();
-            }, EditorContentWatcher.IN_EDIT_COMPILE_TIMEOUT);
-        }));
-        this.bufferSubscriptions.push(this.buffer.onDidSave(() => this.runner.doCompile()));
-        this.bufferSubscriptions.push(this.buffer.onDidReload(() => this.runner.doCompile()));
+        this.bufferSubscriptions.push(this.buffer.onDidChange(() => this.triggerCompile(true)));
+        this.bufferSubscriptions.push(this.buffer.onDidSave(() => this.triggerCompile()));
+        this.bufferSubscriptions.push(this.buffer.onDidReload(() => this.triggerCompile()));
     }
 
     deactivate(): void {
