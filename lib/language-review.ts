@@ -1,11 +1,11 @@
+/// <reference path="../node_modules/typescript/bin/lib.es6.d.ts" />
+
 /// <reference path="../typings/node/node.d.ts" />
 /// <reference path="../typings/atom/atom.d.ts" />
 
 /// <reference path="./typings/atom/atom.d.ts" />
 /// <reference path="./typings/atom-space-pen-views/atom-space-pen-views.d.ts" />
 /// <reference path="./typings/atom-package-dependencies/atom-package-dependencies.d.ts" />
-
-/// <reference path="../typings/es6-promise/es6-promise.d.ts" />
 
 import url = require("url");
 import {View} from "atom-space-pen-views";
