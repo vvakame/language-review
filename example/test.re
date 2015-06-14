@@ -17,6 +17,11 @@ hoge	fuga
 ほげ	ふが
 //}
 
+画像出すぞ！
+
+//image[neco-box][猫だぞ！][scale=0.3]{
+//}
+
 == すごいRe:VIEW楽しく使おう
 
 Cmd+Shift+Oでアウトラインも表示できるよ！
