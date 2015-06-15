@@ -8,9 +8,12 @@
   'cmd-0': 'language-review:reset-zoom'
 '.platform-darwin, .platform-darwin .review-editor .atom-text-editor':
   'cmd-shift-o': 'language-review:toggle-outline'
+  'cmd-shift-i': 'language-review:toggle-preview'
 
 '.platform-win32, .platform-win32 .review-editor .atom-text-editor':
   'ctrl-shift-o': 'language-review:toggle-outline'
+  'ctrl-shift-i': 'language-review:toggle-preview'
 
 '.platform-linux, .platform-linux .review-editor .atom-text-editor':
   'ctrl-shift-o': 'language-review:toggle-outline'
+  'ctrl-shift-i': 'language-review:toggle-preview'
