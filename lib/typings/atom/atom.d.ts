@@ -7,7 +7,6 @@ declare module AtomCore {
         addOpener(callback: (url: string, options?: any) => any): IDisposable;
         getActiveTextEditor(): IEditor;
         getTextEditors(): IEditor[];
-        paneForURI: (uri: string) => IPane;
     }
     interface IPackageManager {
         onDidActivateInitialPackages(callback: () => void): IDisposable;
