@@ -110,7 +110,7 @@ class Controller {
 		var previewPane = atom.workspace.paneForURI(uri);
 
 		if (previewPane) {
-			previewPane.destroyItem(previewPane.itemForUri(uri));
+			previewPane.destroyItem(previewPane.itemForURI(uri));
 			return;
 		}
 
@@ -149,7 +149,7 @@ class Controller {
 		var previewPane = atom.workspace.paneForURI(uri);
 
 		if (previewPane) {
-			previewPane.destroyItem(previewPane.itemForUri(uri));
+			previewPane.destroyItem(previewPane.itemForURI(uri));
 			return;
 		}
 
