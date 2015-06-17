@@ -91,14 +91,14 @@ class ReVIEWOutlineView extends SelectListView {
 		// onSelected的な
 		this.cancel();
 		// emit したい…
-		var view:any = atom.workspaceView.getActiveView();
-		if (!view || typeof view.getEditor !== "function") {
+		var pane:any = atom.workspace.getActivePane();
+		if (!pane || typeof pane.getActiveEditor !== "function") {
 			atom.beep();
 			return;
 		}
-		var editor:AtomCore.IEditor = view.getEditor();
+		var editor:AtomCore.IEditor = pane.getActiveEditor();
 		var point = Point.fromObject({row: symbol.node.line - 1, column: 0});
-		editor.setCursorScreenPosition(point);
+		editor.setCursorBufferPosition(point);
 	}
 }
 
