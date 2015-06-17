@@ -4,7 +4,7 @@
     "name" : "Re:VIEW",
     "patterns": [
         {
-            "comment": "Patagraph = ",
+            "comment": "Paragraph = ",
             "captures": {
                 "1": {
                     "name": "keyword.review"
@@ -16,7 +16,7 @@
                     "name": "string.review"
                 }
             },
-            "name": "patagraph.review",
+            "name": "paragraph.review",
             "match": "(^={1,4}(\\{([^\\}]+)\\})?)\\s(.*)"
         },
         {
