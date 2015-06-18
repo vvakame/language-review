@@ -1,6 +1,6 @@
 {
   "name": "language-review",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "main": "./lib/language-review",
   "description": "Re:VIEW support in Atom",
   "repository": "https://github.com/vvakame/language-review",
@@ -10,7 +10,7 @@
     "node": "*"
   },
   "scripts": {
-    "ci" : "npm install -g grunt-cli && npm install && grunt setup && grunt prepare-test && rm -rf ./node_modules && curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh"
+    "ci": "npm install -g grunt-cli && npm install && grunt setup && grunt prepare-test && rm -rf ./node_modules && curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh"
   },
   "linter-package": true,
   "linter-implementation": "linter",
