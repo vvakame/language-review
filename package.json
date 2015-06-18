@@ -9,6 +9,9 @@
     "atom": "*",
     "node": "*"
   },
+  "scripts": {
+    "ci" : "npm install -g grunt-cli && npm install && grunt setup && grunt prepare-test && rm -rf ./node_modules && curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh"
+  },
   "linter-package": true,
   "linter-implementation": "linter",
   "dependencies": {
