@@ -33,7 +33,7 @@
                 }
             },
             "name": "column.review.begin",
-            "match": "(^={3}\\[(column)\\])\\s(.*)"
+            "match": "(^={1,4}\\[(column)\\])\\s(.*)"
         },
         {
             "comment": "Column ===[/column]",
@@ -46,7 +46,7 @@
                 }
             },
             "name": "column.review.end",
-            "match": "(^={3}\\[/(column)\\])"
+            "match": "(^={1,4}\\[/(column)\\])"
         },
         {
             "comment": "Bullet point * ",
