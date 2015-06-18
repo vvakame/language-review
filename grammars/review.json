@@ -17,7 +17,7 @@
                 }
             },
             "name": "paragraph.review",
-            "match": "(^={1,4}(\\{([^\\}]+)\\})?)\\s(.*)"
+            "match": "(^={1,5}(\\{([^\\}]+)\\})?)\\s(.*)"
         },
         {
             "comment": "Column ===[column]",
@@ -33,7 +33,7 @@
                 }
             },
             "name": "column.review.begin",
-            "match": "(^={1,4}\\[(column)\\])\\s(.*)"
+            "match": "(^={1,5}\\[(column)\\])\\s(.*)"
         },
         {
             "comment": "Column ===[/column]",
@@ -46,7 +46,7 @@
                 }
             },
             "name": "column.review.end",
-            "match": "(^={1,4}\\[/(column)\\])"
+            "match": "(^={1,5}\\[/(column)\\])"
         },
         {
             "comment": "Bullet point * ",
