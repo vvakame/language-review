@@ -15,11 +15,11 @@
   "linter-package": true,
   "linter-implementation": "linter",
   "dependencies": {
-    "review.js": "0.6.4",
-    "pathwatcher": "4.4.0",
-    "color": "0.8.0",
+    "review.js": "0.6.6",
+    "pathwatcher": "4.4.1",
+    "color": "0.9.0",
     "emissary": "1.3.3",
-    "text-buffer": "6.3.6",
+    "text-buffer": "6.3.8",
     "q": "1.4.1",
     "atom-package-dependencies": "1.0.3",
     "atom-space-pen-views": "2.0.5"
@@ -30,12 +30,12 @@
   "devDependencies": {
     "grunt": "0.4.5",
     "grunt-contrib-clean": "0.6.0",
-    "grunt-ts": "4.0.1",
+    "grunt-ts": "4.2.0-beta.1",
     "typescript": "1.5.0-beta",
-    "grunt-tslint": "2.0.0",
+    "grunt-tslint": "2.3.1-beta",
     "grunt-bower-task": "0.4.0",
     "grunt-dtsm": "0.2.9",
-    "source-map-support": "0.3.1",
+    "source-map-support": "0.3.2",
     "grunt-exec": "0.4.6",
     "temp": "0.8.3",
     "matchdep": "0.3.0"
