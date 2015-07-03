@@ -10,7 +10,7 @@ It is used primarily in Japan.
 
 ## インストール方法
 
-Atomの設定画面で `language-review` と検索してインストールするか、`atom install language-review` を実行してください。
+Atomの設定画面で `language-review` と検索してインストールするか、`apm install language-review` を実行してください。
 
 ## 開発方法
 
