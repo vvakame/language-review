@@ -8,88 +8,58 @@ import ReVIEWRunner = require("./util/review-runner");
 import logger = require("./util/logger");
 
 interface LinterError {
-    message: string;
-    line: number; // startline.
-    range: any; // LinterRange([startline,startch],[endline,endch]);
-    level: string; // 'error' | 'warning'
-    linter: string; // linter name
+	type: string;
+	text: string;
+	filePath: string;
+	range: TextBuffer.IRange;
 }
 
-var linterPath = atom.packages.getLoadedPackage("linter").path;
-@replace(require(linterPath + "/lib/linter"))
-class Linter {
-    constructor(public editor: AtomCore.IEditor) {
-    }
+function linter(editor: AtomCore.IEditor): Promise<LinterError[]> {
+	return new Promise((resolve, reject) => {
+		let reviewRunner = new ReVIEWRunner({ editor: editor });
+		reviewRunner.on("report", reports=> {
+				logger.log("Re:VIEW linter ReVIEWRunner compile");
+				resolve(reportToLintMessage(editor, reports));
+		});
+		reviewRunner.startWatching();
+	});
 }
 
-class LinterReVIEW extends Linter {
-    static syntax = [V.reviewScopeName];
-    linterName = "Re:VIEW lint";
+function reportToLintMessage(editor: AtomCore.IEditor, reports:ReVIEW.ProcessReport[]): LinterError[] {
+	return reports
+		.filter(report => report.level !== ReVIEW.ReportLevel.Info)
+		.map((report): LinterError => {
+			let type: string;
+			switch (report.level) {
+				case ReVIEW.ReportLevel.Error:
+					type = "Error";
+					break;
+				case ReVIEW.ReportLevel.Warning:
+					type = "Warning";
+					break;
+			}
 
-    reviewRunner: ReVIEWRunner;
-    pendingReports: ReVIEW.ProcessReport[];
-
-    constructor(editor: AtomCore.IEditor) {
-        super(editor);
-
-        this.reviewRunner = new ReVIEWRunner({ editor: this.editor });
-        this.reviewRunner.on("report", reports=> {
-            logger.log("Re:VIEW linter ReVIEWRunner compile");
-            this.pendingReports = reports;
-            // identify atom-text-editor w/o relying on jQuery
-            atom.commands.dispatch(document.getElementsByTagName("atom-text-editor")[0], "linter:lint");
-        });
-        this.reviewRunner.startWatching();
-    }
-
-    lintFile(filePath: string, callback: (errors: LinterError[]) => any): void {
-        if (!this.pendingReports) {
-            callback([]);
-            return;
-        }
-
-        callback(this.pendingReports
-            .filter(report => report.level !== ReVIEW.ReportLevel.Info)
-            .map((report): LinterError => {
-            let level: string;
-            switch (report.level) {
-                case ReVIEW.ReportLevel.Error:
-                    level = "error";
-                    break;
-                case ReVIEW.ReportLevel.Warning:
-                    level = "warning";
-                    break;
-            }
-
-            let range = this.syntaxTreeToRange(report.nodes[0]);
-
-            return {
-                message: report.message,
-                line: range.start.row + 1,
-                range: range,
-                level: level,
-                linter: "Re:VIEW"
-            };
-        }));
-    }
-
-    syntaxTreeToRange(node: ReVIEW.Parse.SyntaxTree): any {
-        var range = Range.fromObject({
-            start: {
-                row: node.line - 1,
-                column: node.column - 1
-            },
-            end: {
-                row: node.line - 1,
-                column: node.column - 1 + (node.endPos - node.offset)
-            }
-        });
-        return range;
-    }
+			let range = syntaxTreeToRange(report.nodes[0]);
+			return {
+				type: type,
+				text: report.message,
+				filePath: editor.getPath(),
+				range: range
+			};
+	});
 }
 
-export = LinterReVIEW;
-
-function replace(src: any) {
-    return () => src;
+function syntaxTreeToRange(node: ReVIEW.Parse.SyntaxTree): TextBuffer.IRange {
+	return Range.fromObject({
+		start: {
+			row: node.line - 1,
+			column: node.column - 1
+		},
+		end: {
+			row: node.line - 1,
+			column: node.column - 1 + (node.endPos - node.offset)
+		}
+	});
 }
+
+export = linter;

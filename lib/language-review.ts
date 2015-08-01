@@ -14,6 +14,7 @@ import apd = require("atom-package-dependencies");
 
 import V = require("./util/const");
 import logger = require("./util/logger");
+import linter = require("./linter");
 import ReVIEWPreviewView = require("./view/review-preview-view");
 import ReVIEWOutlineView = require("./view/review-outline-view");
 import ReVIEWSyntaxListView = require("./view/review-syntax-list-view");
@@ -22,18 +23,27 @@ class Controller {
 	config = {
 		debugLanguageReVIEW: {
 			title: "Debug: language-review. please do not use this option.",
-			type: 'boolean',
+			type: "boolean",
 			default: false
 		},
 		grammar: {
 			title: "grammer scope. please do not change this option.",
-			type: 'string',
+			type: "string",
 			default: V.reviewScopeName
 		}
 	};
 
 	editorViewSubscription:{ off():any; };
 	outlineView:ReVIEWOutlineView;
+
+	provideLinter() {
+		return {
+				grammarScopes: [V.reviewScopeName],
+				scope: "file", // or "project"
+				lintOnFly: false,
+				lint: linter
+		};
+	}
 
 	activate():void {
 		let linter = apd.require("linter");
@@ -44,7 +54,7 @@ class Controller {
 				notification.dismiss();
 
 				// Packages don't get loaded automatically as a result of an install
-        if (!apd.require("linter")) {
+				if (!apd.require("linter")) {
 					atom.packages.loadPackage("linter");
 				}
 

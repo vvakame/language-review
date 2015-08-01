@@ -12,8 +12,13 @@
   "scripts": {
     "ci": "npm install -g grunt-cli && npm install && grunt setup && grunt prepare-test && rm -rf ./node_modules && curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh"
   },
-  "linter-package": true,
-  "linter-implementation": "linter",
+  "providedServices": {
+    "linter": {
+      "versions": {
+        "1.0.0": "provideLinter"
+      }
+    }
+  },
   "dependencies": {
     "review.js": "0.6.7",
     "pathwatcher": "4.4.1",
