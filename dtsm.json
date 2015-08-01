@@ -9,16 +9,16 @@
   "bundle": "typings/bundle.d.ts",
   "dependencies": {
     "atom/atom.d.ts": {
-      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
+      "ref": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
     },
     "node/node.d.ts": {
-      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
+      "ref": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
     },
     "es6-promise/es6-promise.d.ts": {
-      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
+      "ref": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
     },
     "jasmine/jasmine.d.ts": {
-      "ref": "c7b1128cc9a8f5797bade826e7632b36b06a856c"
+      "ref": "4df20c9706ce6ca27137617770b57f3a0d3f9689"
     }
   },
   "link": {
