@@ -88,9 +88,9 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
     doCompile(): void {
         logger.log();
         this.emit("start");
-        var currentPath:string = this.watcher.getFilePath() || "ch01.re";
-        var basePath:string = path.isAbsolute(currentPath) ? path.dirname(currentPath) : undefined;
-        var filename:string = path.basename(currentPath);
+        var currentPath: string = this.watcher.getFilePath() || "ch01.re";
+        var basePath: string = path.isAbsolute(currentPath) ? path.dirname(currentPath) : undefined;
+        var filename: string = path.basename(currentPath);
 
         setTimeout(() => {
             var files: { [path: string]: string; } = {};
@@ -99,7 +99,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
             };
             ReVIEW.start(review => {
                 review.initConfig({
-                basePath: basePath,
+                    basePath: basePath,
                     read: path => Promise.resolve(files[path]),
                     write: (path, content) => {
                         result[path] = content;
