@@ -7,6 +7,7 @@ import {SelectListView, $, $$} from "atom-space-pen-views";
 import {Point} from "atom";
 
 import ReVIEW = require("review.js");
+import ReVIEWParse = require("review.js/lib/parser/parser");
 
 // import V = require("../util/const");
 import logger = require("../util/logger");
@@ -42,7 +43,7 @@ class ReVIEWOutlineView extends SelectListView {
     attach() {
         this.storeFocusedElement();
 
-        var symbols: ReVIEW.ISymbol[] = [];
+        var symbols: ReVIEW.Symbol[] = [];
 
         let editor = atom.workspace.getActiveTextEditor();
         let runner = new ReVIEWRunner({ editor: editor });
@@ -66,7 +67,7 @@ class ReVIEWOutlineView extends SelectListView {
         this.jq.remove();
     }
 
-    viewForItem(symbol: ReVIEW.ISymbol): JQuery {
+    viewForItem(symbol: ReVIEW.Symbol): JQuery {
         var repeatString = (times: number, str: string, result = ""): string => {
             if (times === 0) {
                 return result;
@@ -75,7 +76,7 @@ class ReVIEWOutlineView extends SelectListView {
             }
         };
 
-        var header: ReVIEW.Parse.HeadlineSyntaxTree = <any>symbol.node;
+        var header: ReVIEWParse.HeadlineSyntaxTree = <any>symbol.node;
         var prefix = repeatString(header.level, "=");
         var text = prefix + " " + symbol.labelName;
 
@@ -87,7 +88,7 @@ class ReVIEWOutlineView extends SelectListView {
         });
     }
 
-    confirmed(symbol: ReVIEW.ISymbol) {
+    confirmed(symbol: ReVIEW.Symbol) {
         // onSelected的な
         this.cancel();
         // emit したい…

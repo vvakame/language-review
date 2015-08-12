@@ -29,7 +29,7 @@ class ReVIEWSyntaxListView extends ScrollView {
 
     runner: ReVIEWRunner;
 
-    acceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes;
+    acceptableSyntaxes: ReVIEW.AcceptableSyntaxes;
 
     static deserialize(state: any): ReVIEWSyntaxListView {
         return new ReVIEWSyntaxListView(state);
@@ -150,7 +150,7 @@ class ReVIEWSyntaxListView extends ScrollView {
 
         var $div = $("<div>");
         $("<h1>").text("Re:VIEW記法の説明").appendTo($div);
-        var SyntaxType = ReVIEW.Build.SyntaxType;
+        var SyntaxType = ReVIEW.SyntaxType;
         this.acceptableSyntaxes.acceptableSyntaxes.forEach(syntax=> {
             var $syntax = $("<div>");
             switch (syntax.type) {

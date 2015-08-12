@@ -9,9 +9,11 @@ import logger = require("./util/logger");
 
 interface LinterError {
     type: string;
-    text: string;
-    filePath: string;
-    range: TextBuffer.IRange;
+    text?: string;
+    html?: string;
+    filePath?: string;
+    range?: TextBuffer.IRange;
+    trace?: {}[];
 }
 
 function linter(editor: AtomCore.IEditor): Promise<LinterError[]> {
@@ -49,7 +51,7 @@ function reportToLintMessage(editor: AtomCore.IEditor, reports: ReVIEW.ProcessRe
         });
 }
 
-function syntaxTreeToRange(node: ReVIEW.Parse.SyntaxTree): TextBuffer.IRange {
+function syntaxTreeToRange(node: ReVIEW.SyntaxTree): TextBuffer.IRange {
     return Range.fromObject({
         start: {
             row: node.line - 1,

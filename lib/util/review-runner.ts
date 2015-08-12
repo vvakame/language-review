@@ -22,8 +22,8 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
     editor: AtomCore.IEditor;
     file: PathWatcher.IFile;
 
-    lastAcceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes;
-    lastSymbols: ReVIEW.ISymbol[];
+    lastAcceptableSyntaxes: ReVIEW.AcceptableSyntaxes;
+    lastSymbols: ReVIEW.Symbol[];
     lastReports: ReVIEW.ProcessReport[];
     lastBook: ReVIEW.Book;
 
@@ -68,9 +68,9 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
     on(eventNames: "start", callback: () => any): any;
 
-    on(eventNames: "syntax", callback: (acceptableSyntaxes: ReVIEW.Build.AcceptableSyntaxes) => any): any;
+    on(eventNames: "syntax", callback: (acceptableSyntaxes: ReVIEW.AcceptableSyntaxes) => any): any;
 
-    on(eventNames: "symbol", callback: (symbols: ReVIEW.ISymbol[]) => any): any;
+    on(eventNames: "symbol", callback: (symbols: ReVIEW.Symbol[]) => any): any;
 
     on(eventNames: "report", callback: (reports: ReVIEW.ProcessReport[]) => any): any;
 
@@ -132,7 +132,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
                             this.emit("compile-failed");
                         }
                     },
-                    builders: [new ReVIEW.Build.HtmlBuilder(false)],
+                    builders: [new ReVIEW.HtmlBuilder(false)],
                     book: {
                         contents: [
                             filename
