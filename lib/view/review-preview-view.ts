@@ -3,8 +3,6 @@
 /// <reference path="../../typings/pathwatcher/pathwatcher.d.ts" />
 /// <reference path="../../typings/q/Q.d.ts" />
 
-/// <reference path="../../node_modules/review.js/dist/review.js.d.ts" />
-
 import path = require("path");
 
 import {$, $$$, ScrollView} from "atom-space-pen-views";

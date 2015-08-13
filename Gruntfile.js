@@ -25,8 +25,7 @@ module.exports = function (grunt) {
       },
       clientMain: {
         src: [
-          '<%= opt.client.tsMain %>/language-review.ts',
-          '<%= opt.client.tsMain %>/linter.ts'
+          '<%= opt.client.tsMain %>/language-review.ts'
         ]
       },
       clientTest: {

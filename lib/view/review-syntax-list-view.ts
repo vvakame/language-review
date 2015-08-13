@@ -2,8 +2,6 @@
 /// <reference path="../../typings/atom/atom.d.ts" />
 /// <reference path="../../typings/pathwatcher/pathwatcher.d.ts" />
 
-/// <reference path="../../node_modules/review.js/dist/review.js.d.ts" />
-
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-view.coffee
 
 import path = require("path");

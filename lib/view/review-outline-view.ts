@@ -1,8 +1,5 @@
 /// <reference path="../../typings/atom/atom.d.ts" />
 
-/// <reference path="../../node_modules/review.js/dist/review.js.d.ts" />
-
-
 import {SelectListView, $, $$} from "atom-space-pen-views";
 import {Point} from "atom";
 

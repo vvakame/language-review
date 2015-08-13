@@ -4,8 +4,6 @@
 /// <reference path="../../typings/text-buffer/text-buffer.d.ts" />
 /// <reference path="../../typings/pathwatcher/pathwatcher.d.ts" />
 
-/// <reference path="../../node_modules/review.js/dist/review.js.d.ts" />
-
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-runner.coffee
 
 import emissaryHelper = require("./emissary-helper");
@@ -14,6 +12,39 @@ import logger = require("./logger");
 
 import ReVIEW = require("review.js");
 import path = require("path");
+
+// 別の.reを参照する構文を生かしておくとビルドエラーになるので潰しておく。
+class SingleFileAnalyzer extends ReVIEW.DefaultAnalyzer {
+    inline_chap(builder: /* AcceptableSyntaxBuilder */ any) {
+        this.inlineDecorationSyntax(builder, "chap");
+    }
+
+    inline_title(builder: /* AcceptableSyntaxBuilder */ any) {
+        this.inlineDecorationSyntax(builder, "title");
+    }
+
+    inline_chapref(builder: /* AcceptableSyntaxBuilder */ any) {
+        this.inlineDecorationSyntax(builder, "chapref");
+    }
+}
+
+// 別の.reを参照する構文を生かしておくとビルドエラーになるので潰しておく。
+class SingleFileHTMLBuilder extends ReVIEW.HtmlBuilder {
+    inline_chap(process: /* BuilderProcess */ any, node: /* InlineElementSyntaxTree */ any) {
+        process.out("第X章");
+        return false;
+    }
+
+    inline_title(process: /* BuilderProcess */ any, node: /* InlineElementSyntaxTree */ any) {
+        process.out("章タイトル(仮)");
+        return false;
+    }
+
+    inline_chapref(process: /* BuilderProcess */ any, node: /* InlineElementSyntaxTree */ any) {
+        process.out("第X章「章タイトル(仮)」");
+        return false;
+    }
+}
 
 class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
 
@@ -132,7 +163,8 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
                             this.emit("compile-failed");
                         }
                     },
-                    builders: [new ReVIEW.HtmlBuilder(false)],
+                    analyzer: new SingleFileAnalyzer(),
+                    builders: [new SingleFileHTMLBuilder(false)],
                     book: {
                         contents: [
                             filename

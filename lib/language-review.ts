@@ -1,4 +1,5 @@
 /// <reference path="../node_modules/typescript/bin/lib.es6.d.ts" />
+/// <reference path="../node_modules/review.js/dist/review.js.d.ts" />
 
 /// <reference path="../typings/node/node.d.ts" />
 /// <reference path="../typings/atom/atom.d.ts" />
