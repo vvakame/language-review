@@ -11,8 +11,6 @@ import {$, ScrollView} from "atom-space-pen-views";
 import pathwatcher = require("pathwatcher");
 var File = pathwatcher.File;
 
-import Q = require("q");
-
 import ReVIEW = require("review.js");
 
 import V = require("../util/const");
@@ -81,29 +79,28 @@ class ReVIEWSyntaxListView extends ScrollView {
         this.runner.deactivate();
     }
 
-    resolveEditor(editorId: string): Q.Promise<AtomCore.IEditor> {
-        var deferred = Q.defer<AtomCore.IEditor>();
+    resolveEditor(editorId: string): Promise<AtomCore.IEditor> {
+        return new Promise<AtomCore.IEditor>((resolve, reject) => {
+            let func = () => {
+                var editor = this.editorForId(editorId);
+                this.editor = editor;
 
-        var resolve = () => {
-            var editor = this.editorForId(editorId);
-            this.editor = editor;
+                if (editor) {
+                    this.jq.trigger("title-changed");
+                    resolve(editor);
+                } else {
+                    reject();
+                }
+            };
 
-            if (editor) {
-                this.jq.trigger("title-changed");
-                deferred.resolve(editor);
+            if (atom.workspace) {
+                func();
             } else {
-                deferred.reject(null);
+                atom.packages.onDidActivateInitialPackages(() => {
+                    func();
+                });
             }
-        };
-
-        if (atom.workspace) {
-            resolve();
-        } else {
-            atom.packages.onDidActivateInitialPackages(() => {
-                resolve();
-            });
-        }
-        return deferred.promise;
+        });
     }
 
     editorForId(editorId: string) {
