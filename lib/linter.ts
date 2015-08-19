@@ -51,15 +51,15 @@ function reportToLintMessage(editor: AtomCore.IEditor, reports: ReVIEW.ProcessRe
         });
 }
 
-function syntaxTreeToRange(node: ReVIEW.SyntaxTree): TextBuffer.IRange {
+function syntaxTreeToRange(node: ReVIEW.NodeLocation): TextBuffer.IRange {
     return Range.fromObject({
         start: {
-            row: node.line - 1,
-            column: node.column - 1
+            row: node.location.start.line - 1,
+            column: node.location.start.column - 1
         },
         end: {
-            row: node.line - 1,
-            column: node.column - 1 + (node.endPos - node.offset)
+            row: node.location.start.line - 1,
+            column: node.location.end ? node.location.end.column - 1 : node.location.start.column - 1
         }
     });
 }

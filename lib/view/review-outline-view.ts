@@ -4,7 +4,6 @@ import {SelectListView, $, $$} from "atom-space-pen-views";
 import {Point} from "atom";
 
 import ReVIEW = require("review.js");
-import ReVIEWParse = require("review.js/lib/parser/parser");
 
 // import V = require("../util/const");
 import logger = require("../util/logger");
@@ -73,7 +72,7 @@ class ReVIEWOutlineView extends SelectListView {
             }
         };
 
-        var header: ReVIEWParse.HeadlineSyntaxTree = <any>symbol.node;
+        var header: ReVIEW.HeadlineSyntaxTree = <any>symbol.node;
         var prefix = repeatString(header.level, "=");
         var text = prefix + " " + symbol.labelName;
 
@@ -95,7 +94,7 @@ class ReVIEWOutlineView extends SelectListView {
             return;
         }
         var editor: AtomCore.IEditor = pane.getActiveEditor();
-        var point = Point.fromObject({ row: symbol.node.line - 1, column: 0 });
+        var point = Point.fromObject({ row: symbol.node.location.start.line - 1, column: 0 });
         editor.setCursorBufferPosition(point);
     }
 }
