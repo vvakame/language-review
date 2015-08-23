@@ -12,6 +12,9 @@ import logger = require("./logger");
 
 import ReVIEW = require("review.js");
 import path = require("path");
+import fs = require("fs");
+
+import PrhValidator = require("reviewjs-prh");
 
 // 別の.reを参照する構文を生かしておくとビルドエラーになるので潰しておく。
 class SingleFileAnalyzer extends ReVIEW.DefaultAnalyzer {
@@ -128,6 +131,24 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
             files[filename] = this.watcher.getContent();
             var result: { [path: string]: string; } = {
             };
+            let validators: ReVIEW.Validator[] = [
+                new ReVIEW.DefaultValidator()
+            ];
+            let dirName: string;
+            if (this.editor) {
+                dirName = this.editor.getBuffer().file.getParent().getPath();
+            } else if (this.file) {
+                dirName = path.dirname(this.file.getPath());
+            }
+            let prhFilePath = path.join(dirName, "prh.yml");
+            if (fs.existsSync(prhFilePath)) {
+                try {
+                    validators.push(new PrhValidator.TextValidator(prhFilePath));
+                } catch (e) {
+                    atom.notifications.addWarning("prh.ymlの定義に誤りがあります。\n" + e);
+                }
+            }
+
             ReVIEW.start(review => {
                 review.initConfig({
                     basePath: basePath,
@@ -164,6 +185,7 @@ class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
                         }
                     },
                     analyzer: new SingleFileAnalyzer(),
+                    validators: validators,
                     builders: [new SingleFileHTMLBuilder(false)],
                     book: {
                         contents: [

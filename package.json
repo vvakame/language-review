@@ -20,13 +20,14 @@
     }
   },
   "dependencies": {
-    "review.js": "0.9.0",
-    "pathwatcher": "5.0.0",
+    "atom-package-dependencies": "1.0.3",
+    "atom-space-pen-views": "2.1.0",
     "color": "0.10.1",
     "emissary": "1.3.3",
-    "text-buffer": "6.6.1",
-    "atom-package-dependencies": "1.0.3",
-    "atom-space-pen-views": "2.1.0"
+    "pathwatcher": "5.0.0",
+    "review.js": "0.9.0",
+    "reviewjs-prh": "0.0.4",
+    "text-buffer": "6.6.1"
   },
   "package-dependencies": {
     "linter": "//this field will be ignored right now"

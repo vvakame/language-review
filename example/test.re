@@ -1,9 +1,16 @@
 = Re:VIEWをはじめよう！
 
-サンプル！
-
 raw記法で無理矢理太字にするぞ！@<raw>{<strong>太字！</strong>}
 raw記法じゃないとエスケープされるぞ！<strong>太字！</strong>
+
+prh.ymlを置くことで文法に対するカスタムチェックを行うことができるぞ！
+sample！
+jquery！
+Ｗｅｂ！
+
+#@# prh:disable
+警告の段落単位の抑制もできるぞ！
+webmasterツール！
 
 はんぱない@<list>{sample}だ！
 
