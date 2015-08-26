@@ -1,0 +1,106 @@
+'.source.review':
+  'コラム':
+    'prefix': 'column'
+    'body': '====[column] ${1:タイトル}\n${2:本文}\n====[/column]\n$0'
+  '番号なし箇条書き':
+    'prefix': 'ulist'
+    'body': ' * ${1:1段深くは**使う}\n'
+  '番号付き箇条書き':
+    'prefix': 'olist'
+    'body': ' 1. ${1:続けるなら番号増やす}\n'
+  '用語リスト':
+    'prefix': 'dlist'
+    'body': ': ${1:用語}\n\t${2:解説}\n'
+  'リスト':
+    'prefix': 'list/'
+    'body': '//list[${1:ラベル}][${2:キャプション}]{\n//}\n$0'
+  'リスト(参照)':
+    'prefix': 'list'
+    'body': '@<list>{${1:ラベル}}$0'
+  '行番号付きリスト':
+    'prefix': 'listnum/'
+    'body': '//listnum[${1:ラベル}][${2:キャプション}]{\n//}\n$0'
+  'リスト（非採番）':
+    'prefix': 'emlist/'
+    'body': '//emlist[${1:キャプション}]{\n//}\n$0'
+  '行番号付きリスト（非採番）':
+    'prefix': 'emlistnum/'
+    'body': '//emlistnum{\n//}\n$0'
+  '見出し（参照）':
+    'prefix': 'hd'
+    'body': '@<hd>{${1:ラベル}}$0'
+  '図表':
+    'prefix': 'img/'
+    'body': '//image[${1:ラベル}][${2:キャプション}][${3:scale=0.3}]{\n//}\n$0'
+  '図表（非採番）':
+    'prefix': 'indepimg/'
+    'body': '//indepimage[${1:ラベル}][${2:キャプション}][${3:scale=0.3}]{\n//}\n$0'
+  '図表（参照）':
+    'prefix': 'img'
+    'body': '@<img>{${1:ラベル}}$0'
+  'アイコン':
+    'prefix': 'icon'
+    'body': '@<icon>{${1:ラベル}}$0'
+  '脚注':
+    'prefix': 'fn/'
+    'body': '//footnote[${1:ラベル}][${2:キャプション}]\n$0'
+  '脚注(参照)':
+    'prefix': 'fn'
+    'body': '@<fn>{${1:ラベル}}$0'
+  'リード文':
+    'prefix': 'lead/'
+    'body': '//lead{\n${1:テキスト}\n//}\n$0'
+  'コマンド実行結果':
+    'prefix': 'cmd/'
+    'body': '//cmd{\n${1:テキスト}\n//}\n$0'
+  '引用':
+    'prefix': 'quote/'
+    'body': '//quote{\n${1:テキスト}\n//}\n$0'
+  '改行':
+    'prefix': 'br'
+    'body': '@<br>{}$0'
+  '振り仮名':
+    'prefix': 'ruby'
+    'body': '@<ruby>{${1:書き},${2:読み}}$0'
+  '太字':
+    'prefix': 'b'
+    'body': '@<b>{${1:テキスト}}$0'
+  'コード':
+    'prefix': 'code'
+    'body': '@<code>{${1:テキスト}}$0'
+  '等幅':
+    'prefix': 'tt'
+    'body': '@<tt>{${1:テキスト}}$0'
+  'リンク':
+    'prefix': 'href'
+    'body': '@<href>{${1:URL},${2:{テキスト}}$0'
+  'リンク':
+    'prefix': 'link'
+    'body': '@<href>{${1:URL},${2:テキスト}}$0'
+  'ラベル（参照）':
+    'prefix': 'label'
+    'body': '@<label>{${1:ラベル}}$0'
+  'ラベル':
+    'prefix': 'label/'
+    'body': '//label[${1:ラベル}]\n$0'
+  '下線':
+    'prefix': 'u'
+    'body': '@<u>{${1:テキスト}}$0'
+  'キーワード':
+    'prefix': 'kw'
+    'body': '@<kw>{${1:略字},${2:正式名}}$0'
+  'テーブル（参照）':
+    'prefix': 'table'
+    'body': '@<table>{${1:テキスト}}$0'
+  'テーブル':
+    'prefix': 'table/'
+    'body': '//table[${1:ラベル}][${2:キャプション}]{\n${3:ヘッダ1\tヘッダ2\n----------\nカラム1\tカラム2}\n//}\n$0'
+  '章番号':
+    'prefix': 'chap'
+    'body': '@<chap>{${1:ファイル}}$0'
+  '章番号+タイトル':
+    'prefix': 'chapref'
+    'body': '@<chapref>{${1:ファイル}}$0'
+  '章タイトル':
+    'prefix': 'title'
+    'body': '@<title>{${1:ファイル}}$0'
