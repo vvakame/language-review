@@ -11,6 +11,7 @@ jquery！
 #@# prh:disable
 警告の段落単位の抑制もできるぞ！
 webmasterツール！
+@<href>{https://jquery.com/,jQuery}！
 
 はんぱない@<list>{sample}だ！
 
