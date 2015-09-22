@@ -1,5 +1,3 @@
-/// <reference path="../../typings/atom/atom.d.ts" />
-
 import {SelectListView, $, $$} from "atom-space-pen-views";
 import {Point} from "atom";
 

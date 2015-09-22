@@ -1,5 +1,3 @@
-/// <reference path="../../typings/emissary/emissary.d.ts" />
-
 // このファイルについて
 // emissary.Emitter.includeInto などでprototypeにメソッドを生やせる
 // しかし、TypeScriptで同じことをやっても型的に解決できない。mixinほしい。

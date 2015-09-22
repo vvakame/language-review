@@ -1,7 +1,3 @@
-/// <reference path="../../typings/node/node.d.ts" />
-/// <reference path="../../typings/atom/atom.d.ts" />
-/// <reference path="../../typings/pathwatcher/pathwatcher.d.ts" />
-
 import path = require("path");
 
 import {$, $$$, ScrollView} from "atom-space-pen-views";

@@ -1,11 +1,3 @@
-/// <reference path="../node_modules/typescript/bin/lib.es6.d.ts" />
-/// <reference path="../node_modules/review.js/dist/review.js.d.ts" />
-/// <reference path="../node_modules/reviewjs-prh/reviewjs-prh.d.ts" />
-/// <reference path="../node_modules/reviewjs-prh/node_modules/prh/prh.d.ts" />
-
-/// <reference path="../typings/node/node.d.ts" />
-/// <reference path="../typings/atom/atom.d.ts" />
-
 /// <reference path="./typings/atom/atom.d.ts" />
 /// <reference path="./typings/atom-space-pen-views/atom-space-pen-views.d.ts" />
 /// <reference path="./typings/atom-package-dependencies/atom-package-dependencies.d.ts" />

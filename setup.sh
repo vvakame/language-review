@@ -2,7 +2,7 @@
 
 set -eux
 
-rm -rf bower-task bower_components node_modules
+rm -rf node_modules
 apm install
 grunt setup
 grunt

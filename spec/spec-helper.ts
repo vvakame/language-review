@@ -1,10 +1,3 @@
-/// <reference path="../typings/atom/atom.d.ts" />
-/// <reference path="../typings/node/node.d.ts" />
-
-/// <reference path="../typings/jquery/jquery.d.ts" />
-
-/// <reference path="../typings/jasmine/jasmine.d.ts" />
-
 import _atom = require("atom");
 var WorkspaceView = _atom.WorkspaceView;
 

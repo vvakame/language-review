@@ -1,9 +1,3 @@
-/// <reference path="../../typings/atom/atom.d.ts" />
-/// <reference path="../../typings/emissary/emissary.d.ts" />
-/// <reference path="../../typings/node/node.d.ts" />
-/// <reference path="../../typings/text-buffer/text-buffer.d.ts" />
-/// <reference path="../../typings/pathwatcher/pathwatcher.d.ts" />
-
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-runner.coffee
 
 import emissaryHelper = require("./emissary-helper");

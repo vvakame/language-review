@@ -1,6 +1,5 @@
 .DS_Store
 npm-debug.log
-tsconfig.json
 
 .idea/
 
@@ -25,4 +24,3 @@ spec/**/*.js.map
 !lib/**/*.js
 !lib/**/*.js.map
 !bower-task/main-js/**/*.js
-
