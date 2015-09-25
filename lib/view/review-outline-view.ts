@@ -1,13 +1,12 @@
 import {SelectListView, $, $$} from "atom-space-pen-views";
 import {Point} from "atom";
 
-import ReVIEW = require("review.js");
+import * as ReVIEW from "review.js";
 
-// import V = require("../util/const");
-import logger = require("../util/logger");
-import ReVIEWRunner = require("../util/review-runner");
+import * as logger from "../util/logger";
+import ReVIEWRunner from "../util/review-runner";
 
-class ReVIEWOutlineView extends SelectListView {
+export default class ReVIEWOutlineView extends SelectListView {
     static activate() {
         new ReVIEWOutlineView();
     }
@@ -96,5 +95,3 @@ class ReVIEWOutlineView extends SelectListView {
         editor.setCursorBufferPosition(point);
     }
 }
-
-export = ReVIEWOutlineView;

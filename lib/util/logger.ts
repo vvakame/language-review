@@ -8,7 +8,7 @@ function isEnableOutput(): boolean {
     return !!atom.config.get("language-review.debug");
 }
 
-interface ICallSite {
+interface CallSite {
     getThis(): any;
     getTypeName(): string;
     getFunction(): Function;
@@ -24,7 +24,7 @@ interface ICallSite {
     isConstructor(): boolean;
 }
 
-function getCallSites(strip = 2): ICallSite[] {
+function getCallSites(strip = 2): CallSite[] {
     "use strict";
 
     function MyError() {

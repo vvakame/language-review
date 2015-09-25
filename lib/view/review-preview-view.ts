@@ -1,15 +1,14 @@
-import path = require("path");
+import * as path from "path";
 
 import {$, $$$, ScrollView} from "atom-space-pen-views";
 
-import pathwatcher = require("pathwatcher");
-var File = pathwatcher.File;
+import {File} from "pathwatcher";
 
-import V = require("../util/const");
-import logger = require("../util/logger");
-import ReVIEWRunner = require("../util/review-runner");
+import * as V from "../util/const";
+import * as logger from "../util/logger";
+import ReVIEWRunner from "../util/review-runner";
 
-class ReVIEWPreviewView extends ScrollView {
+export default class ReVIEWPreviewView extends ScrollView {
 
     editorId: string;
     file: PathWatcher.IFile;
@@ -214,5 +213,3 @@ class ReVIEWPreviewView extends ScrollView {
 }
 
 atom.deserializers.add(ReVIEWPreviewView);
-
-export = ReVIEWPreviewView;

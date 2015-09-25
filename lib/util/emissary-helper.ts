@@ -4,9 +4,9 @@
 // そのため、インタフェースを継承し、実装を与えるが実装を削除するようにする。
 // この処理を必要な箇所全てでやるとアホみたいに可読性落ちるのでこのクラスに集約する。
 
-import emissary = require("emissary");
+import * as emissary from "emissary";
 
-export class EmitterSubscriberBase implements Emissary.IEmitter, Emissary.ISubscriber {
+export default class EmitterSubscriberBase implements Emissary.IEmitter, Emissary.ISubscriber {
 
     static emissarified() {
         delete this.prototype.on;

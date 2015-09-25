@@ -2,17 +2,17 @@
 /// <reference path="./typings/atom-space-pen-views/atom-space-pen-views.d.ts" />
 /// <reference path="./typings/atom-package-dependencies/atom-package-dependencies.d.ts" />
 
-import url = require("url");
+import * as url from "url";
 import {View} from "atom-space-pen-views";
 
-import apd = require("atom-package-dependencies");
+import * as apd from "atom-package-dependencies";
 
-import V = require("./util/const");
-import logger = require("./util/logger");
-import linter = require("./linter");
-import ReVIEWPreviewView = require("./view/review-preview-view");
-import ReVIEWOutlineView = require("./view/review-outline-view");
-import ReVIEWSyntaxListView = require("./view/review-syntax-list-view");
+import * as V from "./util/const";
+import * as logger from "./util/logger";
+import linter from "./linter";
+import ReVIEWPreviewView from "./view/review-preview-view";
+import ReVIEWOutlineView from "./view/review-outline-view";
+import ReVIEWSyntaxListView from "./view/review-syntax-list-view";
 
 class Controller {
     config = {

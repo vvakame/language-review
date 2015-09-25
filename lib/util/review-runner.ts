@@ -1,14 +1,14 @@
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-runner.coffee
 
-import emissaryHelper = require("./emissary-helper");
-import V = require("./const");
-import logger = require("./logger");
+import EmitterSubscriberBase from "./emissary-helper";
+import * as V from "./const";
+import * as logger from "./logger";
 
-import ReVIEW = require("review.js");
-import path = require("path");
-import fs = require("fs");
+import * as ReVIEW from "review.js";
+import * as path from "path";
+import * as fs from "fs";
 
-import PrhValidator = require("reviewjs-prh");
+import * as PrhValidator from "reviewjs-prh";
 
 // 別の.reを参照する構文を生かしておくとビルドエラーになるので潰しておく。
 class SingleFileAnalyzer extends ReVIEW.DefaultAnalyzer {
@@ -43,7 +43,7 @@ class SingleFileHTMLBuilder extends ReVIEW.HtmlBuilder {
     }
 }
 
-class ReVIEWRunner extends emissaryHelper.EmitterSubscriberBase {
+export default class ReVIEWRunner extends EmitterSubscriberBase {
 
     private watcher: IContentWatcher;
 
@@ -211,7 +211,7 @@ interface IContentWatcher {
     getFilePath(): string;
 }
 
-class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implements IContentWatcher {
+class EditorContentWatcher extends EmitterSubscriberBase implements IContentWatcher {
 
     buffer: TextBuffer.ITextBuffer;
 
@@ -303,7 +303,7 @@ class EditorContentWatcher extends emissaryHelper.EmitterSubscriberBase implemen
     }
 }
 
-class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements IContentWatcher {
+class FileContentWatcher extends EmitterSubscriberBase implements IContentWatcher {
 
     fileRemovedSubscription: AtomCore.IDisposable;
     wasAlreadyActivated: boolean;
@@ -378,5 +378,3 @@ class FileContentWatcher extends emissaryHelper.EmitterSubscriberBase implements
         return this.file.getRealPathSync();
     }
 }
-
-export = ReVIEWRunner;

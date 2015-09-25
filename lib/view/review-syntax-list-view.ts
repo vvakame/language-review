@@ -1,19 +1,18 @@
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-view.coffee
 
-import path = require("path");
+import * as path from "path";
 
 import {$, ScrollView} from "atom-space-pen-views";
 
-import pathwatcher = require("pathwatcher");
-var File = pathwatcher.File;
+import {File} from "pathwatcher";
 
-import ReVIEW = require("review.js");
+import * as ReVIEW from "review.js";
 
-import V = require("../util/const");
-import logger = require("../util/logger");
-import ReVIEWRunner = require("../util/review-runner");
+import * as V from "../util/const";
+import * as logger from "../util/logger";
+import ReVIEWRunner from "../util/review-runner";
 
-class ReVIEWSyntaxListView extends ScrollView {
+export default class ReVIEWSyntaxListView extends ScrollView {
 
     editorId: string;
     file: PathWatcher.IFile;
@@ -216,5 +215,3 @@ class ReVIEWSyntaxListView extends ScrollView {
 }
 
 atom.deserializers.add(ReVIEWSyntaxListView);
-
-export = ReVIEWSyntaxListView;

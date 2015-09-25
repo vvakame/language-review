@@ -1,11 +1,11 @@
-import fs = require("fs");
+import * as fs from "fs";
 
-var Range = require("atom").Range;
+import {Range} from "atom";
 
-import V = require("./util/const");
-import ReVIEW = require("review.js");
-import ReVIEWRunner = require("./util/review-runner");
-import logger = require("./util/logger");
+import * as V from "./util/const";
+import * as ReVIEW from "review.js";
+import ReVIEWRunner from "./util/review-runner";
+import * as logger from "./util/logger";
 
 interface LinterError {
     type: string;
@@ -16,7 +16,7 @@ interface LinterError {
     trace?: {}[];
 }
 
-function linter(editor: AtomCore.IEditor): Promise<LinterError[]> {
+export default function linter(editor: AtomCore.IEditor): Promise<LinterError[]> {
     return new Promise((resolve, reject) => {
         let reviewRunner = new ReVIEWRunner({ editor: editor });
         reviewRunner.on("report", reports=> {
@@ -63,5 +63,3 @@ function syntaxTreeToRange(node: ReVIEW.NodeLocation): TextBuffer.IRange {
         }
     });
 }
-
-export = linter;
