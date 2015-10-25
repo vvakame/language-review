@@ -9,13 +9,13 @@
   "bundle": "typings/bundle.d.ts",
   "dependencies": {
     "atom/atom.d.ts": {
-      "ref": "09e37435ffb2c56a6f908081194a74756f24f99d"
+      "ref": "44cbde48eecd1918ed54b3be49a9752688b6c65a"
     },
     "node/node.d.ts": {
-      "ref": "09e37435ffb2c56a6f908081194a74756f24f99d"
+      "ref": "44cbde48eecd1918ed54b3be49a9752688b6c65a"
     },
     "jasmine/jasmine.d.ts": {
-      "ref": "09e37435ffb2c56a6f908081194a74756f24f99d"
+      "ref": "44cbde48eecd1918ed54b3be49a9752688b6c65a"
     }
   },
   "link": {
