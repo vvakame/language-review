@@ -6,9 +6,41 @@ It is used primarily in Japan.
 本パッケージはRe:VIEWサポートをAtomに追加するためのものです。
 依存しているreview.jsの開発が進むにつれこちらもリッチになっていきます。
 
-## インストール方法
+## 利用方法
+
+### インストール方法
 
 Atomの設定画面で `language-review` と検索してインストールするか、`apm install language-review` を実行してください。
+
+### .reファイルの編集
+
+`.re` ファイルを編集する時に、grammarをRe:VIEWに設定してください。
+
+![grammarの設定](https://raw.githubusercontent.com/vvakame/language-review/master/docs/grammar-status.png)
+
+### 機能の呼び出し
+
+language-reviewには `.re` ファイルの編集支援の他に、いくつかの機能があります。
+
+![機能の呼び出し](https://raw.githubusercontent.com/vvakame/language-review/master/docs/package-menu.png)
+
+`Toggle Preview` は現在開いている `.re` ファイルのプレビューを表示します。
+review.jsによりコンパイルし表示し、独自のCSSを当てているため、実際に出力する際には大きな差異が発生するでしょう。
+文法が正しいかを確かめたり、文章の分量調整などの参考程度に使ってください。
+
+`Toggle Outline` は現在開いている `.re` ファイルのアウトラインを表示します。
+好きな見出しを選んでジャンプすることもできます。
+
+`Toggle Syntax List` はreview.jsがサポートする構文の一覧が表示されます。
+これ以外の資料として、[Re:VIEWのフォーマットガイド](https://github.com/kmuto/review/blob/master/doc/format.ja.md)などを利用してください。
+
+### 校正機能の利用
+
+language-reviewには[prh](https://github.com/vvakame/prh#proofread-helper-)が組み込まれています。
+`.re` ファイルと同じディレクトリに[設定ファイル](https://github.com/vvakame/prh/tree/master/misc)を `prh.yml` という名前で配置してください。
+`.re` ファイルの編集時にルールにしたがって修正案を表示してくれます。
+
+![修正の提案](https://raw.githubusercontent.com/vvakame/language-review/master/docs/prh-warning.png)
 
 ## 開発方法
 

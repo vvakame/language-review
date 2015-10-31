@@ -25,4 +25,5 @@ build-package.sh
 
 # others
 example/
+docs/
 spec/
