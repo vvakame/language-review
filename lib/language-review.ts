@@ -16,7 +16,7 @@ import ReVIEWSyntaxListView from "./view/review-syntax-list-view";
 
 class Controller {
     config = {
-        debugLanguageReVIEW: {
+        debug: {
             title: "Debug: language-review. please do not use this option.",
             type: "boolean",
             default: false
