@@ -17,6 +17,7 @@ export default class ReVIEWPreviewView extends ScrollView {
     runner: ReVIEWRunner;
 
     fontSizeObserveSubscription: AtomCore.IDisposable;
+    fontFamilyObserveSubscription: AtomCore.IDisposable;
 
     static deserialize(state: any): ReVIEWPreviewView {
         return new ReVIEWPreviewView(state);
@@ -58,16 +59,24 @@ export default class ReVIEWPreviewView extends ScrollView {
 
     attached() {
         this.fontSizeObserveSubscription = atom.config.observe("editor.fontSize", newValue => {
-            this.adjustFontSize(newValue);
+            this.adjustFont({ fontSize: newValue });
+        });
+        this.fontFamilyObserveSubscription = atom.config.observe("editor.fontFamily", newValue => {
+            this.adjustFont({ fontFamily: newValue });
         });
     }
 
     detached() {
         this.fontSizeObserveSubscription.dispose();
         this.fontSizeObserveSubscription = null;
+        this.fontFamilyObserveSubscription.dispose();
+        this.fontFamilyObserveSubscription = null;
     }
 
-    adjustFontSize(fontSize: number = atom.config.get("editor.fontSize")) {
+    adjustFont({fontSize, fontFamily}: { fontSize?: number; fontFamily?: string }) {
+        fontSize = fontSize || atom.config.get("editor.fontSize");
+        fontFamily = fontFamily || atom.config.get("editor.fontFamily");
+        this.jq.css("font-family", fontFamily);
         this.jq.css("font-size", fontSize);
     }
 
