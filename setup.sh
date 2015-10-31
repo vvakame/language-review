@@ -12,3 +12,5 @@ apm rebuild
 
 grunt setup
 grunt
+
+curl -L https://github.com/vvakame/prh/raw/master/misc/techbooster.yml > example/prh.yml
