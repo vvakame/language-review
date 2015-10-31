@@ -23,6 +23,10 @@ declare module AtomCore {
     interface IEditor {
         onDidChangeGrammar(callback: () => void): AtomCore.IDisposable;
     }
+    interface IConfig {
+        observe(key: string, callback: (newValue: any) => void): IDisposable;
+        observe(key: string, options: any, callback: (newValue: any) => void): IDisposable;
+    }
 }
 
 declare module TextBuffer {

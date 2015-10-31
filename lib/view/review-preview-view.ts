@@ -16,6 +16,8 @@ export default class ReVIEWPreviewView extends ScrollView {
 
     runner: ReVIEWRunner;
 
+    fontSizeObserveSubscription: AtomCore.IDisposable;
+
     static deserialize(state: any): ReVIEWPreviewView {
         return new ReVIEWPreviewView(state);
     }
@@ -52,6 +54,22 @@ export default class ReVIEWPreviewView extends ScrollView {
     get jq(): JQuery {
         // dirty hack
         return <any>this;
+    }
+
+    attached() {
+        this.fontSizeObserveSubscription = atom.config.observe("editor.fontSize", newValue => {
+            this.adjustFontSize(newValue);
+        });
+    }
+
+    detached() {
+        this.fontSizeObserveSubscription.dispose();
+        this.fontSizeObserveSubscription = null;
+    }
+
+    adjustFontSize(fontSize: number) {
+        this.jq.css("font-size", fontSize);
+        this.jq.find("pre").css("font-size", fontSize + 2);
     }
 
     serialize() {
