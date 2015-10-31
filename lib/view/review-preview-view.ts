@@ -67,9 +67,8 @@ export default class ReVIEWPreviewView extends ScrollView {
         this.fontSizeObserveSubscription = null;
     }
 
-    adjustFontSize(fontSize: number) {
+    adjustFontSize(fontSize: number = atom.config.get("editor.fontSize")) {
         this.jq.css("font-size", fontSize);
-        this.jq.find("pre").css("font-size", fontSize + 2);
     }
 
     serialize() {
