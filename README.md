@@ -12,6 +12,13 @@ It is used primarily in Japan.
 
 Atomの設定画面で `language-review` と検索してインストールするか、`apm install language-review` を実行してください。
 
+簡単にAtomやlanguage-reviewをインストールするためのスクリプトも用意しておきました。
+Mac環境でのみ動作を確認しています。
+
+```
+$ curl -L https://github.com/vvakame/language-review/raw/master/install.sh | bash
+```
+
 ### .reファイルの編集
 
 `.re` ファイルを編集する時に、grammarをRe:VIEWに設定してください。
