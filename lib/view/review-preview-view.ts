@@ -6,6 +6,7 @@ import {File} from "pathwatcher";
 
 import * as V from "../util/const";
 import * as logger from "../util/logger";
+import * as ReVIEW from "review.js";
 import ReVIEWRunner from "../util/review-runner";
 
 export default class ReVIEWPreviewView extends ScrollView {
@@ -153,18 +154,43 @@ export default class ReVIEWPreviewView extends ScrollView {
         this.runner.on("start", () => {
             this.showLoading();
         });
-        this.runner.on("report", reports=> {
+        this.runner.on("report", reports => {
             logger.log(reports);
         });
-        this.runner.on("compile-success", book=> {
+        this.runner.on("compile-success", book => {
             changeHandler();
             book.allChunks[0].builderProcesses.forEach(process => {
                 var $html = this.resolveImagePaths(process.result);
                 this.jq.empty().append($html);
             });
         });
-        this.runner.on("compile-failed", () => {
+        this.runner.on("compile-failed", book => {
             changeHandler();
+            let $result = $("<div>");
+            book.allChunks[0].process.reports.forEach(report => {
+                let $report = $("<div>");
+                let type = "Unknown";
+                switch (report.level) {
+                    case ReVIEW.ReportLevel.Error:
+                        type = "Error";
+                        $report.addClass("text-error");
+                        break;
+                    case ReVIEW.ReportLevel.Warning:
+                        type = "Warning";
+                        $report.addClass("text-warning");
+                        break;
+                    case ReVIEW.ReportLevel.Info:
+                        type = "Info";
+                        $report.addClass("text-info");
+                        break;
+                }
+
+                let line = report.nodes[0].location.start.line;
+                let column = report.nodes[0].location.start.column - 1;
+                $report.text(`[${line},${column}] ${type} ${report.message}`);
+                $report.appendTo($result);
+            });
+            this.jq.empty().append($result);
         });
 
         this.runner.activate();

@@ -95,17 +95,11 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
     }
 
     on(eventNames: "start", callback: () => any): any;
-
     on(eventNames: "syntax", callback: (acceptableSyntaxes: ReVIEW.AcceptableSyntaxes) => any): any;
-
     on(eventNames: "symbol", callback: (symbols: ReVIEW.Symbol[]) => any): any;
-
     on(eventNames: "report", callback: (reports: ReVIEW.ProcessReport[]) => any): any;
-
     on(eventNames: "compile-success", callback: (book: ReVIEW.Book) => any): any;
-
-    on(eventNames: "compile-failed", callback: () => any): any;
-
+    on(eventNames: "compile-failed", callback: (book: ReVIEW.Book) => any): any;
     on(eventNames: string, handler: Function): any;
 
     // 後でReVIEWRunner.emissarified();している。特殊化されたオーバーロードのため。
@@ -172,10 +166,10 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
                             this.lastBook = book;
                             this.emit("compile-success", book);
                         },
-                        onCompileFailed: () => {
+                        onCompileFailed: book => {
                             logger.log();
                             this.lastBook = null;
-                            this.emit("compile-failed");
+                            this.emit("compile-failed", book);
                         }
                     },
                     analyzer: new SingleFileAnalyzer(),
