@@ -73,6 +73,10 @@ $ atom --dev .
 
 テストには`grunt test`を実行してください。
 
+デバッグログを出力するにはPackageの設定でDebugオプションをONにしてください。
+
+![DebugをONに](https://raw.githubusercontent.com/vvakame/language-review/master/docs/debug-option.png)
+
 ## ライセンス
 
 本パッケージはMITライセンスで配布しています。
