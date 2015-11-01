@@ -6,7 +6,7 @@ import {File} from "pathwatcher";
 
 import * as V from "../util/const";
 import * as logger from "../util/logger";
-import * as ReVIEW from "review.js";
+import {ReportLevel} from "review.js";
 import ReVIEWRunner from "../util/review-runner";
 
 export default class ReVIEWPreviewView extends ScrollView {
@@ -34,14 +34,14 @@ export default class ReVIEWPreviewView extends ScrollView {
         this.editorId = params.editorId;
 
         if (this.editorId) {
-            var promise = this.resolveEditor(this.editorId);
+            let promise = this.resolveEditor(this.editorId);
             promise.then(editor=> {
                 this.runner = new ReVIEWRunner({ editor: editor });
                 this.handleEvents();
             }).catch(reason=> {
                 // The editor this preview was created for has been closed so close
                 // this preview since a preview cannot be rendered without an editor
-                var view = this.jq.parents(".pane").view();
+                let view = this.jq.parents(".pane").view();
                 if (view) {
                     view.destroyItem(this);
                 }
@@ -96,7 +96,7 @@ export default class ReVIEWPreviewView extends ScrollView {
     resolveEditor(editorId: string): Promise<AtomCore.IEditor> {
         return new Promise<AtomCore.IEditor>((resolve, reject) => {
             let func = () => {
-                var editor = this.editorForId(editorId);
+                let editor = this.editorForId(editorId);
                 this.editor = editor;
 
                 if (editor) {
@@ -118,8 +118,8 @@ export default class ReVIEWPreviewView extends ScrollView {
     }
 
     editorForId(editorId: string) {
-        var foundEditors = atom.workspace.getTextEditors().filter(editor=> {
-            var id = editor.id;
+        let foundEditors = atom.workspace.getTextEditors().filter(editor=> {
+            let id = editor.id;
             if (!id) {
                 return false;
             }
@@ -133,19 +133,19 @@ export default class ReVIEWPreviewView extends ScrollView {
         atom.commands.add(<any>this, "core:move-down", () => this.jq.scrollDown());
 
         atom.commands.add("atom-workspace", "language-review:zoom-in", () => {
-            var zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
+            let zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
             this.jq.css("zoom", zoomLevel + 0.1);
         });
         atom.commands.add("atom-workspace", "language-review:zoom-out", () => {
-            var zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
+            let zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
             this.jq.css("zoom", zoomLevel - 0.1);
         });
         atom.commands.add("atom-workspace", "language-review:reset-zoom", () => {
             this.jq.css("zoom", 1);
         });
 
-        var changeHandler = () => {
-            var pane = atom.workspace.paneForURI(this.getURI());
+        let changeHandler = () => {
+            let pane = atom.workspace.paneForURI(this.getURI());
             if (pane && pane !== atom.workspace.getActivePane()) {
                 pane.activateItem(this);
             }
@@ -160,7 +160,7 @@ export default class ReVIEWPreviewView extends ScrollView {
         this.runner.on("compile-success", book => {
             changeHandler();
             book.allChunks[0].builderProcesses.forEach(process => {
-                var $html = this.resolveImagePaths(process.result);
+                let $html = this.resolveImagePaths(process.result);
                 this.jq.empty().append($html);
             });
         });
@@ -171,15 +171,15 @@ export default class ReVIEWPreviewView extends ScrollView {
                 let $report = $("<div>");
                 let type = "Unknown";
                 switch (report.level) {
-                    case ReVIEW.ReportLevel.Error:
+                    case ReportLevel.Error:
                         type = "Error";
                         $report.addClass("text-error");
                         break;
-                    case ReVIEW.ReportLevel.Warning:
+                    case ReportLevel.Warning:
                         type = "Warning";
                         $report.addClass("text-warning");
                         break;
-                    case ReVIEW.ReportLevel.Info:
+                    case ReportLevel.Info:
                         type = "Info";
                         $report.addClass("text-info");
                         break;
@@ -206,9 +206,9 @@ export default class ReVIEWPreviewView extends ScrollView {
 
     getTitle(): string {
         if (this.file) {
-            return path.basename(this.getPath()) + " Preview";
+            return `${path.basename(this.getPath()) } Preview`;
         } else if (this.editor) {
-            return this.editor.getTitle() + " Preview";
+            return `${this.editor.getTitle() } Preview`;
         } else {
             return "Re:VIEW Preview";
         }
@@ -216,9 +216,9 @@ export default class ReVIEWPreviewView extends ScrollView {
 
     getURI(): string {
         if (this.file) {
-            return "language-review://" + this.getPath();
+            return `language-review://${this.getPath() }`;
         } else {
-            return "language-review://" + V.previewHost + "/" + this.editorId;
+            return `language-review://${V.previewHost}/${this.editorId}`;
         }
     }
 
@@ -232,7 +232,7 @@ export default class ReVIEWPreviewView extends ScrollView {
     }
 
     showError(result: any = {}) {
-        var failureMessage = result.message;
+        let failureMessage = result.message;
 
         this.jq.html($$$(function() {
             this.h2("Previewing Re:VIEW Failed");
@@ -249,11 +249,11 @@ export default class ReVIEWPreviewView extends ScrollView {
     }
 
     resolveImagePaths(html: any): JQuery {
-        var $html = $(html);
-        var imgList = $html.find("img");
-        for (var i = 0; i < imgList.length; i++) {
-            var img = $(imgList[i]);
-            var src = img.attr("src");
+        let $html = $(html);
+        let imgList = $html.find("img");
+        for (let i = 0; i < imgList.length; i++) {
+            let img = $(imgList[i]);
+            let src = img.attr("src");
             if (src.match(/^(https?:\/\/)/)) {
                 continue;
             }

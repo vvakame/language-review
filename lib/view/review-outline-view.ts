@@ -36,7 +36,7 @@ export default class ReVIEWOutlineView extends SelectListView {
     attach() {
         this.storeFocusedElement();
 
-        var symbols: ReVIEW.Symbol[] = [];
+        let symbols: ReVIEW.Symbol[] = [];
 
         let editor = atom.workspace.getActiveTextEditor();
         let runner = new ReVIEWRunner({ editor: editor });
@@ -61,7 +61,7 @@ export default class ReVIEWOutlineView extends SelectListView {
     }
 
     viewForItem(symbol: ReVIEW.Symbol): JQuery {
-        var repeatString = (times: number, str: string, result = ""): string => {
+        let repeatString = (times: number, str: string, result = ""): string => {
             if (times === 0) {
                 return result;
             } else {
@@ -69,9 +69,9 @@ export default class ReVIEWOutlineView extends SelectListView {
             }
         };
 
-        var header: ReVIEW.HeadlineSyntaxTree = <any>symbol.node;
-        var prefix = repeatString(header.level, "=");
-        var text = prefix + " " + symbol.labelName;
+        let header: ReVIEW.HeadlineSyntaxTree = <any>symbol.node;
+        let prefix = repeatString(header.level, "=");
+        let text = `${prefix} ${symbol.labelName}`;
 
         return $$(function() {
             // this eq View(class)
@@ -85,13 +85,13 @@ export default class ReVIEWOutlineView extends SelectListView {
         // onSelected的な
         this.cancel();
         // emit したい…
-        var pane: any = atom.workspace.getActivePane();
+        let pane: any = atom.workspace.getActivePane();
         if (!pane || typeof pane.getActiveEditor !== "function") {
             atom.beep();
             return;
         }
-        var editor: AtomCore.IEditor = pane.getActiveEditor();
-        var point = Point.fromObject({ row: symbol.node.location.start.line - 1, column: 0 });
+        let editor: AtomCore.IEditor = pane.getActiveEditor();
+        let point = Point.fromObject({ row: symbol.node.location.start.line - 1, column: 0 });
         editor.setCursorBufferPosition(point);
     }
 }

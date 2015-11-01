@@ -56,9 +56,7 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
     lastBook: ReVIEW.Book;
 
     constructor(params: { editor: AtomCore.IEditor; });
-
     constructor(params: { file: PathWatcher.IFile; });
-
     constructor(params: { editor?: AtomCore.IEditor; file?: PathWatcher.IFile; }) {
         super();
 
@@ -110,14 +108,14 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
     doCompile(): void {
         logger.log();
         this.emit("start");
-        var currentPath: string = this.watcher.getFilePath() || "ch01.re";
-        var basePath: string = path.isAbsolute(currentPath) ? path.dirname(currentPath) : undefined;
-        var filename: string = path.basename(currentPath);
+        let currentPath: string = this.watcher.getFilePath() || "ch01.re";
+        let basePath: string = path.isAbsolute(currentPath) ? path.dirname(currentPath) : undefined;
+        let filename: string = path.basename(currentPath);
 
         setTimeout(() => {
-            var files: { [path: string]: string; } = {};
+            let files: { [path: string]: string; } = {};
             files[filename] = this.watcher.getContent();
-            var result: { [path: string]: string; } = {
+            let result: { [path: string]: string; } = {
             };
             let validators: ReVIEW.Validator[] = [
                 new ReVIEW.DefaultValidator()
@@ -242,7 +240,7 @@ class EditorContentWatcher extends EmitterSubscriberBase implements IContentWatc
     }
 
     configureRunner(): void {
-        var scopeName = this.editor.getGrammar().scopeName;
+        let scopeName = this.editor.getGrammar().scopeName;
         logger.log("configureRunner grammar " + scopeName);
         if (V.reviewScopeName === scopeName) {
             this.activate();

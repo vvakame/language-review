@@ -1,4 +1,4 @@
-export var protocol = "language-review:";
-export var previewHost = "preview";
-export var syntaxListHost = "syntax-list";
-export var reviewScopeName = "source.review";
+export const protocol = "language-review:";
+export const previewHost = "preview";
+export const syntaxListHost = "syntax-list";
+export const reviewScopeName = "source.review";

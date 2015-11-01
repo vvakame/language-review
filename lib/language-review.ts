@@ -1,7 +1,3 @@
-/// <reference path="./typings/atom/atom.d.ts" />
-/// <reference path="./typings/atom-space-pen-views/atom-space-pen-views.d.ts" />
-/// <reference path="./typings/atom-package-dependencies/atom-package-dependencies.d.ts" />
-
 import * as url from "url";
 import {View} from "atom-space-pen-views";
 
@@ -74,18 +70,18 @@ class Controller {
 
         atom.workspace.addOpener((urlToOpen: string): View => {
             logger.log(urlToOpen);
-            var tmpUrl = url.parse(urlToOpen);
+            let tmpUrl = url.parse(urlToOpen);
 
-            var pathName = tmpUrl.pathname;
+            let pathName = tmpUrl.pathname;
             if (pathName) {
                 pathName = decodeURI(pathName);
             }
 
-            var protocol = tmpUrl.protocol;
+            let protocol = tmpUrl.protocol;
             if (protocol !== V.protocol) {
                 return;
             }
-            var host = tmpUrl.host;
+            let host = tmpUrl.host;
             if (host === V.previewHost) {
                 return new ReVIEWPreviewView({ editorId: pathName.substring(1) });
             } else if (host === V.syntaxListHost) {
@@ -101,7 +97,7 @@ class Controller {
     }
 
     togglePreview(): void {
-        var editor = atom.workspace.getActiveTextEditor();
+        let editor = atom.workspace.getActiveTextEditor();
         if (!editor) {
             return;
         }
@@ -110,16 +106,16 @@ class Controller {
             return;
         }
 
-        var uri = V.protocol + "//" + V.previewHost + "/" + editor.id;
+        let uri = `${V.protocol}//${V.previewHost}/${editor.id}`;
 
-        var previewPane = atom.workspace.paneForURI(uri);
+        let previewPane = atom.workspace.paneForURI(uri);
 
         if (previewPane) {
             previewPane.destroyItem(previewPane.itemForURI(uri));
             return;
         }
 
-        var previousActivePane = atom.workspace.getActivePane();
+        let previousActivePane = atom.workspace.getActivePane();
 
         atom.workspace.open(uri, {
             split: "right",
@@ -140,7 +136,7 @@ class Controller {
     }
 
     toggleSyntaxList() {
-        var editor = atom.workspace.getActiveTextEditor();
+        let editor = atom.workspace.getActiveTextEditor();
         if (!editor) {
             return;
         }
@@ -149,16 +145,16 @@ class Controller {
             return;
         }
 
-        var uri = V.protocol + "//" + V.syntaxListHost + "/" + editor.id;
+        let uri = `${V.protocol}//${V.syntaxListHost}/${editor.id}`;
 
-        var previewPane = atom.workspace.paneForURI(uri);
+        let previewPane = atom.workspace.paneForURI(uri);
 
         if (previewPane) {
             previewPane.destroyItem(previewPane.itemForURI(uri));
             return;
         }
 
-        var previousActivePane = atom.workspace.getActivePane();
+        let previousActivePane = atom.workspace.getActivePane();
 
         atom.workspace.open(uri, {
             split: "right",
@@ -172,5 +168,5 @@ class Controller {
     }
 }
 
-var controller: any = new Controller();
+let controller: any = new Controller();
 export = controller;

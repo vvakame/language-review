@@ -36,14 +36,14 @@ export default class ReVIEWSyntaxListView extends ScrollView {
         this.editorId = params.editorId;
 
         if (this.editorId) {
-            var promise = this.resolveEditor(this.editorId);
+            let promise = this.resolveEditor(this.editorId);
             promise.then(editor=> {
                 this.runner = new ReVIEWRunner({ editor: editor });
                 this.handleEvents();
             }).catch(reason=> {
                 // The editor this preview was created for has been closed so close
                 // this preview since a preview cannot be rendered without an editor
-                var view = this.jq.parents(".pane").view();
+                let view = this.jq.parents(".pane").view();
                 if (view) {
                     view.destroyItem(this);
                 }
@@ -77,7 +77,7 @@ export default class ReVIEWSyntaxListView extends ScrollView {
     resolveEditor(editorId: string): Promise<AtomCore.IEditor> {
         return new Promise<AtomCore.IEditor>((resolve, reject) => {
             let func = () => {
-                var editor = this.editorForId(editorId);
+                let editor = this.editorForId(editorId);
                 this.editor = editor;
 
                 if (editor) {
@@ -99,8 +99,8 @@ export default class ReVIEWSyntaxListView extends ScrollView {
     }
 
     editorForId(editorId: string) {
-        var foundEditors = atom.workspace.getTextEditors().filter(editor=> {
-            var id = editor.id;
+        let foundEditors = atom.workspace.getTextEditors().filter(editor=> {
+            let id = editor.id;
             if (!id) {
                 return false;
             }
@@ -114,11 +114,11 @@ export default class ReVIEWSyntaxListView extends ScrollView {
         atom.commands.add(<any>this, "core:move-down", () => this.jq.scrollDown());
 
         atom.commands.add("atom-workspace", "language-review:zoom-in", () => {
-            var zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
+            let zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
             this.jq.css("zoom", zoomLevel + 0.1);
         });
         atom.commands.add("atom-workspace", "language-review:zoom-out", () => {
-            var zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
+            let zoomLevel = parseFloat(this.jq.css("zoom")) || 1;
             this.jq.css("zoom", zoomLevel - 0.1);
         });
         atom.commands.add("atom-workspace", "language-review:reset-zoom", () => {
@@ -138,11 +138,11 @@ export default class ReVIEWSyntaxListView extends ScrollView {
             return;
         }
 
-        var $div = $("<div>");
+        let $div = $("<div>");
         $("<h1>").text("Re:VIEW記法の説明").appendTo($div);
-        var SyntaxType = ReVIEW.SyntaxType;
+        let SyntaxType = ReVIEW.SyntaxType;
         this.acceptableSyntaxes.acceptableSyntaxes.forEach(syntax=> {
-            var $syntax = $("<div>");
+            let $syntax = $("<div>");
             switch (syntax.type) {
                 case SyntaxType.Other:
                     switch (syntax.symbolName) {
@@ -168,15 +168,15 @@ export default class ReVIEWSyntaxListView extends ScrollView {
                     break;
                 case SyntaxType.Block:
                     syntax.argsLength.forEach(len=> {
-                        var text = "//" + syntax.symbolName;
-                        for (var i = 0; i < len; i++) {
+                        let text = "//" + syntax.symbolName;
+                        for (let i = 0; i < len; i++) {
                             text += "[???]";
                         }
                         $("<div>").text(text).appendTo($syntax);
                     });
                     break;
             }
-            var $description = $("<pre>").text(syntax.description);
+            let $description = $("<pre>").text(syntax.description);
             $description.appendTo($syntax);
             $syntax.append("<hr>");
             $syntax.appendTo($div);
@@ -188,9 +188,9 @@ export default class ReVIEWSyntaxListView extends ScrollView {
 
     getTitle(): string {
         if (this.file) {
-            return path.basename(this.getPath()) + " Syntax List";
+            return `${path.basename(this.getPath()) } Syntax List`;
         } else if (this.editor) {
-            return this.editor.getTitle() + " Syntax List";
+            return `${this.editor.getTitle() } Syntax List`;
         } else {
             return "Re:VIEW Syntax List";
         }
@@ -198,9 +198,9 @@ export default class ReVIEWSyntaxListView extends ScrollView {
 
     getURI(): string {
         if (this.file) {
-            return "language-review://" + this.getPath();
+            return `language-review://${this.getPath() }`;
         } else {
-            return "language-review://" + V.syntaxListHost + "/" + this.editorId;
+            return `language-review://${V.syntaxListHost}/${this.editorId}`;
         }
     }
 

@@ -31,21 +31,21 @@ function getCallSites(strip = 2): CallSite[] {
         (<any>Error).captureStackTrace(this, MyError);
     }
 
-    var oldPrepareStackTrace = (<any>Error).prepareStackTrace;
+    let oldPrepareStackTrace = (<any>Error).prepareStackTrace;
 
-    var callSites: any[];
+    let callSites: any[];
 
     (<any>Error).prepareStackTrace = function(error: any, stack: any) {
         callSites = stack;
         return stack;
     };
-    var obj: any = new (<any>MyError)();
+    let obj: any = new (<any>MyError)();
 
     obj.stack;
 
     (<any>Error).prepareStackTrace = oldPrepareStackTrace;
 
-    for (var i = 0; i < strip; i++) {
+    for (let i = 0; i < strip; i++) {
         callSites.shift();
     }
 
@@ -55,15 +55,14 @@ function getCallSites(strip = 2): CallSite[] {
 function logHelper(callback: () => void): void {
     "use strict";
 
-    var callSite = getCallSites(3)[0];
-    var label: string;
-    var functionName = callSite.getFunctionName();
+    let callSite = getCallSites(3)[0];
+    let label: string;
+    let functionName = callSite.getFunctionName();
     if (functionName) {
         label = functionName;
     } else {
-        var fileName = callSite.getFileName();
-        label = fileName.substr(fileName.lastIndexOf("/") + 1);
-        label += ":" + callSite.getLineNumber() + ":" + callSite.getColumnNumber();
+        let fileName = callSite.getFileName();
+        label = `${fileName.substr(fileName.lastIndexOf("/") + 1) }:${callSite.getLineNumber() }:${callSite.getColumnNumber() }`;
     }
 
     console.group(label);
