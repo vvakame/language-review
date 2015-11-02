@@ -1,6 +1,6 @@
 {
   "name": "language-review",
-  "version": "0.11.6",
+  "version": "0.11.7",
   "main": "./lib/language-review",
   "description": "Re:VIEW support in Atom",
   "repository": "https://github.com/vvakame/language-review",
