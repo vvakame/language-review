@@ -12,9 +12,7 @@ if [ $? -ne 0 ] ; then
   temp=$(mktemp -d -t atom)
   cd $temp
   curl -L https://atom.io/download/mac --output atom.zip
-  unzip atom.zip
-
-  cp -r Atom.app /Applications/
+  unzip atom.zip -d /Applications
 
   # 1回Atomを起動するとatom, apm両コマンドがパス上に配置される
   open /Applications/Atom.app && sleep 10
