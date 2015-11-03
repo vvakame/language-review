@@ -151,20 +151,28 @@ export default class ReVIEWPreviewView extends ScrollView {
             }
         };
 
+        let savedScrollTop: number = 0;
+        let inFailedContext = false;
         this.runner.on("start", () => {
+            if (!inFailedContext) {
+                savedScrollTop = this.jq.scrollTop();
+            }
             this.showLoading();
         });
         this.runner.on("report", reports => {
             logger.log(reports);
         });
         this.runner.on("compile-success", book => {
+            inFailedContext = false;
             changeHandler();
             book.allChunks[0].builderProcesses.forEach(process => {
                 let $html = this.resolveImagePaths(process.result);
                 this.jq.empty().append($html);
             });
+            this.jq.scrollTop(savedScrollTop);
         });
         this.runner.on("compile-failed", book => {
+            inFailedContext = true;
             changeHandler();
             let $result = $("<div>");
             book.allChunks[0].process.reports.forEach(report => {
