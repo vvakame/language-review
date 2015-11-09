@@ -73,7 +73,7 @@
         },
         {
             "comment": "List //list[main][main()]{ ... //}",
-            "begin": "^(//)(list)\\[([^\\]]*)\\]\\[((\\\\]|[^]])*)\\](\\{)",
+            "begin": "^(//)(list)\\[([^\\]]*)\\](\\[([^\\]]*)\\])?(?:\\[((\\\\]|[^]])*)\\])?(\\{)",
             "end": "(^//\\})",
             "name": "list.review",
             "endCaptures": {
@@ -85,23 +85,26 @@
                 "1": {
                     "name": "keyword.review"
                 },
-                "3": {
-                    "name": "variable.parameter.review"
-                },
                 "2": {
                     "name": "support.function.review"
                 },
-                "4": {
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "5": {
                     "name": "string.review"
                 },
                 "6": {
+                    "name": "string.review"
+                },
+                "8": {
                     "name": "keyword.review"
                 }
             }
         },
         {
             "comment": "EMList //emlist[main()]{ ... //}",
-            "begin": "^(//)(emlist)(\\[((\\\\]|[^]])*)\\])?(\\{)",
+            "begin": "^(//)(emlist)\\[([^\\]]*)\\](\\[([^\\]]*)\\])?(?:\\[((\\\\]|[^]])*)\\])?(\\{)",
             "end": "(^//\\})",
             "name": "emlist.review",
             "endCaptures": {
@@ -116,10 +119,16 @@
                 "2": {
                     "name": "support.function.review"
                 },
-                "4": {
+                "3": {
+                    "name": "variable.parameter.review"
+                },
+                "5": {
                     "name": "string.review"
                 },
                 "6": {
+                    "name": "string.review"
+                },
+                "8": {
                     "name": "keyword.review"
                 }
             }
@@ -151,7 +160,7 @@
         },
         {
             "comment": "//listnum[hello][...]",
-            "begin": "^(//)(listnum)\\[([^\\]]*)\\]\\[((\\\\]|[^]])*)\\](\\{)",
+            "begin": "^(//)(listnum)\\[([^\\]]*)\\](\\[([^\\]]*)\\])?(?:\\[((\\\\]|[^]])*)\\])?(\\{)",
             "end": "(^//\\})",
             "name": "listnum.review",
             "endCaptures": {
@@ -160,21 +169,24 @@
                 }
             },
             "beginCaptures": {
-                "1": {
-                    "name": "keyword.review"
-                },
-                "3": {
-                    "name": "variable.parameter.review"
-                },
-                "2": {
-                    "name": "support.function.review"
-                },
-                "4": {
-                    "name": "string.review"
-                },
-                "6": {
-                    "name": "keyword.review"
-                }
+              "1": {
+                  "name": "keyword.review"
+              },
+              "2": {
+                  "name": "support.function.review"
+              },
+              "3": {
+                  "name": "variable.parameter.review"
+              },
+              "5": {
+                  "name": "string.review"
+              },
+              "6": {
+                  "name": "string.review"
+              },
+              "8": {
+                  "name": "keyword.review"
+              }
             }
         },
         {
@@ -213,11 +225,11 @@
                 "1": {
                     "name": "keyword.review"
                 },
-                "3": {
-                    "name": "variable.parameter.review"
-                },
                 "2": {
                     "name": "support.function.review"
+                },
+                "3": {
+                    "name": "variable.parameter.review"
                 },
                 "5": {
                     "name": "string.review"
@@ -569,11 +581,11 @@
                 "1": {
                     "name": "keyword.review"
                 },
-                "3": {
-                    "name": "keyword.review"
-                },
                 "2": {
                     "name": "support.function.review"
+                },
+                "3": {
+                    "name": "keyword.review"
                 },
                 "4": {
                     "name": "string.review"
