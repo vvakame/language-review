@@ -22,12 +22,10 @@
   "dependencies": {
     "atom-package-dependencies": "1.0.3",
     "atom-space-pen-views": "2.1.0",
-    "color": "0.10.1",
     "emissary": "1.3.3",
     "pathwatcher": "6.3.0",
     "review.js": "0.10.2",
-    "reviewjs-prh": "0.1.4",
-    "text-buffer": "8.0.3"
+    "reviewjs-prh": "0.1.4"
   },
   "package-dependencies": {
     "linter": "//this field will be ignored right now"
