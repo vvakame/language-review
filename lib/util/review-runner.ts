@@ -48,27 +48,21 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
     private watcher: IContentWatcher;
 
     editor: AtomCore.IEditor;
-    file: PathWatcher.IFile;
 
     lastAcceptableSyntaxes: ReVIEW.AcceptableSyntaxes;
     lastSymbols: ReVIEW.Symbol[];
     lastReports: ReVIEW.ProcessReport[];
     lastBook: ReVIEW.Book;
 
-    constructor(params: { editor: AtomCore.IEditor; });
-    constructor(params: { file: PathWatcher.IFile; });
-    constructor(params: { editor?: AtomCore.IEditor; file?: PathWatcher.IFile; }) {
+    constructor(params: { editor: AtomCore.IEditor; }) {
         super();
 
         this.editor = params.editor;
-        this.file = params.file;
 
         if (this.editor) {
             this.watcher = new EditorContentWatcher(this, this.editor);
-        } else if (this.file) {
-            this.watcher = new FileContentWatcher(this, this.file);
         } else {
-            throw new Error("editor or file are required");
+            throw new Error("editor is required");
         }
     }
 
@@ -123,8 +117,6 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
             let dirName: string;
             if (this.editor) {
                 dirName = this.editor.getBuffer().file.getParent().getPath();
-            } else if (this.file) {
-                dirName = path.dirname(this.file.getPath());
             }
             let prhFilePath = path.join(dirName, "prh.yml");
             if (fs.existsSync(prhFilePath)) {
@@ -292,81 +284,5 @@ class EditorContentWatcher extends EmitterSubscriberBase implements IContentWatc
 
     getFilePath(): string {
         return this.buffer.getUri();
-    }
-}
-
-class FileContentWatcher extends EmitterSubscriberBase implements IContentWatcher {
-
-    fileRemovedSubscription: AtomCore.IDisposable;
-    wasAlreadyActivated: boolean;
-    contentChangedSubscription: AtomCore.IDisposable;
-
-    constructor(public runner: ReVIEWRunner, public file: PathWatcher.IFile) {
-        super();
-    }
-
-    startWatching(): void {
-        logger.log();
-        if (this.fileRemovedSubscription) {
-            return;
-        }
-
-        this.configureRunner();
-
-        this.file.onDidDelete
-        this.fileRemovedSubscription = this.file.onDidDelete(() => {
-            this.configureRunner();
-        });
-    }
-
-    stopWatching(): void {
-        logger.log();
-        if (!this.fileRemovedSubscription) {
-            return;
-        }
-
-        this.fileRemovedSubscription.dispose();
-        this.fileRemovedSubscription = null;
-    }
-
-    configureRunner(): void {
-        if (this.file.existsSync()) {
-            this.activate();
-        } else {
-            this.deactivate();
-        }
-    }
-
-    activate(): void {
-        logger.log();
-        if (!this.wasAlreadyActivated) {
-            this.emit("activate");
-        }
-        this.wasAlreadyActivated = true;
-        this.runner.doCompile();
-        if (this.contentChangedSubscription) {
-            return;
-        }
-        this.contentChangedSubscription = this.file.onDidDelete(() => {
-            this.runner.doCompile();
-        });
-    }
-
-
-    deactivate(): void {
-        logger.log();
-        if (this.contentChangedSubscription) {
-            this.contentChangedSubscription.dispose();
-            this.contentChangedSubscription = null;
-        }
-        this.runner.emit("deactivate");
-    }
-
-    getContent(): string {
-        return this.file.readSync(false);
-    }
-
-    getFilePath(): string {
-        return this.file.getRealPathSync();
     }
 }

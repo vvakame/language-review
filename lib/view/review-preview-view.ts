@@ -2,8 +2,6 @@ import * as path from "path";
 
 import {$, $$$, ScrollView} from "atom-space-pen-views";
 
-import {File} from "pathwatcher";
-
 import * as V from "../util/const";
 import * as logger from "../util/logger";
 import {ReportLevel} from "review.js";
@@ -12,7 +10,6 @@ import ReVIEWRunner from "../util/review-runner";
 export default class ReVIEWPreviewView extends ScrollView {
 
     editorId: string;
-    file: PathWatcher.IFile;
     editor: AtomCore.IEditor;
 
     runner: ReVIEWRunner;
@@ -28,7 +25,7 @@ export default class ReVIEWPreviewView extends ScrollView {
         return this.div({ class: "review-preview native-key-bindings", tabindex: -1 });
     }
 
-    constructor(params: { editorId?: string; filePath?: string; } = {}) {
+    constructor(params: { editorId: string; }) {
         super();
 
         this.editorId = params.editorId;
@@ -47,9 +44,7 @@ export default class ReVIEWPreviewView extends ScrollView {
                 }
             });
         } else {
-            this.file = new File(params.filePath);
-            this.runner = new ReVIEWRunner({ file: this.file });
-            this.handleEvents();
+            throw new Error("editorId is required");
         }
     }
 
@@ -84,7 +79,7 @@ export default class ReVIEWPreviewView extends ScrollView {
     serialize() {
         return {
             deserializer: "ReVIEWPreviewView",
-            filePath: this.file ? this.getPath() : null,
+            filePath: null as string,
             editorId: this.editorId
         };
     }
@@ -213,9 +208,7 @@ export default class ReVIEWPreviewView extends ScrollView {
     }
 
     getTitle(): string {
-        if (this.file) {
-            return `${path.basename(this.getPath()) } Preview`;
-        } else if (this.editor) {
+        if (this.editor) {
             return `${this.editor.getTitle() } Preview`;
         } else {
             return "Re:VIEW Preview";
@@ -223,17 +216,11 @@ export default class ReVIEWPreviewView extends ScrollView {
     }
 
     getURI(): string {
-        if (this.file) {
-            return `language-review://${this.getPath() }`;
-        } else {
-            return `language-review://${V.previewHost}/${this.editorId}`;
-        }
+        return `language-review://${V.previewHost}/${this.editorId}`;
     }
 
     getPath(): string {
-        if (this.file) {
-            return this.file.getPath();
-        } else if (this.editor) {
+        if (this.editor) {
             return this.editor.getPath();
         }
         return null;

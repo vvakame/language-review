@@ -86,9 +86,6 @@ class Controller {
                 return new ReVIEWPreviewView({ editorId: pathName.substring(1) });
             } else if (host === V.syntaxListHost) {
                 return new ReVIEWSyntaxListView({ editorId: pathName.substring(1) });
-            } else {
-                // TODO
-                return new ReVIEWPreviewView({ filePath: pathName });
             }
         });
     }
