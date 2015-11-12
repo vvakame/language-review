@@ -1,5 +1,4 @@
 import * as url from "url";
-import {View} from "atom-space-pen-views";
 
 import * as apd from "atom-package-dependencies";
 

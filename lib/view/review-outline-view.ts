@@ -1,4 +1,4 @@
-import {SelectListView, $, $$} from "atom-space-pen-views";
+import {SelectListView, $$} from "atom-space-pen-views";
 import {Point} from "atom";
 
 import * as ReVIEW from "review.js";
