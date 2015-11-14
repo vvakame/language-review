@@ -27,23 +27,27 @@ interface CallSite {
 function getCallSites(strip = 2): CallSite[] {
     "use strict";
 
-    function MyError() {
-        (<any>Error).captureStackTrace(this, MyError);
+    class MyError extends Error {
+        constructor() {
+            super();
+            (Error as any).captureStackTrace(this, MyError);
+        }
     }
 
-    let oldPrepareStackTrace = (<any>Error).prepareStackTrace;
-
+    let oldPrepareStackTrace = (Error as any).prepareStackTrace;
     let callSites: any[];
-
-    (<any>Error).prepareStackTrace = function(error: any, stack: any) {
+    (Error as any).prepareStackTrace = (error: any, stack: any) => {
         callSites = stack;
         return stack;
     };
-    let obj: any = new (<any>MyError)();
+    new MyError().stack;
+    (Error as any).prepareStackTrace = oldPrepareStackTrace;
 
-    obj.stack;
-
-    (<any>Error).prepareStackTrace = oldPrepareStackTrace;
+    if (!callSites) {
+        // NOTE https://github.com/atom/atom/pull/9181
+        // Error.prepareStackTrace が上書きできない
+        return null;
+    }
 
     for (let i = 0; i < strip; i++) {
         callSites.shift();
@@ -55,20 +59,24 @@ function getCallSites(strip = 2): CallSite[] {
 function logHelper(callback: () => void): void {
     "use strict";
 
-    let callSite = getCallSites(3)[0];
-    let label: string;
-    let functionName = callSite.getFunctionName();
-    if (functionName) {
-        label = functionName;
+    let callSites = getCallSites(3);
+    if (callSites) {
+        let callSite = callSites[0];
+        let label: string;
+        let functionName = callSite.getFunctionName();
+        if (functionName) {
+            label = functionName;
+        } else {
+            let fileName = callSite.getFileName();
+            label = `${fileName.substr(fileName.lastIndexOf("/") + 1) }:${callSite.getLineNumber() }:${callSite.getColumnNumber() }`;
+        }
+        console.group(label);
+        console.log([callSite.getFileName(), callSite.getLineNumber(), callSite.getColumnNumber()]);
+        callback();
+        console.groupEnd();
     } else {
-        let fileName = callSite.getFileName();
-        label = `${fileName.substr(fileName.lastIndexOf("/") + 1) }:${callSite.getLineNumber() }:${callSite.getColumnNumber() }`;
+        callback();
     }
-
-    console.group(label);
-    console.log([callSite.getFileName(), callSite.getLineNumber(), callSite.getColumnNumber()]);
-    callback();
-    console.groupEnd();
 }
 
 /* tslint:disable:no-unused-variable */
