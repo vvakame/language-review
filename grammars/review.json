@@ -494,12 +494,12 @@
         {
             "comment": "Comment #@# ",
             "name": "comment.line.review",
-            "match": "#@#.*"
+            "match": "^#@#.*"
         },
         {
             "comment": "Warning #@warn(...) ",
             "name": "comment.review",
-            "match": "#@warn\\(.*\\)"
+            "match": "^#@warn\\(.*\\)"
         },
         {
             "comment": "Comment @<comment>{...} //comment{...} ",
