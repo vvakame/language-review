@@ -273,6 +273,7 @@ class EditorContentWatcher extends EmitterSubscriberBase implements IContentWatc
 
     deactivate(): void {
         logger.log();
+        this.stopWatching();
         this.bufferSubscriptions.forEach(subscription => subscription.dispose());
         this.bufferSubscriptions = [];
         this.runner.emit("deactivate");

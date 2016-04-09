@@ -21,6 +21,7 @@ export default function linter(editor: AtomCore.IEditor): Promise<LinterError[]>
         let reviewRunner = new ReVIEWRunner({ editor: editor });
         reviewRunner.on("report", reports=> {
             logger.log("Re:VIEW linter ReVIEWRunner compile");
+            reviewRunner.deactivate();
             resolve(reportToLintMessage(editor, reports));
         });
         reviewRunner.startWatching();
