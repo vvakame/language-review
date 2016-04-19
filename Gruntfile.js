@@ -75,7 +75,7 @@ module.exports = function (grunt) {
         ]
       }
     },
-    exec: {
+    shell: {
       test: {
         command: 'apm test'
       }
@@ -95,7 +95,7 @@ module.exports = function (grunt) {
   grunt.registerTask(
     'test',
     "テストを実行する。",
-    ['default', 'exec:test']);
+    ['default', 'shell:test']);
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };
