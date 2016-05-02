@@ -37,7 +37,7 @@
         "./lib/view/review-syntax-list-view.ts",
         "./spec/language-review-spec.ts",
         "./spec/spec-helper.ts",
-        "./lib/typings/atom-package-dependencies/atom-package-dependencies.d.ts",
+        "./lib/typings/atom-package-deps/atom-package-deps.d.ts",
         "./lib/typings/atom-space-pen-views/atom-space-pen-views.d.ts",
         "./lib/typings/atom/atom.d.ts",
         "./typings/atom/atom.d.ts",
@@ -53,5 +53,8 @@
         "./typings/status-bar/status-bar.d.ts",
         "./typings/text-buffer/text-buffer.d.ts",
         "./node_modules/typescript/lib/lib.es6.d.ts"
-    ]
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }

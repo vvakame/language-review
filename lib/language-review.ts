@@ -1,6 +1,6 @@
 import * as url from "url";
 
-import * as apd from "atom-package-dependencies";
+import * as apd from "atom-package-deps";
 
 import * as V from "./util/const";
 import * as logger from "./util/logger";
@@ -36,23 +36,9 @@ class Controller {
     }
 
     activate(): void {
-        let linter = apd.require("linter");
-        if (!linter) {
-            let notification = atom.notifications.addInfo("Re:VIEW: 足りない依存関係があるため、インストールを行っています。");
-            apd.install(() => {
-                atom.notifications.addSuccess("Re:VIEW: 準備ができました！");
-                notification.dismiss();
-
-                // Packages don't get loaded automatically as a result of an install
-                if (!apd.require("linter")) {
-                    atom.packages.loadPackage("linter");
-                }
-
-                atom.packages.activatePackage("linter").then(() => this.readyToActivate());
-            });
-            return;
-        }
-
+        apd.install("language-review").then(() => {
+            logger.log("dependency installed");
+        });
         this.readyToActivate();
     }
 
