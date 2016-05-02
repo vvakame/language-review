@@ -14,13 +14,13 @@
   },
   "dependencies": {
     "atom/atom.d.ts": {
-      "ref": "247e8d48404d11f3aff85dea5029413229e0fc36"
+      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
     },
     "node/node.d.ts": {
-      "ref": "247e8d48404d11f3aff85dea5029413229e0fc36"
+      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
     },
     "jasmine/jasmine.d.ts": {
-      "ref": "247e8d48404d11f3aff85dea5029413229e0fc36"
+      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
     }
   }
 }
