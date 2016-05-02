@@ -85,7 +85,10 @@ export default class ReVIEWPreviewView extends ScrollView {
     }
 
     destroy() {
-        this.runner.deactivate();
+        if (this.runner) {
+            // https://github.com/vvakame/language-review/issues/54#issuecomment-210971891
+            this.runner.deactivate();
+        }
     }
 
     resolveEditor(editorId: string): Promise<AtomCore.IEditor> {
