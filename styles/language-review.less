@@ -4,6 +4,20 @@
 @import "syntax-variables";
 @import 'octicon-utf-codes';
 
+.width-per-loop(@counter) when (@counter > 0) {
+  .width-per-loop((@counter - 1));
+  
+  .width-@{counter}per {
+    width: (1% * @counter);
+  }
+  .width-0@{counter}per {
+    width: (1% * @counter);
+  }
+  .width-00@{counter}per {
+    width: (1% * @counter);
+  }
+}
+
 .review-preview {
   font-family: @font-family;
   background-color: #fff;
@@ -11,6 +25,8 @@
   box-sizing: border-box;
   padding: 20px;
   color: #000;
+
+  .width-per-loop(100);
 
   // FirstStepReVIEWのcssより
   .column {
