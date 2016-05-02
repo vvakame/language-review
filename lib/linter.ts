@@ -1,8 +1,5 @@
-import * as fs from "fs";
-
 import {Range} from "atom";
 
-import * as V from "./util/const";
 import * as ReVIEW from "review.js";
 import ReVIEWRunner from "./util/review-runner";
 import * as logger from "./util/logger";
@@ -19,7 +16,7 @@ interface LinterError {
 export default function linter(editor: AtomCore.IEditor): Promise<LinterError[]> {
     return new Promise((resolve, reject) => {
         let reviewRunner = new ReVIEWRunner({ editor: editor });
-        reviewRunner.on("report", reports=> {
+        reviewRunner.on("report", reports => {
             logger.log("Re:VIEW linter ReVIEWRunner compile");
             reviewRunner.deactivate();
             resolve(reportToLintMessage(editor, reports));

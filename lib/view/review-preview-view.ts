@@ -32,10 +32,10 @@ export default class ReVIEWPreviewView extends ScrollView {
 
         if (this.editorId) {
             let promise = this.resolveEditor(this.editorId);
-            promise.then(editor=> {
+            promise.then(editor => {
                 this.runner = new ReVIEWRunner({ editor: editor });
                 this.handleEvents();
-            }).catch(reason=> {
+            }).catch(reason => {
                 // The editor this preview was created for has been closed so close
                 // this preview since a preview cannot be rendered without an editor
                 let view = this.jq.parents(".pane").view();
@@ -113,7 +113,7 @@ export default class ReVIEWPreviewView extends ScrollView {
     }
 
     editorForId(editorId: string) {
-        let foundEditors = atom.workspace.getTextEditors().filter(editor=> {
+        let foundEditors = atom.workspace.getTextEditors().filter(editor => {
             let id = editor.id;
             if (!id) {
                 return false;
@@ -209,7 +209,7 @@ export default class ReVIEWPreviewView extends ScrollView {
 
     getTitle(): string {
         if (this.editor) {
-            return `${this.editor.getTitle() } Preview`;
+            return `${this.editor.getTitle()} Preview`;
         } else {
             return "Re:VIEW Preview";
         }

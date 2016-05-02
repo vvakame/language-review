@@ -1,7 +1,5 @@
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-view.coffee
 
-import * as path from "path";
-
 import {$, ScrollView} from "atom-space-pen-views";
 
 import * as ReVIEW from "review.js";
@@ -34,10 +32,10 @@ export default class ReVIEWSyntaxListView extends ScrollView {
 
         if (this.editorId) {
             let promise = this.resolveEditor(this.editorId);
-            promise.then(editor=> {
+            promise.then(editor => {
                 this.runner = new ReVIEWRunner({ editor: editor });
                 this.handleEvents();
-            }).catch(reason=> {
+            }).catch(reason => {
                 // The editor this preview was created for has been closed so close
                 // this preview since a preview cannot be rendered without an editor
                 let view = this.jq.parents(".pane").view();
@@ -92,7 +90,7 @@ export default class ReVIEWSyntaxListView extends ScrollView {
     }
 
     editorForId(editorId: string) {
-        let foundEditors = atom.workspace.getTextEditors().filter(editor=> {
+        let foundEditors = atom.workspace.getTextEditors().filter(editor => {
             let id = editor.id;
             if (!id) {
                 return false;
@@ -118,7 +116,7 @@ export default class ReVIEWSyntaxListView extends ScrollView {
             this.jq.css("zoom", 1);
         });
 
-        this.runner.on("syntax", acceptableSyntaxes=> {
+        this.runner.on("syntax", acceptableSyntaxes => {
             this.acceptableSyntaxes = acceptableSyntaxes;
             this.renderSyntaxList();
         });
@@ -133,8 +131,10 @@ export default class ReVIEWSyntaxListView extends ScrollView {
 
         let $div = $("<div>");
         $("<h1>").text("Re:VIEW記法の説明").appendTo($div);
+        /* tslint:disable:variable-name */
         let SyntaxType = ReVIEW.SyntaxType;
-        this.acceptableSyntaxes.acceptableSyntaxes.forEach(syntax=> {
+        /* tslint:enable:variable-name */
+        this.acceptableSyntaxes.acceptableSyntaxes.forEach(syntax => {
             let $syntax = $("<div>");
             switch (syntax.type) {
                 case SyntaxType.Other:
@@ -160,7 +160,7 @@ export default class ReVIEWSyntaxListView extends ScrollView {
                     $("<span>").text("@<" + syntax.symbolName + ">{}").appendTo($syntax);
                     break;
                 case SyntaxType.Block:
-                    syntax.argsLength.forEach(len=> {
+                    syntax.argsLength.forEach(len => {
                         let text = "//" + syntax.symbolName;
                         for (let i = 0; i < len; i++) {
                             text += "[???]";
@@ -181,7 +181,7 @@ export default class ReVIEWSyntaxListView extends ScrollView {
 
     getTitle(): string {
         if (this.editor) {
-            return `${this.editor.getTitle() } Syntax List`;
+            return `${this.editor.getTitle()} Syntax List`;
         } else {
             return "Re:VIEW Syntax List";
         }

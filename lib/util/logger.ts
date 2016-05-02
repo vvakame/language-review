@@ -68,7 +68,7 @@ function logHelper(callback: () => void): void {
             label = functionName;
         } else {
             let fileName = callSite.getFileName();
-            label = `${fileName.substr(fileName.lastIndexOf("/") + 1) }:${callSite.getLineNumber() }:${callSite.getColumnNumber() }`;
+            label = `${fileName.substr(fileName.lastIndexOf("/") + 1)}:${callSite.getLineNumber()}:${callSite.getColumnNumber()}`;
         }
         console.group(label);
         console.log([callSite.getFileName(), callSite.getLineNumber(), callSite.getColumnNumber()]);

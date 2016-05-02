@@ -34,18 +34,6 @@ module.exports = function (grunt) {
         ]
       }
     },
-    bower: {
-      install: {
-        options: {
-          targetDir: 'bower-task',
-          layout: 'byType', // exportsOverride の左辺に従って分類
-          install: true,
-          verbose: true, // ログの詳細を出すかどうか
-          cleanTargetDir: true,
-          cleanBowerDir: false
-        }
-      }
-    },
     dtsm: {
       client: {
         options: {
@@ -90,7 +78,7 @@ module.exports = function (grunt) {
   grunt.registerTask(
     'default',
     "必要なコンパイルを行いAtomプラグインとして実行できるようにする。",
-    ['clean:clientScript', 'tsconfig', 'ts'/*, 'tslint' */]);
+    ['clean:clientScript', 'tsconfig', 'ts', 'tslint']);
 
   grunt.registerTask(
     'test',

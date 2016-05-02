@@ -36,8 +36,6 @@ export default class ReVIEWOutlineView extends SelectListView {
     attach() {
         this.storeFocusedElement();
 
-        let symbols: ReVIEW.Symbol[] = [];
-
         let editor = atom.workspace.getActiveTextEditor();
         let runner = new ReVIEWRunner({ editor: editor });
         runner.on("report", reports => {
