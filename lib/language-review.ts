@@ -28,6 +28,7 @@ class Controller {
 
     provideLinter() {
         return {
+            name: "review.js",
             grammarScopes: [V.reviewScopeName],
             scope: "file", // or "project"
             lintOnFly: false,
