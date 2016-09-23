@@ -1,6 +1,6 @@
 // check this https://github.com/yujinakayama/atom-lint/blob/master/lib/lint-view.coffee
 
-import {$, ScrollView} from "atom-space-pen-views";
+import { $, ScrollView } from "atom-space-pen-views";
 
 import * as ReVIEW from "review.js";
 
@@ -35,7 +35,7 @@ export default class ReVIEWSyntaxListView extends ScrollView {
             promise.then(editor => {
                 this.runner = new ReVIEWRunner({ editor: editor });
                 this.handleEvents();
-            }).catch(reason => {
+            }).catch(_reason => {
                 // The editor this preview was created for has been closed so close
                 // this preview since a preview cannot be rendered without an editor
                 let view = this.jq.parents(".pane").view();
@@ -57,7 +57,7 @@ export default class ReVIEWSyntaxListView extends ScrollView {
         return {
             deserializer: "ReVIEWSyntaxListView",
             filePath: null as string,
-            editorId: this.editorId
+            editorId: this.editorId,
         };
     }
 
@@ -171,6 +171,7 @@ export default class ReVIEWSyntaxListView extends ScrollView {
                         $("<div>").text(text).appendTo($syntax);
                     });
                     break;
+                default:
             }
             let $description = $("<pre>").text(syntax.description);
             $description.appendTo($syntax);

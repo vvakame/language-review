@@ -1,10 +1,10 @@
 import * as path from "path";
 
-import {$, $$$, ScrollView} from "atom-space-pen-views";
+import { $, $$$, ScrollView } from "atom-space-pen-views";
 
 import * as V from "../util/const";
 import * as logger from "../util/logger";
-import {ReportLevel} from "review.js";
+import { ReportLevel } from "review.js";
 import ReVIEWRunner from "../util/review-runner";
 
 export default class ReVIEWPreviewView extends ScrollView {
@@ -35,7 +35,7 @@ export default class ReVIEWPreviewView extends ScrollView {
             promise.then(editor => {
                 this.runner = new ReVIEWRunner({ editor: editor });
                 this.handleEvents();
-            }).catch(reason => {
+            }).catch(_reason => {
                 // The editor this preview was created for has been closed so close
                 // this preview since a preview cannot be rendered without an editor
                 let view = this.jq.parents(".pane").view();
@@ -80,7 +80,7 @@ export default class ReVIEWPreviewView extends ScrollView {
         return {
             deserializer: "ReVIEWPreviewView",
             filePath: null as string,
-            editorId: this.editorId
+            editorId: this.editorId,
         };
     }
 
@@ -189,6 +189,7 @@ export default class ReVIEWPreviewView extends ScrollView {
                         type = "Info";
                         $report.addClass("text-info");
                         break;
+                    default:
                 }
 
                 let line = report.nodes[0].location.start.line;
@@ -232,7 +233,7 @@ export default class ReVIEWPreviewView extends ScrollView {
     showError(result: any = {}) {
         let failureMessage = result.message;
 
-        this.jq.html($$$(function() {
+        this.jq.html($$$(function(this: any) {
             this.h2("Previewing Re:VIEW Failed");
             if (failureMessage) {
                 return this.h3(failureMessage);
@@ -241,7 +242,7 @@ export default class ReVIEWPreviewView extends ScrollView {
     }
 
     showLoading() {
-        this.jq.html($$$(function() {
+        this.jq.html($$$(function(this: any) {
             this.div({ class: "review-spinner" }, "Loading Re:VIEW\u2026");
         }));
     }

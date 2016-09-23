@@ -1,10 +1,6 @@
-"use strict";
-
 /* tslint:disable:ban */
 
 function isEnableOutput(): boolean {
-    "use strict";
-
     return !!atom.config.get("language-review.debug");
 }
 
@@ -25,8 +21,6 @@ interface CallSite {
 }
 
 function getCallSites(strip = 2): CallSite[] {
-    "use strict";
-
     class MyError extends Error {
         constructor() {
             super();
@@ -36,7 +30,7 @@ function getCallSites(strip = 2): CallSite[] {
 
     let oldPrepareStackTrace = (Error as any).prepareStackTrace;
     let callSites: any[];
-    (Error as any).prepareStackTrace = (error: any, stack: any) => {
+    (Error as any).prepareStackTrace = (_error: any, stack: any) => {
         callSites = stack;
         return stack;
     };
@@ -57,8 +51,6 @@ function getCallSites(strip = 2): CallSite[] {
 }
 
 function logHelper(callback: () => void): void {
-    "use strict";
-
     let callSites = getCallSites(3);
     if (callSites) {
         let callSite = callSites[0];
@@ -82,8 +74,6 @@ function logHelper(callback: () => void): void {
 /* tslint:disable:no-unused-variable */
 
 export function log(...args: any[]): void {
-    "use strict";
-
     if (isEnableOutput()) {
         logHelper(() => {
             console.log.apply(console, args);
@@ -92,8 +82,6 @@ export function log(...args: any[]): void {
 }
 
 export function warn(...args: any[]): void {
-    "use strict";
-
     if (isEnableOutput()) {
         logHelper(() => {
             console.warn.apply(console, args);
@@ -102,8 +90,6 @@ export function warn(...args: any[]): void {
 }
 
 export function error(...args: any[]): void {
-    "use strict";
-
     if (isEnableOutput()) {
         logHelper(() => {
             console.error.apply(console, args);

@@ -1,59 +1,44 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "moduleResolution": "node",
         "target": "es5",
+        "lib": [
+            "dom",
+            "es2017"
+        ],
+        "types": [
+            "node",
+            "jasmine"
+        ],
         "noImplicitAny": true,
+        "strictNullChecks": false,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "stripInternal": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": false,
         "rootDir": ".",
         "sourceMap": true,
         "declaration": false,
-        "listFiles": true,
+        "listFiles": false,
+        "traceResolution": false,
         "newLine": "LF",
         "noEmitOnError": true,
-        "removeComments": false,
-        "inlineSources": true
+        "inlineSources": true,
+        "listEmittedFiles": false
     },
-    "filesGlob": [
-        "./**/*.ts",
-        "./**/*.tsx",
-        "!./**/*.d.ts",
-        "./lib/typings/**/*.d.ts",
-        "./typings/**/*.d.ts",
-        "!./example/**/*.ts",
-        "!./pages/**/*.ts",
-        "!./node_modules/**/*",
-        "./node_modules/typescript/lib/lib.es6.d.ts"
+    "include": [
+        "typings/**/*.d.ts",
+        "lib/**/*.ts",
+        "spec/**/*.ts"
     ],
-    "files": [
-        "./lib/language-review.ts",
-        "./lib/linter.ts",
-        "./lib/util/const.ts",
-        "./lib/util/emissary-helper.ts",
-        "./lib/util/logger.ts",
-        "./lib/util/review-runner.ts",
-        "./lib/view/review-outline-view.ts",
-        "./lib/view/review-preview-view.ts",
-        "./lib/view/review-syntax-list-view.ts",
-        "./spec/language-review-spec.ts",
-        "./spec/spec-helper.ts",
-        "./lib/typings/atom-package-deps/atom-package-deps.d.ts",
-        "./lib/typings/atom-space-pen-views/atom-space-pen-views.d.ts",
-        "./lib/typings/atom/atom.d.ts",
-        "./typings/atom/atom.d.ts",
-        "./typings/bundle.d.ts",
-        "./typings/emissary/emissary.d.ts",
-        "./typings/jasmine/jasmine.d.ts",
-        "./typings/jquery/jquery.d.ts",
-        "./typings/mixto/mixto.d.ts",
-        "./typings/node/node.d.ts",
-        "./typings/pathwatcher/pathwatcher.d.ts",
-        "./typings/q/Q.d.ts",
-        "./typings/space-pen/space-pen.d.ts",
-        "./typings/status-bar/status-bar.d.ts",
-        "./typings/text-buffer/text-buffer.d.ts",
-        "./node_modules/typescript/lib/lib.es6.d.ts"
-    ],
-    "atom": {
-        "rewriteTsconfig": true
-    }
+    "exclude": [
+        "node_modules"
+    ]
 }

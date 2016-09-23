@@ -31,72 +31,72 @@ export default class EmitterSubscriberBase implements Emissary.IEmitter, Emissar
     }
 
     // overwrite by emissary.Emitter.includeInto(ReVIEWRunner);
-    on(eventNames: string, handler: Function): any /* return value type are Signal */ {
+    on(_eventNames: string, _handler: Function): any /* return value type are Signal */ {
         throw new Error();
     }
 
-    once(eventName: string, handler: Function): any /* return value type are Signal */ {
+    once(_eventName: string, _handler: Function): any /* return value type are Signal */ {
         throw new Error();
     }
 
-    signal(eventName: string): void {
+    signal(_eventName: string): void {
         throw new Error();
     }
 
-    behavior(eventName: string, initialValue: any): void {
+    behavior(_eventName: string, _initialValue: any): void {
         throw new Error();
     }
 
-    emit(eventName: string, ...args: any[]): void {
+    emit(_eventName: string, ..._args: any[]): void {
         throw new Error();
     }
 
-    off(eventNames: string, handler: Function): void {
+    off(_eventNames: string, _handler: Function): void {
         throw new Error();
     }
 
-    pauseEvents(eventNames: string): void {
+    pauseEvents(_eventNames: string): void {
         throw new Error();
     }
 
-    resumeEvents(eventNames: string): void {
+    resumeEvents(_eventNames: string): void {
         throw new Error();
     }
 
-    incrementSubscriptionCount(eventName: string): number {
+    incrementSubscriptionCount(_eventName: string): number {
         throw new Error();
     }
 
-    decrementSubscriptionCount(eventName: string): number {
+    decrementSubscriptionCount(_eventName: string): number {
         throw new Error();
     }
 
-    getSubscriptionCount(eventName: string): number {
+    getSubscriptionCount(_eventName: string): number {
         throw new Error();
     }
 
-    hasSubscriptions(eventName: string): boolean {
+    hasSubscriptions(_eventName: string): boolean {
         throw new Error();
     }
 
     // overwrite by emissary.Subscriber.includeInto(ReVIEWRunner);
-    subscribeWith(eventEmitter: any, methodName: string, args: any): Emissary.ISubscription {
+    subscribeWith(_eventEmitter: any, _methodName: string, _args: any): Emissary.ISubscription {
         throw new Error();
     }
 
-    addSubscription(subscription: any): Emissary.ISubscription {
+    addSubscription(_subscription: any): Emissary.ISubscription {
         throw new Error();
     }
 
-    subscribe(eventEmitterOrSubscription: any, ...args: any[]): Emissary.ISubscription {
+    subscribe(_eventEmitterOrSubscription: any, ..._args: any[]): Emissary.ISubscription {
         throw new Error();
     }
 
-    subscribeToCommand(eventEmitter: any, ...args: any[]): Emissary.ISubscription {
+    subscribeToCommand(_eventEmitter: any, ..._args: any[]): Emissary.ISubscription {
         throw new Error();
     }
 
-    unsubscribe(object?: any): any {
+    unsubscribe(_object?: any): any {
         throw new Error();
     }
 }

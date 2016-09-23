@@ -1,4 +1,4 @@
-import {Range} from "atom";
+import { Range } from "atom";
 
 import * as ReVIEW from "review.js";
 import ReVIEWRunner from "./util/review-runner";
@@ -14,7 +14,7 @@ interface LinterError {
 }
 
 export default function linter(editor: AtomCore.IEditor): Promise<LinterError[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
         let reviewRunner = new ReVIEWRunner({ editor: editor });
         reviewRunner.on("report", reports => {
             logger.log("Re:VIEW linter ReVIEWRunner compile");
@@ -37,6 +37,7 @@ function reportToLintMessage(editor: AtomCore.IEditor, reports: ReVIEW.ProcessRe
                 case ReVIEW.ReportLevel.Warning:
                     type = "Warning";
                     break;
+                default:
             }
 
             let range = syntaxTreeToRange(report.nodes[0]);
@@ -44,7 +45,7 @@ function reportToLintMessage(editor: AtomCore.IEditor, reports: ReVIEW.ProcessRe
                 type: type,
                 text: report.message,
                 filePath: editor.getPath(),
-                range: range
+                range: range,
             };
         });
 }
@@ -53,11 +54,11 @@ function syntaxTreeToRange(node: ReVIEW.NodeLocation): TextBuffer.IRange {
     return Range.fromObject({
         start: {
             row: node.location.start.line - 1,
-            column: node.location.start.column - 1
+            column: node.location.start.column - 1,
         },
         end: {
             row: node.location.start.line - 1,
-            column: node.location.end ? node.location.end.column - 1 : node.location.start.column - 1
-        }
+            column: node.location.end ? node.location.end.column - 1 : node.location.start.column - 1,
+        },
     });
 }

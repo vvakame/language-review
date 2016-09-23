@@ -6,21 +6,14 @@
     }
   ],
   "path": "typings",
-  "bundle": "typings/bundle.d.ts",
   "link": {
     "npm": {
-      "include": true
+      "include": false
     }
   },
   "dependencies": {
     "atom/atom.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
-    },
-    "node/node.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
-    },
-    "jasmine/jasmine.d.ts": {
-      "ref": "e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6"
+      "ref": "d79cd56465f9ed53172dc1617c863a164b0fd7fb"
     }
   }
 }

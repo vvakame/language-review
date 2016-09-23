@@ -14,13 +14,13 @@ class Controller {
         debug: {
             title: "Debug: language-review. please do not use this option.",
             type: "boolean",
-            default: false
+            default: false,
         },
         grammar: {
             title: "grammer scope. please do not change this option.",
             type: "string",
-            default: V.reviewScopeName
-        }
+            default: V.reviewScopeName,
+        },
     };
 
     editorViewSubscription: { off(): any; };
@@ -32,7 +32,7 @@ class Controller {
             grammarScopes: [V.reviewScopeName],
             scope: "file", // or "project"
             lintOnFly: false,
-            lint: linter
+            lint: linter,
         };
     }
 
@@ -65,7 +65,7 @@ class Controller {
 
             let protocol = tmpUrl.protocol;
             if (protocol !== V.protocol) {
-                return;
+                return null;
             }
             let host = tmpUrl.host;
             if (host === V.previewHost) {
@@ -73,6 +73,7 @@ class Controller {
             } else if (host === V.syntaxListHost) {
                 return new ReVIEWSyntaxListView({ editorId: pathName.substring(1) });
             }
+            return null;
         });
     }
 
@@ -102,7 +103,7 @@ class Controller {
 
         atom.workspace.open(uri, {
             split: "right",
-            searchAllPanes: true
+            searchAllPanes: true,
         }).then(view => {
             if (view instanceof ReVIEWPreviewView) {
                 (<ReVIEWPreviewView>view).renderReVIEW();
@@ -141,7 +142,7 @@ class Controller {
 
         atom.workspace.open(uri, {
             split: "right",
-            searchAllPanes: true
+            searchAllPanes: true,
         }).done(view => {
             if (view instanceof ReVIEWSyntaxListView) {
                 (<ReVIEWSyntaxListView>view).renderSyntaxList();

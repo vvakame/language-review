@@ -1,5 +1,5 @@
-import {SelectListView, $, $$} from "atom-space-pen-views";
-import {Point} from "atom";
+import { SelectListView, $, $$ } from "atom-space-pen-views";
+import { Point } from "atom";
 
 import * as ReVIEW from "review.js";
 
@@ -38,7 +38,7 @@ export default class ReVIEWOutlineView extends SelectListView {
 
         let editor = atom.workspace.getActiveTextEditor();
         let runner = new ReVIEWRunner({ editor: editor });
-        runner.on("report", reports => {
+        runner.on("report", _reports => {
             logger.log("Re:VIEW linter ReVIEWRunner compile");
             if (runner.lastSymbols) {
                 let symbols = runner.lastSymbols.filter(symbol => symbol.symbolName === "hd");
@@ -71,7 +71,7 @@ export default class ReVIEWOutlineView extends SelectListView {
         let prefix = repeatString(header.level, "=");
         let text = `${prefix} ${symbol.labelName}`;
 
-        return $$(function() {
+        return $$(function(this: any) {
             // this eq View(class)
             this.li(() => {
                 this.span(text);

@@ -27,17 +27,17 @@ class SingleFileAnalyzer extends ReVIEW.DefaultAnalyzer {
 
 // 別の.reを参照する構文を生かしておくとビルドエラーになるので潰しておく。
 class SingleFileHTMLBuilder extends ReVIEW.HtmlBuilder {
-    inline_chap(process: /* BuilderProcess */ any, node: /* InlineElementSyntaxTree */ any) {
+    inline_chap(process: /* BuilderProcess */ any, _node: /* InlineElementSyntaxTree */ any) {
         process.out("第X章");
         return false;
     }
 
-    inline_title(process: /* BuilderProcess */ any, node: /* InlineElementSyntaxTree */ any) {
+    inline_title(process: /* BuilderProcess */ any, _node: /* InlineElementSyntaxTree */ any) {
         process.out("章タイトル(仮)");
         return false;
     }
 
-    inline_chapref(process: /* BuilderProcess */ any, node: /* InlineElementSyntaxTree */ any) {
+    inline_chapref(process: /* BuilderProcess */ any, _node: /* InlineElementSyntaxTree */ any) {
         process.out("第X章「章タイトル(仮)」");
         return false;
     }
@@ -45,7 +45,7 @@ class SingleFileHTMLBuilder extends ReVIEW.HtmlBuilder {
 
 export default class ReVIEWRunner extends EmitterSubscriberBase {
 
-    private watcher: IContentWatcher;
+    private watcher: ContentWatcher;
 
     editor: AtomCore.IEditor;
 
@@ -95,7 +95,7 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
     on(eventNames: string, handler: Function): any;
 
     // 後でReVIEWRunner.emissarified();している。特殊化されたオーバーロードのため。
-    on(eventNames: string, handler: Function): any {
+    on(_eventNames: string, _handler: Function): any {
         throw new Error();
     }
 
@@ -112,7 +112,7 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
             let result: { [path: string]: string; } = {
             };
             let validators: ReVIEW.Validator[] = [
-                new ReVIEW.DefaultValidator()
+                new ReVIEW.DefaultValidator(),
             ];
             let dirName: string;
             if (this.editor) {
@@ -160,16 +160,16 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
                             logger.log();
                             this.lastBook = null;
                             this.emit("compile-failed", book);
-                        }
+                        },
                     },
                     analyzer: new SingleFileAnalyzer(),
                     validators: validators,
                     builders: [new SingleFileHTMLBuilder(false)],
                     book: {
                         contents: [
-                            filename
-                        ]
-                    }
+                            filename,
+                        ],
+                    },
                 });
             });
         });
@@ -186,7 +186,7 @@ export default class ReVIEWRunner extends EmitterSubscriberBase {
 
 ReVIEWRunner.emissarified();
 
-interface IContentWatcher {
+interface ContentWatcher {
     startWatching(): void;
     stopWatching(): void;
     activate(): void;
@@ -195,7 +195,7 @@ interface IContentWatcher {
     getFilePath(): string;
 }
 
-class EditorContentWatcher extends EmitterSubscriberBase implements IContentWatcher {
+class EditorContentWatcher extends EmitterSubscriberBase implements ContentWatcher {
 
     buffer: TextBuffer.ITextBuffer;
 

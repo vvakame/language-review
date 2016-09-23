@@ -1,14 +1,7 @@
 .DS_Store
 npm-debug.log
 
-.idea/
-
 node_modules/
-
-.tscache/
-typings/
-bower-task/**/*.js
-bower_components/
 
 example/sample.js
 example/sample.rb

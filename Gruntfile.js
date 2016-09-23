@@ -64,6 +64,12 @@ module.exports = function (grunt) {
       }
     },
     shell: {
+      tsfmt: {
+        command: "tsfmt -r"
+      },
+      tsc: {
+        command: "tsc -p ./"
+      },
       test: {
         command: 'apm test'
       }
@@ -78,7 +84,7 @@ module.exports = function (grunt) {
   grunt.registerTask(
     'default',
     "必要なコンパイルを行いAtomプラグインとして実行できるようにする。",
-    ['clean:clientScript', 'tsconfig', 'ts', 'tslint']);
+    ['clean:clientScript', 'shell:tsfmt', 'shell:tsc', 'tslint']);
 
   grunt.registerTask(
     'test',
