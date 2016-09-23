@@ -1,11 +1,21 @@
 # https://github.com/atom/ci/blob/master/README.md
 
-language: objective-c
+language: generic
+
 node_js:
   - v4
 
 env:
-  - APM_TEST_PACKAGES="linter"
+  global:
+    - APM_TEST_PACKAGES="linter"
+    - ATOM_LINT_WITH_BUNDLED_NODE="true"
+
+  matrix:
+    - ATOM_CHANNEL=stable
+    - ATOM_CHANNEL=beta
+
+os:
+  - osx
 
 script: 'npm run ci'
 
