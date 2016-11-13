@@ -3,7 +3,7 @@
 language: generic
 
 node_js:
-  - v4
+  - "4"
 
 env:
   global:
