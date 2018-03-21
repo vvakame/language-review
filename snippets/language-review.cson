@@ -72,7 +72,7 @@
     'prefix': 'tt'
     'body': '@<tt>{${1:テキスト}}$0'
   'リンク':
-    'prefix': 'link'
+    'prefix': 'href'
     'body': '@<href>{${1:URL},${2:テキスト}}$0'
   'ラベル（参照）':
     'prefix': 'label'
