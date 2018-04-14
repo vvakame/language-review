@@ -1,3 +1,3 @@
-'.re':
+'.source.review':
   'editor':
-    'commentStart': '+@+'
+    'commentStart': '#@#'
