@@ -1,5 +1,5 @@
 {
-    "scopeName": "source.re",
+    "scopeName" : "source.review",
     "fileTypes" : ["re"],
     "name" : "Re:VIEW",
     "patterns": [
@@ -597,6 +597,5 @@
             "name": "instruction.inline.review",
             "match": "(@<)([a-z]+)(>\\{)((\\\\}|[^}])*)(\\})"
         }
-    ],
-    "scopeName" : "source.review"
+    ]
 }
