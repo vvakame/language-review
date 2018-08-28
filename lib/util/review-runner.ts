@@ -199,7 +199,7 @@ class EditorContentWatcher extends EmitterSubscriberBase implements ContentWatch
 
     buffer: TextBuffer.ITextBuffer;
 
-    grammerChangeSubscription: AtomCore.IDisposable;
+    grammarChangeSubscription: AtomCore.IDisposable;
     wasAlreadyActivated: boolean;
     bufferSubscriptions: AtomCore.IDisposable[] = [];
     lastKeyHitTimeoutId: any;
@@ -212,23 +212,23 @@ class EditorContentWatcher extends EmitterSubscriberBase implements ContentWatch
 
     startWatching(): void {
         logger.log();
-        if (this.grammerChangeSubscription) {
+        if (this.grammarChangeSubscription) {
             return;
         }
 
         this.configureRunner();
 
-        this.grammerChangeSubscription = this.editor.onDidChangeGrammar(() => this.configureRunner());
+        this.grammarChangeSubscription = this.editor.onDidChangeGrammar(() => this.configureRunner());
     }
 
     stopWatching(): void {
         logger.log();
-        if (!this.grammerChangeSubscription) {
+        if (!this.grammarChangeSubscription) {
             return;
         }
 
-        this.grammerChangeSubscription.dispose();
-        this.grammerChangeSubscription = null;
+        this.grammarChangeSubscription.dispose();
+        this.grammarChangeSubscription = null;
     }
 
     configureRunner(): void {
