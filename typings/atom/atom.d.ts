@@ -855,7 +855,7 @@ declare namespace AtomCore {
         mergeIntersectingSelections(): any;
         preserveCursorPositionOnBufferReload(): Emissary.ISubscription;
         getGrammar(): IGrammar;
-        setGrammar(grammer: IGrammar): void;
+        setGrammar(grammar: IGrammar): void;
         reloadGrammar(): any;
         shouldAutoIndent(): boolean;
         shouldShowInvisibles(): boolean;

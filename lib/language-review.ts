@@ -17,7 +17,7 @@ class Controller {
             default: false,
         },
         grammar: {
-            title: "grammer scope. please do not change this option.",
+            title: "grammar scope. please do not change this option.",
             type: "string",
             default: V.reviewScopeName,
         },
